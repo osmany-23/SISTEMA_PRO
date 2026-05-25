@@ -7,6 +7,8 @@ use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
@@ -54,6 +56,9 @@ class ExpenseRepository extends BaseRepository
     {
         try {
             DB::beginTransaction();
+            if (Schema::hasColumn('expenses', 'user_id')) {
+                $input['user_id'] = Auth::id();
+            }
             $expense = $this->create($input);
             $input['reference_code'] = getSettingValue('expense_code').'_11'.$expense->id;
             $expense->update($input);

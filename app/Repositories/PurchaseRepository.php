@@ -10,6 +10,7 @@ use App\Models\PurchaseLot;
 use App\Services\ProductBatchService;
 use Exception;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
@@ -86,6 +87,9 @@ class PurchaseRepository extends BaseRepository
                 'supplier_id', 'warehouse_id', 'date', 'tax_rate', 'tax_amount', 'discount', 'shipping', 'grand_total',
                 'received_amount', 'paid_amount', 'payment_type', 'notes', 'status',
             ]);
+            if (Schema::hasColumn('purchases', 'user_id')) {
+                $purchaseInputArray['user_id'] = Auth::id();
+            }
             if (Schema::hasColumn('purchases', 'tipo_origen') && array_key_exists('tipo_origen', $input)) {
                 $purchaseInputArray['tipo_origen'] = $input['tipo_origen'];
             }
@@ -586,6 +590,9 @@ class PurchaseRepository extends BaseRepository
             'notes' => $payload['notes'] ?? null,
             'status' => $status > 0 ? $status : Purchase::RECEIVED,
         ];
+        if (Schema::hasColumn('purchases', 'user_id')) {
+            $purchasePayload['user_id'] = Auth::id();
+        }
         if (Schema::hasColumn('purchases', 'tipo_origen')) {
             $purchasePayload['tipo_origen'] = 'LOTE';
         }

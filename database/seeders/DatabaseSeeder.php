@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             CreditAndBatchPermissionSeeder::class,
             DefaultUserSeeder::class,
+            BackfillAdjustmentTraceabilitySeeder::class,
             InitializeUserLastActivitySeeder::class,
             SettingTableSeeder::class,
             DefaultEmailTemplateSeeder::class,

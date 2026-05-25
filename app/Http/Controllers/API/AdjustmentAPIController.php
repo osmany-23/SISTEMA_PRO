@@ -11,6 +11,7 @@ use App\Models\Adjustment;
 use App\Models\AdjustmentItem;
 use App\Models\ManageStock;
 use App\Repositories\AdjustmentRepository;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -29,7 +30,7 @@ class AdjustmentAPIController extends AppBaseController
     {
         $perPage = getPageSize($request);
 
-        $adjustments = $this->adjustmentRepository;
+        $adjustments = $this->adjustmentRepository->with(['warehouse', 'user', 'adjustmentItems.product']);
 
         if ($request->get('warehouse_id')) {
             $adjustments->where('warehouse_id', $request->get('warehouse_id'));
@@ -52,14 +53,14 @@ class AdjustmentAPIController extends AppBaseController
 
     public function show(Adjustment $adjustment): AdjustmentResource
     {
-        $adjustment = $adjustment->load('adjustmentItems.product');
+        $uloadedAdjustment = $adjustment->load('adjustmentItems.product', 'warehouse', 'user');
 
-        return new AdjustmentResource($adjustment);
+        return new AdjustmentResource($uloadedAdjustment);
     }
 
     public function edit(Adjustment $adjustment): AdjustmentResource
     {
-        $adjustment = $adjustment->load('adjustmentItems.product.stocks', 'warehouse');
+        $adjustment = $adjustment->load('adjustmentItems.product.stocks', 'warehouse', 'user');
 
         return new AdjustmentResource($adjustment);
     }

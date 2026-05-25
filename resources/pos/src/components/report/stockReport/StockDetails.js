@@ -9,6 +9,7 @@ import SaleReturnTabs from './stockDetails/SaleReturnTabs';
 import PurchaseTab from './stockDetails/PurchaseTabs';
 import PurchaseReturnTabs from './stockDetails/PurchaseReturnTabs';
 import CreditTabs from './stockDetails/CreditTabs';
+import AdjustmentTabs from './stockDetails/AdjustmentTabs';
 import HeaderTitle from '../../header/HeaderTitle';
 import {connect} from 'react-redux';
 import {stockDetailsWarehouseAction} from '../../../store/action/stockDetailsWarehouse';
@@ -93,6 +94,12 @@ const StockDetails = (props) => {
                          tabClassName='position-relative mb-3 me-7'>
                         <div className='w-100 mx-auto'>
                             {key === 'credits' && <CreditTabs id={id}/>}
+                        </div>
+                    </Tab>
+                    <Tab eventKey='adjustments' title={getFormattedMessage('adjustments.title')}
+                         tabClassName='position-relative mb-3 me-7'>
+                        <div className='w-100 mx-auto'>
+                            {key === 'adjustments' && <AdjustmentTabs id={id}/>}
                         </div>
                     </Tab>
                 </Tabs>

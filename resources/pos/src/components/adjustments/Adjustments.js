@@ -67,6 +67,16 @@ const Adjustments = (props) => {
         setIsDetails(isDetails);
     };
 
+    const resolveMovementSummary = (items = []) => {
+        const movementTypes = [
+            ...new Set(
+                items.map((item) => item.tipo_movimiento || (item.method_type === 1 ? "entrada" : "salida"))
+            ),
+        ];
+
+        return movementTypes.length === 1 ? movementTypes[0] : "mixto";
+    };
+
     const itemsValue =
         currencySymbol &&
         adjustments.length >= 0 &&
@@ -79,6 +89,9 @@ const Adjustments = (props) => {
             ),
             time: moment(item.attributes.created_at).format("LT"),
             warehouse_name: item.attributes.warehouse_name,
+            user_name: item.attributes.user_name || "No registrado",
+            descripcion: item.attributes.descripcion || "",
+            tipo_movimiento: resolveMovementSummary(item.attributes.adjustment_items || []),
             id: item.id,
             currency: currencySymbol,
         }));
@@ -101,6 +114,38 @@ const Adjustments = (props) => {
             selector: (row) => row.warehouse_name,
             sortField: "warehouse_name",
             sortable: false,
+        },
+        {
+            name: getFormattedMessage("globally.user.label"),
+            selector: (row) => row.user_name,
+            sortable: false,
+        },
+        {
+            name: getFormattedMessage("globally.type.label"),
+            sortable: false,
+            cell: (row) => (
+                <span
+                    className={`badge ${
+                        row.tipo_movimiento === "entrada"
+                            ? "bg-light-success"
+                            : row.tipo_movimiento === "salida"
+                            ? "bg-light-danger"
+                            : "bg-light-primary"
+                    }`}
+                >
+                    {row.tipo_movimiento.toUpperCase()}
+                </span>
+            ),
+        },
+        {
+            name: getFormattedMessage("adjustments.description.label"),
+            selector: (row) => row.descripcion,
+            sortable: false,
+            cell: (row) => (
+                <span className="text-gray-700 text-truncate d-inline-block" style={{ maxWidth: "220px" }}>
+                    {row.descripcion || "No registrado"}
+                </span>
+            ),
         },
         {
             name: getFormattedMessage(

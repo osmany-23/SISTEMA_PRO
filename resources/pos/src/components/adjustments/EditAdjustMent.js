@@ -79,7 +79,7 @@ const EditAdjustMent = (props) => {
                 })
             ),
             id: adjustments.id,
-            notes: adjustments.attributes.note,
+            descripcion: adjustments.attributes.descripcion,
             AdjustmentType: {
                 label:
                     selectedAdjustMentType &&

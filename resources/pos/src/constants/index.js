@@ -69,6 +69,7 @@ export const apiBaseURL = {
     STOCK_SALE_RETURN_TAB: "get-sale-return-product-report",
     STOCK_PURCHASE_TAB: "get-purchase-product-report",
     STOCK_PURCHASE_RETURN_TAB: "get-purchase-return-product-report",
+    STOCK_ADJUSTMENT_TAB: "get-adjustment-product-report",
     STOCK_DETAILS_WAREHOUSE: "get-product-count",
     TOP_SELLING_PRODUCT_REPORT: "top-selling-product-report",
     STOCK_ALERT: "stock-alerts",
@@ -454,6 +455,7 @@ export const stockReportActionType = {
     STOCK_DETAILS_SALE_RETURN_TAB: "STOCK_DETAILS_SALE_RETURN_TAB",
     STOCK_DETAILS_PURCHASE_TAB: "STOCK_DETAILS_PURCHASE_TAB",
     STOCK_DETAILS_PURCHASE_RETURN_TAB: "STOCK_DETAILS_PURCHASE_RETURN_TAB",
+    STOCK_DETAILS_ADJUSTMENT_TAB: "STOCK_DETAILS_ADJUSTMENT_TAB",
     STOCK_DETAILS_WAREHOUSE: "STOCK_DETAILS_WAREHOUSE",
 };
 

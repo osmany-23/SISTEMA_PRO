@@ -4,6 +4,7 @@ import { translateMessage } from "../../sharedMethod";
 
 const shellMenuItems = Array.from({ length: 7 });
 const shellCards = Array.from({ length: 4 });
+const APP_LOADER_BRAND = "PRIMETECH SERVICES";
 
 const AppBootstrapLoader = ({ variant = "fullscreen", showProgress = true }) => {
     const isShellVariant = variant === "shell";
@@ -75,7 +76,7 @@ const AppBootstrapLoader = ({ variant = "fullscreen", showProgress = true }) => 
                 <div className="pos-bootstrap__panel">
                     <div className="pos-bootstrap__spinner" />
                     <div className="pos-bootstrap__copy">
-                        <span className="pos-bootstrap__eyebrow">InventaPro POS</span>
+                        <span className="pos-bootstrap__eyebrow">{APP_LOADER_BRAND}</span>
                         <strong className="pos-bootstrap__label">
                             {loadingLabel}
                         </strong>

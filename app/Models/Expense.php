@@ -56,6 +56,7 @@ class Expense extends BaseModel
         'reference_code',
         'details',
         'title',
+        'user_id',
     ];
 
     public static $rules = [
@@ -89,6 +90,7 @@ class Expense extends BaseModel
             'warehouse_name' => $this->warehouse->name,
             'expense_category_name' => $this->expenseCategory->name,
             'title' => $this->title,
+            'user_name' => $this->user ? trim(($this->user->first_name ?? '').' '.($this->user->last_name ?? '')) ?: $this->user->email : null,
             'created_at' => $this->created_at,
         ];
 
@@ -98,6 +100,11 @@ class Expense extends BaseModel
     public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class, 'warehouse_id', 'id');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function expenseCategory(): BelongsTo

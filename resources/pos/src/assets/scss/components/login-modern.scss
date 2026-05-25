@@ -1,0 +1,1137 @@
+/**
+ * InventaPro - Premium Login Form
+ * Diseño SaaS empresarial premium con glassmorphism, animaciones modernas
+ * y experiencia visual de nivel senior UI/UX
+ */
+
+// ============================================
+// VARIABLES Y COLORES PREMIUM
+// ============================================
+
+// Primary Colors
+$login-primary-dark: #0a1428;
+$login-primary-blue: #1e88e5;
+$login-secondary-blue: #1565c0;
+$login-tertiary-blue: #0d47a1;
+$login-accent-yellow: #ffc107;
+$login-accent-light: #ffeb3b;
+
+// Backgrounds
+$login-bg-light: #f5f7fa;
+$login-bg-darker: #f0f2f5;
+$login-white: #ffffff;
+
+// Text & Borders
+$login-text-dark: #0f1419;
+$login-text-medium: #4a5568;
+$login-text-light: #8892a6;
+$login-border-light: #d9dce1;
+$login-border-lighter: #e8eaef;
+
+// States
+$login-error-color: #dc3545;
+$login-error-light: #f8d7da;
+$login-success-color: #28a745;
+
+// ============================================
+// ANIMACIONES OPTIMIZADAS
+// ============================================
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// ============================================
+// CONTENEDOR PRINCIPAL
+// ============================================
+
+.login-container {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg, $login-primary-dark 0%, #0f2847 50%, #1b4d7c 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: 
+            radial-gradient(circle at 20% 50%, rgba(30, 136, 229, 0.12) 0%, transparent 40%),
+            radial-gradient(circle at 80% 80%, rgba(255, 193, 7, 0.08) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 0;
+    }
+}
+
+// ============================================
+// WRAPPER PRINCIPAL PREMIUM
+// ============================================
+
+.login-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 1280px;
+    height: auto;
+    min-height: 650px;
+    background: $login-white;
+    border-radius: 28px;
+    box-shadow: 
+        0 24px 72px rgba(0, 0, 0, 0.15),
+        0 0 1px rgba(30, 136, 229, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    z-index: 1;
+    position: relative;
+
+    @media (max-width: 991px) {
+        flex-direction: column;
+        min-height: auto;
+        border-radius: 20px;
+    }
+
+    @media (max-width: 576px) {
+        border-radius: 16px;
+        box-shadow: 0 14px 48px rgba(0, 0, 0, 0.12);
+    }
+}
+
+// ============================================
+// PANEL IZQUIERDO - BRANDING PREMIUM
+// ============================================
+
+.login-panel-left {
+    flex: 1;
+    background: linear-gradient(135deg, $login-primary-dark 0%, #0f2847 50%, #1e5aa0 100%);
+    padding: 70px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+
+    @media (max-width: 1199px) {
+        padding: 60px 50px;
+    }
+
+    @media (max-width: 991px) {
+        padding: 50px 40px;
+        min-height: auto;
+        justify-content: center;
+        gap: 40px;
+    }
+
+    @media (max-width: 576px) {
+        padding: 30px 20px;
+    }
+}
+
+// Efectos de fondo abstractos
+.login-bg-shapes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+
+    .shape {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.12;
+        &.shape-1 {
+            width: 350px;
+            height: 350px;
+            background: $login-accent-yellow;
+            top: -80px;
+            right: -120px;
+        }
+
+        &.shape-2 {
+            width: 250px;
+            height: 250px;
+            background: $login-primary-blue;
+            top: 55%;
+            left: -80px;
+            opacity: 0.1;
+        }
+
+        &.shape-3 {
+            width: 300px;
+            height: 300px;
+            background: $login-accent-yellow;
+            bottom: -120px;
+            right: 5%;
+            opacity: 0.08;
+        }
+    }
+}
+
+// ============================================
+// BRANDING Y CONTENIDO
+// ============================================
+
+.login-branding {
+    text-align: center;
+    color: $login-white;
+    z-index: 1;
+    margin-bottom: 50px;
+
+    @media (max-width: 576px) {
+        margin-bottom: 30px;
+    }
+}
+
+.login-logo-wrapper {
+    margin-bottom: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+
+    .login-logo {
+        max-width: 190px;
+        height: auto;
+        max-height: 190px;
+        border-radius: 0;
+        background: transparent;
+        border: 0;
+        padding: 0;
+        filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.2));
+        transition: transform 0.16s ease-out;
+        object-fit: contain;
+
+        &:hover {
+            transform: scale(1.025);
+        }
+
+        @media (max-width: 576px) {
+            max-width: 138px;
+            max-height: 138px;
+        }
+    }
+}
+
+.login-title {
+    font-size: 36px;
+    font-weight: 800;
+    margin: 0 0 18px 0;
+    letter-spacing: -0.8px;
+    background: linear-gradient(135deg, $login-white 0%, #f0f0f0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+
+    @media (max-width: 768px) {
+        font-size: 28px;
+    }
+
+    @media (max-width: 576px) {
+        font-size: 24px;
+    }
+}
+
+.login-subtitle {
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba($login-white, 0.9);
+    margin: 0;
+    line-height: 1.7;
+    max-width: 320px;
+    letter-spacing: 0.3px;
+
+    @media (max-width: 576px) {
+        font-size: 14px;
+    }
+}
+
+// ============================================
+// TARJETAS DE CARACTERÍSTICAS
+// ============================================
+
+.login-features {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    z-index: 1;
+
+    @media (max-width: 991px) {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
+    }
+
+    @media (max-width: 576px) {
+        display: none;
+    }
+}
+
+.feature-card {
+    background: linear-gradient(135deg, rgba($login-white, 0.16) 0%, rgba($login-white, 0.07) 100%);
+    border: 1px solid rgba($login-white, 0.24);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: transform 0.16s ease-out, border-color 0.16s ease-out, background 0.16s ease-out;
+    cursor: pointer;
+    color: $login-white;
+
+    &:hover {
+        background: linear-gradient(135deg, rgba($login-white, 0.22) 0%, rgba($login-white, 0.1) 100%);
+        border-color: rgba($login-accent-yellow, 0.4);
+        transform: translateY(-2px);
+    }
+
+    &:nth-child(2) {
+        border-color: rgba($login-primary-blue, 0.44);
+
+        .feature-icon {
+            background: linear-gradient(135deg, rgba($login-accent-yellow, 0.95) 0%, rgba($login-accent-light, 0.9) 100%);
+            color: $login-primary-dark;
+            box-shadow: 0 6px 20px rgba($login-accent-yellow, 0.26);
+        }
+    }
+
+    &:nth-child(3) {
+        border-color: rgba(100, 181, 246, 0.44);
+
+        .feature-icon {
+            background: linear-gradient(135deg, rgba(#29b6f6, 0.95) 0%, rgba($login-primary-blue, 0.95) 100%);
+            box-shadow: 0 6px 20px rgba(#29b6f6, 0.28);
+        }
+    }
+
+    .feature-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, rgba($login-primary-blue, 0.8) 0%, rgba($login-secondary-blue, 0.8) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        flex-shrink: 0;
+        box-shadow: 0 6px 20px rgba(30, 136, 229, 0.35);
+        transition: transform 0.2s ease;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+
+    .feature-text {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+
+        .feature-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: $login-white;
+            letter-spacing: 0.2px;
+        }
+
+        .feature-desc {
+            font-size: 12px;
+            color: rgba($login-white, 0.75);
+            font-weight: 300;
+        }
+    }
+}
+
+// ============================================
+// PANEL DERECHO - FORMULARIO PREMIUM
+// ============================================
+
+.login-panel-right {
+    flex: 1;
+    padding: 70px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, $login-bg-light 0%, $login-bg-darker 100%);
+    position: relative;
+
+    @media (max-width: 1199px) {
+        padding: 60px 50px;
+    }
+
+    @media (max-width: 991px) {
+        padding: 50px 40px;
+    }
+
+    @media (max-width: 768px) {
+        padding: 40px 30px;
+    }
+
+    @media (max-width: 576px) {
+        padding: 40px 24px;
+        background: $login-white;
+    }
+}
+
+.login-form-wrapper {
+    width: 100%;
+    max-width: 400px;
+}
+
+// ============================================
+// ENCABEZADO DEL FORMULARIO
+// ============================================
+
+.login-form-header {
+    text-align: center;
+    margin-bottom: 42px;
+}
+
+.login-mobile-logo-wrapper {
+    display: none;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+.login-mobile-logo {
+    max-width: 132px;
+    max-height: 132px;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 12px rgba($login-primary-dark, 0.14));
+}
+
+.login-form-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: $login-text-dark;
+    margin: 0 0 10px 0;
+    letter-spacing: -0.6px;
+    line-height: 1.2;
+
+    @media (max-width: 768px) {
+        font-size: 28px;
+    }
+
+    @media (max-width: 576px) {
+        font-size: 26px;
+    }
+}
+
+.login-form-subtitle {
+    font-size: 15px;
+    color: $login-text-medium;
+    margin: 0;
+    line-height: 1.6;
+    font-weight: 400;
+    letter-spacing: -0.3px;
+
+    .company-name {
+        color: $login-primary-blue;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    @media (max-width: 576px) {
+        font-size: 14px;
+    }
+}
+
+// ============================================
+// FORMULARIO
+// ============================================
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.login-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+// Input Wrapper
+.login-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.login-input {
+    width: 100%;
+    padding: 13px 16px 13px 44px;
+    border: 2px solid $login-border-lighter;
+    border-radius: 12px;
+    font-size: 15px;
+    color: $login-text-dark;
+    background: $login-white;
+    transition: border-color 0.16s ease-out, box-shadow 0.16s ease-out, background-color 0.16s ease-out;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+
+    &::placeholder {
+        color: $login-text-light;
+        font-weight: 400;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: $login-primary-blue;
+        box-shadow: 
+            0 0 0 4px rgba($login-primary-blue, 0.12),
+            0 4px 16px rgba($login-primary-blue, 0.15);
+        background: $login-white;
+    }
+
+    &:hover:not(&.error):not(:focus) {
+        border-color: $login-border-light;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    &.error {
+        border-color: $login-error-color;
+        background: rgba($login-error-color, 0.03);
+
+        &:focus {
+            box-shadow: 
+                0 0 0 4px rgba($login-error-color, 0.12),
+                0 4px 16px rgba($login-error-color, 0.15);
+        }
+    }
+
+    &:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 30px $login-white inset !important;
+        -webkit-text-fill-color: $login-text-dark !important;
+    }
+
+    &:-webkit-autofill::first-line {
+        font-size: 15px !important;
+    }
+
+    @media (max-width: 576px) {
+        padding: 12px 14px 12px 40px;
+        font-size: 16px;
+    }
+}
+
+.login-input-icon {
+    position: absolute;
+    left: 14px;
+    color: $login-text-light;
+    font-size: 16px;
+    pointer-events: none;
+    transition: color 0.3s ease;
+}
+
+// Icono mostrar contraseña
+.login-input-icon-password {
+    position: absolute;
+    right: 14px;
+    color: $login-text-light;
+    cursor: pointer;
+    font-size: 16px;
+    transition: color 0.16s ease-out, transform 0.16s ease-out;
+
+    &:hover {
+        color: $login-primary-blue;
+        transform: scale(1.1);
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+
+    @media (max-width: 576px) {
+        right: 12px;
+        font-size: 15px;
+    }
+}
+
+// Mensaje de Error
+.login-error-text {
+    font-size: 13px;
+    color: $login-error-color;
+    margin-top: 4px;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+}
+
+// ============================================
+// OPCIONES DEL FORMULARIO
+// ============================================
+
+.login-form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    gap: 16px;
+
+    @media (max-width: 576px) {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        gap: 14px;
+    }
+}
+
+.login-remember {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    cursor: pointer;
+    font-size: 14px;
+    color: $login-text-medium;
+    font-weight: 500;
+    user-select: none;
+    transition: color 0.3s ease;
+
+    input {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        accent-color: $login-primary-blue;
+        border-radius: 5px;
+        transition: box-shadow 0.16s ease-out;
+    }
+
+    &:hover {
+        color: $login-primary-blue;
+
+        input {
+            box-shadow: 0 0 0 3px rgba($login-primary-blue, 0.15);
+        }
+    }
+
+    span {
+        letter-spacing: -0.2px;
+    }
+
+    @media (max-width: 576px) {
+        font-size: 13px;
+        gap: 8px;
+    }
+}
+
+.login-forgot-link {
+    font-size: 14px;
+    color: $login-primary-blue;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.16s ease-out, text-decoration-color 0.16s ease-out;
+    letter-spacing: -0.2px;
+    white-space: nowrap;
+
+    &:hover {
+        color: $login-secondary-blue;
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 4px;
+    }
+
+    &:active {
+        color: $login-tertiary-blue;
+    }
+
+    @media (max-width: 576px) {
+        font-size: 13px;
+    }
+}
+
+// ============================================
+// BOTÓN DE ACCESO PREMIUM
+// ============================================
+
+.login-btn-submit {
+    background: linear-gradient(135deg, $login-primary-blue 0%, $login-secondary-blue 100%);
+    color: $login-white;
+    border: none;
+    padding: 15px 28px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.16s ease-out, box-shadow 0.16s ease-out, background 0.16s ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    box-shadow: 
+        0 8px 24px rgba($login-primary-blue, 0.35),
+        0 1px 3px rgba(0, 0, 0, 0.12);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: -0.3px;
+
+    &::before {
+        content: none;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 12px;
+        opacity: 0;
+        box-shadow: 0 0 30px rgba($login-primary-blue, 0.5);
+        transition: opacity 0.3s ease;
+    }
+
+    &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 
+            0 12px 32px rgba($login-primary-blue, 0.45),
+            0 2px 8px rgba(0, 0, 0, 0.15);
+        background: linear-gradient(135deg, $login-secondary-blue 0%, $login-tertiary-blue 100%);
+
+        &::after {
+            opacity: 1;
+        }
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 
+            0 6px 16px rgba($login-primary-blue, 0.3),
+            0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+
+    &:disabled,
+    &.loading {
+        opacity: 0.9;
+        cursor: not-allowed;
+        box-shadow: 0 6px 16px rgba($login-primary-blue, 0.2);
+    }
+
+    .btn-text {
+        font-weight: 700;
+        position: relative;
+        z-index: 1;
+    }
+
+    .btn-icon {
+        font-size: 16px;
+        transition: transform 0.16s ease-out;
+        position: relative;
+        z-index: 1;
+    }
+
+    &:hover:not(:disabled) .btn-icon {
+        transform: translateX(5px);
+    }
+
+    @media (max-width: 576px) {
+        padding: 14px 24px;
+        font-size: 15px;
+        gap: 10px;
+    }
+}
+
+// ============================================
+// FOOTER DEL FORMULARIO
+// ============================================
+
+.login-form-footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 28px;
+    border-top: 1.5px solid $login-border-light;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: $login-text-light;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+
+    .footer-icon {
+        color: $login-primary-blue;
+        font-size: 17px;
+        transition: color 0.16s ease-out;
+    }
+
+    .footer-text {
+        font-weight: 600;
+    }
+
+    @media (max-width: 576px) {
+        font-size: 13px;
+        margin-top: 32px;
+        padding-top: 24px;
+    }
+}
+
+// ============================================
+// MEDIA QUERIES RESPONSIVOS
+// ============================================
+
+@media (max-width: 1199px) {
+    .login-wrapper {
+        border-radius: 24px;
+    }
+
+    .login-panel-left,
+    .login-panel-right {
+        padding: 60px 50px;
+    }
+
+    .login-title {
+        font-size: 32px;
+    }
+
+    .login-form-title {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 991px) {
+    .login-container {
+        padding: 20px 16px;
+    }
+
+    .login-wrapper {
+        border-radius: 20px;
+        min-height: auto;
+    }
+
+    .login-panel-left {
+        padding: 50px 40px;
+    }
+
+    .login-panel-right {
+        padding: 50px 40px;
+    }
+
+    .login-title {
+        font-size: 28px;
+    }
+
+    .login-form-title {
+        font-size: 26px;
+    }
+
+    .login-features {
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 12px;
+    }
+
+    .feature-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 14px;
+
+        .feature-text {
+            gap: 4px;
+        }
+
+        .feature-label {
+            font-size: 13px;
+        }
+
+        .feature-desc {
+            font-size: 11px;
+        }
+
+        .feature-icon {
+            width: 44px;
+            height: 44px;
+            font-size: 20px;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        padding: 16px;
+    }
+
+    .login-wrapper {
+        border-radius: 18px;
+    }
+
+    .login-panel-left,
+    .login-panel-right {
+        padding: 42px 32px;
+    }
+
+    .login-branding {
+        margin-bottom: 36px;
+    }
+
+    .login-logo-wrapper {
+        margin-bottom: 36px;
+    }
+
+    .login-title {
+        font-size: 26px;
+    }
+
+    .login-subtitle {
+        font-size: 14px;
+    }
+
+    .login-form-header {
+        margin-bottom: 36px;
+    }
+
+    .login-form-title {
+        font-size: 24px;
+    }
+
+    .login-form-subtitle {
+        font-size: 14px;
+    }
+
+    .login-input {
+        padding: 12px 14px 12px 40px;
+        font-size: 14px;
+    }
+
+    .login-btn-submit {
+        padding: 13px 24px;
+        font-size: 15px;
+    }
+
+    .login-form {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .login-container {
+        min-height: 100vh;
+        padding: 12px;
+    }
+
+    .login-wrapper {
+        flex-direction: column;
+        border-radius: 16px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+        min-height: auto;
+    }
+
+    .login-panel-left {
+        display: none;
+    }
+
+    .login-panel-right {
+        padding: 48px 24px 56px;
+        background: $login-white;
+        display: flex;
+        align-items: flex-start;
+        padding-top: 48px;
+        min-height: auto;
+    }
+
+    .login-form-wrapper {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .login-branding {
+        display: none;
+    }
+
+    .login-logo-wrapper {
+        display: none;
+    }
+
+    .login-mobile-logo-wrapper {
+        display: flex;
+    }
+
+    .login-form-header {
+        margin-bottom: 32px;
+    }
+
+    .login-form-title {
+        font-size: 24px;
+        margin-bottom: 8px;
+    }
+
+    .login-form-subtitle {
+        font-size: 13px;
+    }
+
+    .login-form {
+        gap: 18px;
+    }
+
+    .login-form-group {
+        gap: 6px;
+    }
+
+    .login-input {
+        padding: 12px 12px 12px 38px;
+        font-size: 16px;
+    }
+
+    .login-input-icon {
+        left: 12px;
+        font-size: 15px;
+    }
+
+    .login-input-icon-password {
+        right: 12px;
+    }
+
+    .login-form-options {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        gap: 12px;
+        margin: 4px 0;
+    }
+
+    .login-forgot-link {
+        align-self: flex-start;
+    }
+
+    .login-btn-submit {
+        padding: 13px 22px;
+        font-size: 15px;
+        margin-top: 4px;
+    }
+
+    .login-form-footer {
+        margin-top: 36px;
+        padding-top: 24px;
+        font-size: 13px;
+        gap: 8px;
+    }
+
+    .footer-icon {
+        font-size: 16px;
+    }
+}
+
+// ============================================
+// TEMA OSCURO MEJORADO
+// ============================================
+
+@media (prefers-color-scheme: dark) {
+    .login-panel-right {
+        background: linear-gradient(135deg, #1a1f2e 0%, #222938 100%);
+
+        .login-form-title {
+            color: #f0f1f3;
+        }
+
+        .login-form-subtitle {
+            color: #b8bcc4;
+
+            .company-name {
+                color: #64b5f6;
+            }
+        }
+
+        .login-input {
+            background: #2d3748;
+            border-color: #404d61;
+            color: #f0f1f3;
+
+            &::placeholder {
+                color: #7f8a99;
+            }
+
+            &:focus {
+                border-color: #64b5f6;
+                box-shadow: 
+                    0 0 0 4px rgba(100, 181, 246, 0.15),
+                    0 4px 16px rgba(100, 181, 246, 0.1);
+            }
+
+            &:hover:not(&.error):not(:focus) {
+                border-color: #505d76;
+            }
+        }
+
+        .login-input-icon,
+        .login-input-icon-password {
+            color: #9ca3af;
+        }
+
+        .login-remember {
+            color: #f0f1f3;
+
+            &:hover {
+                color: #64b5f6;
+            }
+        }
+
+        .login-form-footer {
+            border-top-color: #404d61;
+            color: #9ca3af;
+        }
+    }
+}
+
+// ============================================
+// UTILIDADES
+// ============================================
+
+.width-540 {
+    width: 540px;
+    max-width: 100%;
+}
+
+.login-company-logo {
+    max-width: 190px;
+    height: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .login-container::before,
+    .login-wrapper,
+    .login-panel-left,
+    .login-panel-right,
+    .login-branding,
+    .login-bg-shapes .shape,
+    .login-form-header,
+    .login-error-text,
+    .login-btn-submit::before,
+    .login-form-footer {
+        animation: none !important;
+    }
+
+    .login-logo,
+    .feature-card,
+    .login-btn-submit,
+    .login-input,
+    .login-input-icon-password {
+        transition: none !important;
+    }
+}

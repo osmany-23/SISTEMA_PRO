@@ -52,16 +52,19 @@ class Adjustment extends BaseModel implements HasMedia, JsonResourceful
     public const JSON_API_TYPE = 'adjustments';
 
     protected $fillable = [
-        'reference_code',
-        'date',
-        'warehouse_id',
-        'total_products',
+            'reference_code',
+            'descripcion',
+            'date',
+            'warehouse_id',
+            'user_id',
+            'total_products',
     ];
 
     public static $rules = [
         'reference_code' => 'nullable',
         'date' => 'date|required',
         'warehouse_id' => 'required|exists:warehouses,id',
+        'descripcion' => 'nullable|string|max:2000',
     ];
 
     public $casts = [
@@ -81,7 +84,10 @@ class Adjustment extends BaseModel implements HasMedia, JsonResourceful
             'reference_code' => $this->reference_code,
             'date' => $this->date,
             'warehouse_id' => $this->warehouse_id,
-            'warehouse_name' => $this->warehouse->name,
+            'warehouse_name' => optional($this->warehouse)->name,
+            'user_id' => $this->user_id,
+            'user_name' => $this->resolveUserName(),
+            'descripcion' => $this->descripcion,
             'total_products' => $this->total_products,
             'created_at' => $this->created_at,
             'adjustment_items' => $this->adjustmentItems,
@@ -95,8 +101,24 @@ class Adjustment extends BaseModel implements HasMedia, JsonResourceful
         return $this->belongsTo(Warehouse::class, 'warehouse_id', 'id');
     }
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
     public function adjustmentItems(): HasMany
     {
         return $this->hasMany(AdjustmentItem::class, 'adjustment_id', 'id');
+    }
+
+    private function resolveUserName(): ?string
+    {
+        if (! $this->user) {
+            return null;
+        }
+
+        $fullName = trim(collect([$this->user->first_name, $this->user->last_name])->filter()->implode(' '));
+
+        return $fullName !== '' ? $fullName : ($this->user->email ?? null);
     }
 }

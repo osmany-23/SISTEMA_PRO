@@ -47,16 +47,22 @@ class AdjustmentItem extends BaseModel implements JsonResourceful
 
     const METHOD_SUBTRACTION = 2;
 
+    const MOVEMENT_ENTRY = 'entrada';
+
+    const MOVEMENT_EXIT = 'salida';
+
     protected $fillable = [
         'adjustment_id',
         'product_id',
         'method_type',
+        'tipo_movimiento',
         'quantity',
     ];
 
     public static $rules = [
         'product_id' => 'required|exists:products,id',
         'method_type' => 'required',
+        'tipo_movimiento' => 'nullable|in:entrada,salida',
         'quantity' => 'nullable|numeric',
     ];
 
@@ -78,6 +84,7 @@ class AdjustmentItem extends BaseModel implements JsonResourceful
         $fields = [
             'product_id' => $this->product_id,
             'method_type' => $this->method_type,
+            'tipo_movimiento' => $this->tipo_movimiento ?: $this->movementFromMethod(),
             'quantity' => $this->quantity,
         ];
 
@@ -92,6 +99,13 @@ class AdjustmentItem extends BaseModel implements JsonResourceful
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
+
+    public function movementFromMethod(): string
+    {
+        return (int) $this->method_type === self::METHOD_ADDITION
+            ? self::MOVEMENT_ENTRY
+            : self::MOVEMENT_EXIT;
     }
 
     public function getSaleUnitAttribute()

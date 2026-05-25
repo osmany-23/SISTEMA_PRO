@@ -80,6 +80,7 @@ class Purchase extends BaseModel implements HasMedia, JsonResourceful
         'date',
         'supplier_id',
         'warehouse_id',
+        'user_id',
         'tax_rate',
         'tax_amount',
         'discount',
@@ -168,6 +169,10 @@ class Purchase extends BaseModel implements HasMedia, JsonResourceful
             'supplier_name' => $this->supplier->name,
             'warehouse_id' => $this->warehouse_id,
             'warehouse_name' => $this->warehouse->name,
+            'user_id' => $this->user_id,
+            'user_name' => optional($this->user)->first_name || optional($this->user)->last_name
+                ? trim(optional($this->user)->first_name.' '.optional($this->user)->last_name)
+                : optional($this->user)->email,
             'tax_rate' => $this->tax_rate,
             'tax_amount' => $this->tax_amount,
             'discount' => $this->discount,
@@ -193,6 +198,11 @@ class Purchase extends BaseModel implements HasMedia, JsonResourceful
     public function supplier(): BelongsTo
     {
         return $this->belongsTo(Supplier::class, 'supplier_id', 'id');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function purchaseItems(): HasMany

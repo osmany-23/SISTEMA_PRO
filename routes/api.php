@@ -464,6 +464,7 @@ Route::middleware(['auth:sanctum', 'session.activity'])->group(function () {
         [ReportAPIController::class, 'getPurchaseReturnProductReportExport']
     );
     Route::get('get-product-count', [ReportAPIController::class, 'getProductQuantity']);
+    Route::get('get-adjustment-product-report', [ReportAPIController::class, 'getAdjustmentProductReport']);
 
     Route::get('config', [UserAPIController::class, 'config']);
 

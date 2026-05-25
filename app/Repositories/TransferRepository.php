@@ -8,7 +8,9 @@ use App\Models\TransferItem;
 use App\Services\ProductBatchService;
 use Exception;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
@@ -78,6 +80,9 @@ class TransferRepository extends BaseRepository
                 'from_warehouse_id', 'to_warehouse_id', 'tax_rate', 'tax_amount', 'discount', 'shipping', 'grand_total',
                 'note', 'date', 'status',
             ]);
+            if (Schema::hasColumn('transfers', 'user_id')) {
+                $TransferInputArray['user_id'] = Auth::id();
+            }
 
             /** @var Transfer $transfer */
             $transfer = Transfer::create($TransferInputArray);

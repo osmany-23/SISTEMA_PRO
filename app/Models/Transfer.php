@@ -94,6 +94,7 @@ class Transfer extends BaseModel implements HasMedia, JsonResourceful
         'note',
         'status',
         'reference_code',
+        'user_id',
     ];
 
     public static $rules = [
@@ -140,6 +141,7 @@ class Transfer extends BaseModel implements HasMedia, JsonResourceful
             'note' => $this->note,
             'status' => $this->status,
             'reference_code' => $this->reference_code,
+            'user_name' => $this->user ? trim(($this->user->first_name ?? '').' '.($this->user->last_name ?? '')) ?: $this->user->email : null,
             'transfer_items' => $this->transferItems,
             'from_warehouse' => $this->fromWarehouse,
             'to_warehouse' => $this->toWarehouse,
@@ -157,6 +159,11 @@ class Transfer extends BaseModel implements HasMedia, JsonResourceful
     public function toWarehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class, 'to_warehouse_id', 'id');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function transferItems(): HasMany

@@ -73,19 +73,20 @@ export const loginAction = (user, navigate, setLoading) => async (dispatch) => {
         dispatch(setLanguage(authUser.language));
         localStorage.setItem(Tokens.UPDATED_LANGUAGE, authUser.language || "");
 
-        const bootstrapTasks = [
+        const backgroundBootstrapTasks = [
             dispatch(fetchFrontSetting()),
             dispatch(fetchConfig()),
-            preloadRouteModule(redirectRoute),
         ];
+        const routePreloadTasks = [preloadRouteModule(redirectRoute)];
 
         if (redirectRoute === "/app/dashboard") {
-            bootstrapTasks.push(preloadRouteModule("/app/dashboard"));
+            routePreloadTasks.push(preloadRouteModule("/app/dashboard"));
         }
 
         dispatch(fetchPermissions());
-        await Promise.allSettled(bootstrapTasks);
+        await Promise.allSettled(routePreloadTasks);
         markAuthBootstrapReady(authToken);
+        Promise.allSettled(backgroundBootstrapTasks);
 
         dispatch(
             addToast({ text: getFormattedMessage("login.success.message") })

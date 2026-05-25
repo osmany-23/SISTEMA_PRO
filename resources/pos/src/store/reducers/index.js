@@ -55,6 +55,7 @@ import stockDetailsSaleTabReducers from "./stockDetailsSaleTabReducers";
 import stockDetailsSaleReturnReducers from "./stockDetailsSaleReturnReducers";
 import stockDetailsPurchaseReducer from "./stockDetilsPurchaseReducres";
 import stockDetailsPurchaseReturnReducer from "./stockDetailsPurchaseReturnReducres";
+import stockDetailsAdjustmentReducer from "./stockDetailsAdjustmentReducers";
 import stockDetailsWarehouseReducer from "./stockDetailsWarehouseReducres";
 import filterDropDownToggleReducer from "./filterDropDownToggleReducer";
 import warehouseDisableReducer from "./warehouseDisableReducer";
@@ -159,6 +160,7 @@ export default combineReducers({
     stockDetailSaleReturn: stockDetailsSaleReturnReducers,
     stockDetailsPurchase: stockDetailsPurchaseReducer,
     stockDetailPurchaseReturn: stockDetailsPurchaseReturnReducer,
+    stockDetailsAdjustment: stockDetailsAdjustmentReducer,
     stockWarehouse: stockDetailsWarehouseReducer,
     dropDownToggle: filterDropDownToggleReducer,
     isOptionDisabled: warehouseDisableReducer,

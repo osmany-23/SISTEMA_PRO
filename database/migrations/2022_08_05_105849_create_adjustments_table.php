@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->date('date');
             $table->string('reference_code')->nullable();
+            $table->text('descripcion')->nullable();
             $table->unsignedBigInteger('warehouse_id');
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->integer('total_products')->nullable();
             $table->foreign('warehouse_id')->references('id')
                 ->on('warehouses')

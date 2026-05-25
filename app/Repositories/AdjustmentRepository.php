@@ -5,10 +5,13 @@ namespace App\Repositories;
 use App\Models\Adjustment;
 use App\Models\AdjustmentItem;
 use App\Models\ManageStock;
+use App\Services\InventoryMovementService;
 use App\Services\ProductBatchService;
 use Exception;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
@@ -61,9 +64,10 @@ class AdjustmentRepository extends BaseRepository
             );
             $input['total_products'] = count($input['adjustment_items']);
             $input['date'] = $input['date'] ?? date('Y/m/d');
-            $adjustmentInputArray = Arr::only($input, [
-                'date', 'warehouse_id', 'total_products',
-            ]);
+            $input['user_id'] = $this->resolveAuthenticatedUserId();
+            $adjustmentInputArray = Arr::only($input, $this->availableAdjustmentColumns([
+                'date', 'warehouse_id', 'total_products', 'descripcion', 'user_id',
+            ]));
             $adjustment = Adjustment::create($adjustmentInputArray);
             $reference_code = 'AD_111'.$adjustment->id;
             $adjustment->update(['reference_code' => $reference_code]);
@@ -72,7 +76,7 @@ class AdjustmentRepository extends BaseRepository
 
             DB::commit();
 
-            return $adjustment;
+            return $adjustment->load('warehouse', 'user', 'adjustmentItems.product');
         } catch (Exception $e) {
             DB::rollBack();
             throw new UnprocessableEntityHttpException($e->getMessage());
@@ -83,7 +87,10 @@ class AdjustmentRepository extends BaseRepository
     {
         foreach ($input['adjustment_items'] as $adjustmentItem) {
             $adjustmentItem['adjustment_id'] = $adjustment->id;
-            AdjustmentItem::Create($adjustmentItem);
+            $adjustmentItem = $this->normalizeAdjustmentItem($adjustmentItem);
+            $createdItem = AdjustmentItem::create($adjustmentItem);
+            $this->applyStockMovement($adjustment, $createdItem);
+            continue;
 
             $product = ManageStock::whereWarehouseId($adjustment->warehouse_id)->whereProductId($adjustmentItem['product_id'])->first();
             if (! empty($product)) {
@@ -128,16 +135,17 @@ class AdjustmentRepository extends BaseRepository
 
             $input['total_products'] = count($input['adjustment_items']);
             $input['date'] = $input['date'] ?? date('Y/m/d');
-            $adjustmentInputArray = Arr::only($input, [
-                'date', 'warehouse_id', 'total_products',
-            ]);
+            $input['user_id'] = $adjustment->user_id ?: $this->resolveAuthenticatedUserId();
+            $adjustmentInputArray = Arr::only($input, $this->availableAdjustmentColumns([
+                'date', 'warehouse_id', 'total_products', 'descripcion', 'user_id',
+            ]));
             $adjustment->update($adjustmentInputArray);
 
             $adjustment = $this->updateAdjustmentItems($adjustment, $input);
 
             DB::commit();
 
-            return $adjustment;
+            return $adjustment->load('warehouse', 'user', 'adjustmentItems.product');
         } catch (Exception $e) {
             DB::rollBack();
             throw new UnprocessableEntityHttpException($e->getMessage());
@@ -146,6 +154,16 @@ class AdjustmentRepository extends BaseRepository
 
     public function updateAdjustmentItems($adjustment, $input)
     {
+        $oldItems = AdjustmentItem::whereAdjustmentId($adjustment->id)->lockForUpdate()->get();
+        foreach ($oldItems as $oldItem) {
+            $this->applyStockMovement($adjustment, $oldItem, true);
+        }
+
+        AdjustmentItem::whereAdjustmentId($adjustment->id)->delete();
+        $this->storeAdjustmentItems($adjustment, $input);
+
+        return $adjustment;
+
         $adjustmentItmOldIds = AdjustmentItem::whereAdjustmentId($adjustment->id)->pluck('id')->toArray();
         $adjustmentItemIds = [];
 
@@ -235,6 +253,108 @@ class AdjustmentRepository extends BaseRepository
         }
 
         return $adjustment;
+    }
+
+    private function normalizeAdjustmentItem(array $adjustmentItem): array
+    {
+        $movement = $adjustmentItem['tipo_movimiento'] ?? null;
+        if (! in_array($movement, [AdjustmentItem::MOVEMENT_ENTRY, AdjustmentItem::MOVEMENT_EXIT], true)) {
+            $movement = (int) ($adjustmentItem['method_type'] ?? 0) === AdjustmentItem::METHOD_SUBTRACTION
+                ? AdjustmentItem::MOVEMENT_EXIT
+                : AdjustmentItem::MOVEMENT_ENTRY;
+        }
+
+        $adjustmentItem['tipo_movimiento'] = $movement;
+        $adjustmentItem['method_type'] = $movement === AdjustmentItem::MOVEMENT_ENTRY
+            ? AdjustmentItem::METHOD_ADDITION
+            : AdjustmentItem::METHOD_SUBTRACTION;
+        $adjustmentItem['quantity'] = round((float) ($adjustmentItem['quantity'] ?? 0), 2);
+
+        if ($adjustmentItem['quantity'] <= 0) {
+            throw new UnprocessableEntityHttpException('La cantidad del ajuste debe ser mayor a cero.');
+        }
+
+        return Arr::only($adjustmentItem, $this->availableAdjustmentItemColumns([
+            'adjustment_id', 'product_id', 'method_type', 'tipo_movimiento', 'quantity',
+        ]));
+    }
+
+    private function applyStockMovement(Adjustment $adjustment, AdjustmentItem $item, bool $reverse = false): void
+    {
+        $movement = $item->tipo_movimiento ?: $item->movementFromMethod();
+        if ($reverse) {
+            $movement = $movement === AdjustmentItem::MOVEMENT_ENTRY
+                ? AdjustmentItem::MOVEMENT_EXIT
+                : AdjustmentItem::MOVEMENT_ENTRY;
+        }
+
+        $stock = ManageStock::whereWarehouseId($adjustment->warehouse_id)
+            ->whereProductId($item->product_id)
+            ->lockForUpdate()
+            ->first();
+        $previousStock = round((float) optional($stock)->quantity, 2);
+
+        if (! $stock && $movement === AdjustmentItem::MOVEMENT_EXIT) {
+            throw new UnprocessableEntityHttpException('Quantity exceeds quantity available in stock.');
+        }
+
+        if (! $stock) {
+            $stock = ManageStock::create([
+                'warehouse_id' => $adjustment->warehouse_id,
+                'product_id' => $item->product_id,
+                'quantity' => 0,
+            ]);
+        }
+
+        $newStock = $movement === AdjustmentItem::MOVEMENT_ENTRY
+            ? $previousStock + (float) $item->quantity
+            : $previousStock - (float) $item->quantity;
+
+        if ($newStock < 0) {
+            throw new UnprocessableEntityHttpException('Quantity exceeds quantity available in stock.');
+        }
+
+        $stock->update(['quantity' => $newStock]);
+
+        app(InventoryMovementService::class)->record([
+            'tipo_documento' => $reverse ? 'AJUSTE_REVERSION' : 'AJUSTE',
+            'referencia' => $adjustment->reference_code,
+            'product_id' => $item->product_id,
+            'warehouse_id' => $adjustment->warehouse_id,
+            'user_id' => $adjustment->user_id ?: $this->resolveAuthenticatedUserId(),
+            'movimiento' => $movement,
+            'cantidad' => $item->quantity,
+            'stock_anterior' => $previousStock,
+            'stock_nuevo' => $newStock,
+            'motivo' => $reverse
+                ? 'Reversion de ajuste: '.($adjustment->descripcion ?: $adjustment->reference_code)
+                : ($adjustment->descripcion ?: 'Ajuste de inventario'),
+            'fecha' => now(),
+        ], $item);
+    }
+
+    private function availableAdjustmentColumns(array $columns): array
+    {
+        return array_values(array_filter($columns, fn ($column) => Schema::hasColumn('adjustments', $column)));
+    }
+
+    private function availableAdjustmentItemColumns(array $columns): array
+    {
+        return array_values(array_filter($columns, fn ($column) => Schema::hasColumn('adjustment_items', $column)));
+    }
+
+    private function resolveAuthenticatedUserId(): ?int
+    {
+        $userId = optional(request()->user())->id
+            ?: optional(auth('sanctum')->user())->id
+            ?: Auth::id()
+            ?: auth()->id();
+
+        if ($userId) {
+            return (int) $userId;
+        }
+
+        return null;
     }
 
     private function assertNoTrackedBatchProducts(array $productIds, string $message): void

@@ -37,12 +37,13 @@ const AdjustmentForm = (props) => {
     const [adjustMentValue, setAdjustMentValue] = useState({
         date: new Date(),
         warehouse_id: "",
-        notes: singleAdjustMent ? singleAdjustMent.notes : "",
+        descripcion: singleAdjustMent ? singleAdjustMent.descripcion : "",
         AdjustmentType: { label: getFormattedMessage("addition.title"), value: 1 },
     });
     const [errors, setErrors] = useState({
         date: "",
         warehouse_id: "",
+        descripcion: "",
         AdjustmentType: "",
     });
 
@@ -71,6 +72,9 @@ const AdjustmentForm = (props) => {
                     : "",
                 AdjustmentType: singleAdjustMent
                     ? singleAdjustMent.AdjustmentType
+                    : "",
+                descripcion: singleAdjustMent
+                    ? singleAdjustMent.descripcion
                     : "",
             });
             if (updateProducts.length === 0) {
@@ -107,6 +111,8 @@ const AdjustmentForm = (props) => {
                     type: toastType.ERROR,
                 })
             );
+        } else if (!adjustMentValue.descripcion || adjustMentValue.descripcion.trim().length < 3) {
+            error.descripcion = getFormattedMessage("adjustments.description.required.label");
         } else {
             isValid = true;
         }
@@ -130,18 +136,28 @@ const AdjustmentForm = (props) => {
         setErrors("");
     };
 
+    const onDescriptionChange = (event) => {
+        setAdjustMentValue((previousState) => ({
+            ...previousState,
+            descripcion: event.target.value,
+        }));
+        setErrors((previousState) => ({ ...previousState, descripcion: "" }));
+    };
+
     const prepareFormData = (prepareData) => {
         const formValue = {
             date: moment(prepareData.date).toDate(),
             warehouse_id: prepareData.warehouse_id.value
                 ? prepareData.warehouse_id.value
                 : prepareData.warehouse_id,
-            note: prepareData.notes,
+            descripcion: prepareData.descripcion,
             adjustment_items: updateProducts.map((item) => {
+                const movementType = item.adjustMethod === 1 ? "entrada" : "salida";
                 return {
                     product_id: item.product_id,
                     quantity: item.quantity,
                     method_type: item.adjustMethod,
+                    tipo_movimiento: movementType,
                     adjustment_item_id: item.adjustment_item_id,
                 };
             }),
@@ -200,6 +216,31 @@ const AdjustmentForm = (props) => {
                         <span className="text-danger d-block fw-400 fs-small mt-2">
                             {errors["date"] ? errors["date"] : null}
                         </span>
+                    </div>
+                    <div className="mb-10">
+                        <label className="form-label">
+                            {getFormattedMessage("adjustments.description.label")}:
+                        </label>
+                        <textarea
+                            className={`form-control form-control-solid ${
+                                errors["descripcion"] ? "is-invalid" : ""
+                            }`}
+                            rows="3"
+                            maxLength={2000}
+                            value={adjustMentValue.descripcion || ""}
+                            onChange={onDescriptionChange}
+                            placeholder={placeholderText(
+                                "adjustments.description.placeholder.label"
+                            )}
+                        />
+                        <div className="d-flex justify-content-between mt-2">
+                            <span className="text-danger d-block fw-400 fs-small">
+                                {errors["descripcion"] ? errors["descripcion"] : null}
+                            </span>
+                            <span className="text-muted fs-small">
+                                {(adjustMentValue.descripcion || "").length}/2000
+                            </span>
+                        </div>
                     </div>
                     <div className="mb-10">
                         <label className="form-label">

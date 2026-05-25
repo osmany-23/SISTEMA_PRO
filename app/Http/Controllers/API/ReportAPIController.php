@@ -16,6 +16,7 @@ use App\Exports\SalesWarehouseReportExport;
 use App\Exports\StockReportExport;
 use App\Exports\TopSellingProductReportExport;
 use App\Http\Controllers\AppBaseController;
+use App\Models\AdjustmentItem;
 use App\Models\BaseUnit;
 use App\Models\Brand;
 use App\Models\Credit;
@@ -322,6 +323,63 @@ class ReportAPIController extends AppBaseController
         $product = ManageStock::whereProductId($productId)->with('warehouse', 'product')->get();
 
         return $this->sendResponse($product, 'Product Quantity retrieved successfully');
+    }
+
+    public function getAdjustmentProductReport(Request $request): JsonResponse
+    {
+        $perPage = getPageSize($request);
+        $productId = (int) $request->get('product_id');
+
+        $query = AdjustmentItem::query()
+            ->with(['product', 'adjustment.warehouse', 'adjustment.user'])
+            ->where('product_id', $productId)
+            ->latest('id');
+
+        if ($search = trim((string) ($request->input('filter.search') ?? $request->get('search')))) {
+            $query->whereHas('adjustment', function ($adjustmentQuery) use ($search) {
+                $adjustmentQuery->where('reference_code', 'LIKE', "%{$search}%")
+                    ->orWhere('descripcion', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $paginated = $query->paginate($perPage);
+        $rows = $paginated->getCollection()->map(function (AdjustmentItem $item) {
+            $adjustment = $item->adjustment;
+            $user = optional($adjustment)->user;
+            $userName = trim(collect([
+                optional($user)->first_name,
+                optional($user)->last_name,
+            ])->filter()->implode(' '));
+
+            $movement = $item->tipo_movimiento ?: $item->movementFromMethod();
+
+            return [
+                'id' => $item->id,
+                'product_id' => $item->product_id,
+                'product_name' => optional($item->product)->name,
+                'product_code' => optional($item->product)->code,
+                'tipo_documento' => strtoupper('ajuste '.$movement),
+                'tipo_movimiento' => $movement,
+                'quantity' => $item->quantity,
+                'reference_code' => optional($adjustment)->reference_code,
+                'warehouse_name' => optional(optional($adjustment)->warehouse)->name,
+                'user_name' => $userName !== '' ? $userName : optional($user)->email,
+                'descripcion' => optional($adjustment)->descripcion,
+                'date' => optional($adjustment)->date,
+                'created_at' => optional($adjustment)->created_at,
+            ];
+        })->values();
+
+        return response()->json([
+            'success' => true,
+            'data' => $rows,
+            'meta' => [
+                'total' => $paginated->total(),
+                'current_page' => $paginated->currentPage(),
+                'per_page' => $paginated->perPage(),
+            ],
+            'message' => 'Product adjustment report retrieved successfully',
+        ]);
     }
 
     /**

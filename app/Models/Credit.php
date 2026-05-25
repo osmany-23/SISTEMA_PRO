@@ -27,6 +27,7 @@ class Credit extends BaseModel
 
     protected $fillable = [
         'sale_id',
+        'user_id',
         'customer_id',
         'total_amount',
         'principal_balance',
@@ -46,6 +47,7 @@ class Credit extends BaseModel
 
     protected $casts = [
         'sale_id' => 'integer',
+        'user_id' => 'integer',
         'customer_id' => 'integer',
         'total_amount' => 'double',
         'principal_balance' => 'double',
@@ -68,6 +70,11 @@ class Credit extends BaseModel
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class, 'customer_id', 'id');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function payments(): HasMany

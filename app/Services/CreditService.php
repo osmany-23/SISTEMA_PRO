@@ -1783,6 +1783,10 @@ class CreditService
             $payload['credit_type'] = $creditType;
         }
 
+        if ($this->creditsTableHasColumn('user_id')) {
+            $payload['user_id'] = auth()->id();
+        }
+
         if ($this->creditsTableHasColumn('restructured')) {
             $payload['restructured'] = false;
             $payload['restructured_at'] = null;
