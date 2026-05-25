@@ -1,0 +1,250 @@
+/* POS responsive fixes (styles only).
+   Goal: ensure modals/overlays always appear above the POS UI on mobile/desktop,
+   and keep the calculator visible in responsive layouts. */
+
+:root {
+    /* Above toast (999999) and most UI elements; below react-datepicker portal (2147483647). */
+    --pos-overlay-z: 2000000;
+    --pos-overlay-backdrop-z: 1999990;
+}
+
+/* Bootstrap / react-bootstrap modal stacking */
+.modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: var(--pos-overlay-z) !important;
+}
+
+.modal-backdrop {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: var(--pos-overlay-backdrop-z) !important;
+}
+
+/* react-bootstrap-sweetalert */
+.sweet-alert,
+.sweet-overlay {
+    z-index: calc(var(--pos-overlay-z) + 5) !important;
+}
+
+/* Safety: dropdown portals should never cover modals */
+.app-select__menu-portal {
+    z-index: 1200 !important;
+}
+
+/* Header TPV button: make it semi-oval (pill-ish) instead of a circle. */
+.header > .container-fluid > .navbar.navbar-expand-lg .pos-button {
+    border-radius: 999px !important;
+    padding: 8px 18px !important;
+    line-height: 1 !important;
+}
+
+/* Calculator: keep visible and centered on mobile (was pushed below viewport). */
+@media (max-width: 768px) {
+    /* Center all Bootstrap modals vertically on phones (desktop stays untouched). */
+    .modal.show .modal-dialog {
+        display: flex !important;
+        align-items: center !important;
+        min-height: calc(100% - 1rem) !important;
+    }
+
+    /* Header (phone): keep everything in ONE top bar row like other screens (menu + title + actions). */
+    .header {
+        height: 70px !important;
+    }
+
+    .header > .container-fluid {
+        align-items: center !important;
+        flex-wrap: nowrap !important;
+        row-gap: 0 !important;
+        column-gap: 0.5rem;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    /* Responsive baseline makes all `.btn` full-width on phones; in the header it pushes
+       the actions off-screen so only the menu icon remains visible. */
+    .header .btn,
+    .header .btn-sm,
+    .header .btn-lg {
+        width: auto !important;
+    }
+
+    .header > .container-fluid > button.d-xl-none {
+        flex: 0 0 auto !important;
+    }
+
+    /* Middle title/nav: allow shrinking so right-side actions stay in the header. */
+    .header > .container-fluid > .navbar.navbar-expand-xl {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        overflow: hidden;
+    }
+
+    /* Right-side actions (TPV / fullscreen / notifications / profile) */
+    .header > .container-fluid > .navbar.navbar-expand-lg {
+        flex: 0 0 auto !important;
+        margin-inline-start: auto !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        white-space: nowrap;
+    }
+
+    /* Header actions: keep on one line and vertically centered. */
+    .header > .container-fluid > .navbar.navbar-expand-lg .nav,
+    .header > .container-fluid > .navbar.navbar-expand-lg ul.nav {
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        gap: 0.5rem;
+        margin: 0 !important;
+    }
+
+    .header .navbar .pos-button {
+        padding: 8px 18px !important;
+        border-radius: 999px !important;
+        font-size: 0.875rem;
+        line-height: 1;
+    }
+
+    /* POS (phone): keep Hold/Reset/Pay buttons aligned, same size, same row. */
+    .pos-screen .left-content .bg-btn-pink,
+    .pos-screen .left-content .btn-danger.btn-rounded,
+    .pos-screen .left-content .pos-pay-btn {
+        flex: 1 1 0;
+        width: auto !important;
+        min-width: 0;
+        border-radius: 0.938rem !important; /* ~15px */
+    }
+
+    /* Prefer flex gap when the wrapper class exists (newer builds). */
+    .pos-screen .pos-payment-actions {
+        gap: 0.5rem;
+    }
+
+    .pos-screen .pos-payment-actions .me-2 {
+        margin-right: 0 !important;
+    }
+
+    /* Slightly reduce icon/avatar sizes so everything fits comfortably in the top bar. */
+    .header > .container-fluid > .navbar.navbar-expand-lg .fs-2 {
+        font-size: 1.35rem !important;
+    }
+
+    .header > .container-fluid > .navbar.navbar-expand-lg .image-tiny,
+    .header > .container-fluid > .navbar.navbar-expand-lg .custom-user-avatar {
+        width: 38px !important;
+        height: 38px !important;
+    }
+
+    /* Dashboard charts (phone only): make all charts the same, larger height.
+       Note: Chart.js needs `maintainAspectRatio: false` on mobile to respect this. */
+    :root {
+        --dashboard-chart-h-mobile: 320px;
+    }
+
+    .dashboard-chart-container {
+        position: relative;
+        height: var(--dashboard-chart-h-mobile) !important;
+    }
+
+    .dashboard-chart-container canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .echarts-for-react {
+        height: var(--dashboard-chart-h-mobile) !important;
+    }
+
+    /* POS toolbar dropdowns: open centered on the screen (phone only). */
+    .pos-screen .header-btn-grp .register_dropdown .dropdown-menu.show {
+        position: fixed !important;
+        inset: auto !important;
+        top: 50% !important;
+        left: 50% !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: translate(-50%, -50%) !important;
+        width: min(320px, calc(100vw - 2rem)) !important;
+        max-width: calc(100vw - 2rem) !important;
+        max-height: calc(100vh - 2rem) !important;
+        overflow: auto !important;
+        margin: 0 !important;
+        z-index: calc(var(--pos-overlay-backdrop-z) - 20) !important;
+        border-radius: 0.75rem !important;
+        box-shadow: 0 0 0 100vmax rgba(6, 9, 23, 0.25),
+            0 10px 30px rgba(0, 0, 0, 0.18) !important;
+    }
+
+    .calculator {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translate(-50%, -50%) !important;
+        z-index: calc(var(--pos-overlay-backdrop-z) - 10) !important;
+        max-width: calc(100vw - 2rem) !important;
+        max-height: calc(100vh - 2rem) !important;
+        overflow: auto !important;
+        /* Backdrop without adding DOM (styles only) */
+        box-shadow: 0 0 0 100vmax rgba(6, 9, 23, 0.35) !important;
+    }
+
+    .calculator .pos_calc_close {
+        top: -18px !important;
+        right: -18px !important;
+        left: auto !important;
+    }
+}
+
+/* Reports "Secciones" select (phone only < md) */
+@media (max-width: 767.98px) {
+    .report-nav-mobile {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        flex: 1 1 100%;
+    }
+
+    .report-nav-mobile-toggle {
+        justify-content: flex-start !important;
+        text-align: left;
+    }
+
+    .report-nav-mobile-label {
+        text-align: left;
+    }
+
+    .report-nav-mobile-menu.dropdown-menu.show {
+        z-index: calc(var(--pos-overlay-backdrop-z) - 20) !important;
+        animation: posReportNavMobileMenuIn 140ms ease-out;
+    }
+
+    .report-nav-mobile-menu .dropdown-item > .nav-link {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        padding-top: 0.75rem !important;
+        padding-bottom: 0.75rem !important;
+    }
+
+    @keyframes posReportNavMobileMenuIn {
+        from {
+            opacity: 0;
+            transform: translate(-50%, -48%) scale(0.98);
+        }
+        to {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+    }
+}
