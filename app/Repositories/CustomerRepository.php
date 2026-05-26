@@ -16,6 +16,7 @@ class CustomerRepository extends BaseRepository
         'name',
         'email',
         'phone',
+        'cedula',
         'country',
         'dob',
         'city',

@@ -70,6 +70,21 @@ class SettingRepository extends BaseRepository
                 'smtp_Encryption', 'address', 'show_version_on_footer', 'country', 'state', 'city', 'postcode',
                 'date_format', 'purchase_code', 'purchase_return_code', 'sale_code', 'sale_return_code', 'expense_code',
                 'is_currency_right', 'show_logo_in_receipt', 'show_app_name_in_sidebar', 'require_initial_payment',
+                'business_trade_name', 'business_ruc', 'business_country', 'business_phone_secondary',
+                'business_whatsapp', 'business_emails', 'business_website', 'business_facebook',
+                'business_instagram', 'business_tiktok', 'business_linkedin', 'business_youtube',
+                'business_secondary_logo', 'business_favicon', 'business_primary_color',
+                'business_secondary_color', 'business_button_color', 'business_pdf_color',
+                'business_header_color', 'business_table_color', 'business_tax_regime',
+                'business_tax_information', 'business_legal_text', 'business_terms',
+                'business_warranty_policy', 'business_return_policy', 'quotation_validity_days',
+                'quotation_validity_text', 'quotation_auto_observations', 'quotation_thank_you_text',
+                'quotation_footer_text', 'quotation_digital_signature', 'quotation_company_stamp',
+                'quotation_company_qr', 'quotation_benefit_1_title', 'quotation_benefit_1_subtitle',
+                'quotation_benefit_1_image', 'quotation_benefit_2_title', 'quotation_benefit_2_subtitle',
+                'quotation_benefit_2_image', 'quotation_benefit_3_title', 'quotation_benefit_3_subtitle',
+                'quotation_benefit_3_image', 'quotation_benefit_4_title', 'quotation_benefit_4_subtitle',
+                'quotation_benefit_4_image', 'quotation_show_product_image',
             ]);
 
             $booleanSettingKeys = [
@@ -78,6 +93,25 @@ class SettingRepository extends BaseRepository
                 'show_logo_in_receipt',
                 'show_app_name_in_sidebar',
                 'require_initial_payment',
+                'quotation_show_product_image',
+            ];
+
+            $nullableSettingKeys = [
+                'business_trade_name', 'business_ruc', 'business_country', 'business_phone_secondary',
+                'business_whatsapp', 'business_emails', 'business_website', 'business_facebook',
+                'business_instagram', 'business_tiktok', 'business_linkedin', 'business_youtube',
+                'business_secondary_logo', 'business_favicon', 'business_primary_color',
+                'business_secondary_color', 'business_button_color', 'business_pdf_color',
+                'business_header_color', 'business_table_color', 'business_tax_regime',
+                'business_tax_information', 'business_legal_text', 'business_terms',
+                'business_warranty_policy', 'business_return_policy', 'quotation_validity_days',
+                'quotation_validity_text', 'quotation_auto_observations', 'quotation_thank_you_text',
+                'quotation_footer_text', 'quotation_digital_signature', 'quotation_company_stamp',
+                'quotation_company_qr', 'quotation_benefit_1_title', 'quotation_benefit_1_subtitle',
+                'quotation_benefit_1_image', 'quotation_benefit_2_title', 'quotation_benefit_2_subtitle',
+                'quotation_benefit_2_image', 'quotation_benefit_3_title', 'quotation_benefit_3_subtitle',
+                'quotation_benefit_3_image', 'quotation_benefit_4_title', 'quotation_benefit_4_subtitle',
+                'quotation_benefit_4_image',
             ];
 
             foreach ($settingInputArray as $key => $value) {
@@ -86,6 +120,11 @@ class SettingRepository extends BaseRepository
                         ['key' => $key],
                         ['value' => filter_var($value, FILTER_VALIDATE_BOOLEAN) ? '1' : '0']
                     );
+                    continue;
+                }
+
+                if (in_array($key, $nullableSettingKeys, true)) {
+                    Setting::query()->updateOrCreate(['key' => $key], ['value' => $value ?? '']);
                     continue;
                 }
 

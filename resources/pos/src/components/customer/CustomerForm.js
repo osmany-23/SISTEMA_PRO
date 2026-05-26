@@ -26,6 +26,7 @@ const CustomerForm = (props) => {
             : null,
         email: singleCustomer ? singleCustomer[0].email : "",
         phone: singleCustomer ? singleCustomer[0].phone : "",
+        cedula: singleCustomer ? singleCustomer[0].cedula || "" : "",
         country: singleCustomer ? singleCustomer[0].country : "",
         city: singleCustomer ? singleCustomer[0].city : "",
         address: singleCustomer ? singleCustomer[0].address : "",
@@ -36,6 +37,7 @@ const CustomerForm = (props) => {
         name: "",
         email: "",
         phone: "",
+        cedula: "",
         country: "",
         city: "",
         address: "",
@@ -45,6 +47,7 @@ const CustomerForm = (props) => {
         singleCustomer &&
         singleCustomer[0].dob === customerValue.dob &&
         singleCustomer[0].phone === customerValue.phone &&
+        (singleCustomer[0].cedula || "") === customerValue.cedula &&
         singleCustomer[0].name === customerValue.name &&
         singleCustomer[0].country === customerValue.country &&
         singleCustomer[0].city === customerValue.city &&
@@ -195,6 +198,21 @@ const CustomerForm = (props) => {
                             />
                             <span className="text-danger d-block fw-400 fs-small mt-2">
                                 {errors["phone"] ? errors["phone"] : null}
+                            </span>
+                        </div>
+
+                        <div className="col-md-6 mb-3">
+                            <label className="form-label">Cedula:</label>
+                            <input
+                                type="text"
+                                name="cedula"
+                                className="form-control"
+                                placeholder="Cedula del cliente"
+                                onChange={(e) => onChangeInput(e)}
+                                value={customerValue.cedula}
+                            />
+                            <span className="text-danger d-block fw-400 fs-small mt-2">
+                                {errors["cedula"] ? errors["cedula"] : null}
                             </span>
                         </div>
 

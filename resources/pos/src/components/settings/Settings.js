@@ -26,6 +26,140 @@ import HeaderTitle from "../header/HeaderTitle";
 import TopProgressBar from "../../shared/components/loaders/TopProgressBar";
 import dateFormatOptions from "./dateFormatOptions.json";
 
+const businessSettingKeys = [
+    "business_trade_name",
+    "business_ruc",
+    "business_country",
+    "business_phone_secondary",
+    "business_whatsapp",
+    "business_emails",
+    "business_website",
+    "business_facebook",
+    "business_instagram",
+    "business_tiktok",
+    "business_linkedin",
+    "business_youtube",
+    "business_secondary_logo",
+    "business_favicon",
+    "business_primary_color",
+    "business_secondary_color",
+    "business_button_color",
+    "business_pdf_color",
+    "business_header_color",
+    "business_table_color",
+    "business_tax_regime",
+    "business_tax_information",
+    "business_legal_text",
+    "business_terms",
+    "business_warranty_policy",
+    "business_return_policy",
+    "quotation_validity_days",
+    "quotation_validity_text",
+    "quotation_auto_observations",
+    "quotation_thank_you_text",
+    "quotation_footer_text",
+    "quotation_digital_signature",
+    "quotation_company_stamp",
+    "quotation_company_qr",
+    "quotation_benefit_1_title",
+    "quotation_benefit_1_subtitle",
+    "quotation_benefit_1_image",
+    "quotation_benefit_2_title",
+    "quotation_benefit_2_subtitle",
+    "quotation_benefit_2_image",
+    "quotation_benefit_3_title",
+    "quotation_benefit_3_subtitle",
+    "quotation_benefit_3_image",
+    "quotation_benefit_4_title",
+    "quotation_benefit_4_subtitle",
+    "quotation_benefit_4_image",
+    "quotation_show_product_image",
+];
+
+const businessDefaults = {
+    business_primary_color: "#c1121f",
+    business_secondary_color: "#111827",
+    business_button_color: "#c1121f",
+    business_pdf_color: "#c1121f",
+    business_header_color: "#111827",
+    business_table_color: "#1f2937",
+    quotation_validity_days: "15",
+    quotation_validity_text: "Esta cotizacion es valida durante los dias indicados.",
+    quotation_thank_you_text: "Gracias por confiar en nosotros.",
+    quotation_footer_text: "Soluciones automotrices profesionales para su negocio.",
+    quotation_benefit_1_title: "Repuestos originales",
+    quotation_benefit_1_subtitle: "Calidad garantizada",
+    quotation_benefit_2_title: "Mejores precios",
+    quotation_benefit_2_subtitle: "Competitivos",
+    quotation_benefit_3_title: "Asesoria profesional",
+    quotation_benefit_3_subtitle: "Te ayudamos a elegir",
+    quotation_benefit_4_title: "Entrega rapida",
+    quotation_benefit_4_subtitle: "En Jalapa y alrededores",
+    quotation_show_product_image: "1",
+};
+
+const businessFields = [
+    { name: "business_trade_name", label: "Frase empresarial" },
+    { name: "business_ruc", label: "Numero RUC" },
+    { name: "business_country", label: "Pais" },
+    { name: "business_phone_secondary", label: "Telefono secundario" },
+    { name: "business_whatsapp", label: "WhatsApp" },
+    { name: "business_emails", label: "Correos electronicos" },
+    { name: "business_website", label: "Pagina web" },
+    { name: "business_facebook", label: "Facebook" },
+    { name: "business_instagram", label: "Instagram" },
+    { name: "business_tiktok", label: "TikTok" },
+    { name: "business_linkedin", label: "LinkedIn" },
+    { name: "business_youtube", label: "YouTube" },
+    { name: "business_secondary_logo", label: "Logo secundario transparente (URL)" },
+    { name: "business_favicon", label: "Favicon (URL)" },
+];
+
+const visualFields = [
+    { name: "business_primary_color", label: "Color principal del sistema" },
+    { name: "business_secondary_color", label: "Color secundario" },
+    { name: "business_button_color", label: "Color de botones" },
+    { name: "business_pdf_color", label: "Color de PDF" },
+    { name: "business_header_color", label: "Color de encabezados" },
+    { name: "business_table_color", label: "Color de tablas" },
+];
+
+const legalFields = [
+    { name: "business_tax_regime", label: "Regimen fiscal" },
+    { name: "business_tax_information", label: "Informacion tributaria" },
+    { name: "business_legal_text", label: "Texto legal", textarea: true },
+    { name: "business_terms", label: "Terminos y condiciones", textarea: true },
+    { name: "business_warranty_policy", label: "Politica de garantia", textarea: true },
+    { name: "business_return_policy", label: "Politica de devoluciones", textarea: true },
+];
+
+const quotationSettingFields = [
+    { name: "quotation_show_product_image", label: "Mostrar campo imagen en cotizacion", type: "checkbox" },
+    { name: "quotation_validity_days", label: "Dias de vencimiento de cotizacion", type: "number" },
+    { name: "quotation_validity_text", label: "Texto de validez", textarea: true },
+    { name: "quotation_auto_observations", label: "Observaciones automaticas", textarea: true },
+    { name: "quotation_thank_you_text", label: "Texto de agradecimiento", textarea: true },
+    { name: "quotation_footer_text", label: "Pie de pagina", textarea: true },
+    { name: "quotation_digital_signature", label: "Firma digital (URL)" },
+    { name: "quotation_company_stamp", label: "Sello empresarial (URL)" },
+    { name: "quotation_company_qr", label: "QR empresarial / WhatsApp (URL)" },
+];
+
+const quotationBenefitFields = [
+    { name: "quotation_benefit_1_title", label: "Beneficio 1 - titulo" },
+    { name: "quotation_benefit_1_subtitle", label: "Beneficio 1 - texto" },
+    { name: "quotation_benefit_1_image", label: "Beneficio 1 - imagen (URL)" },
+    { name: "quotation_benefit_2_title", label: "Beneficio 2 - titulo" },
+    { name: "quotation_benefit_2_subtitle", label: "Beneficio 2 - texto" },
+    { name: "quotation_benefit_2_image", label: "Beneficio 2 - imagen (URL)" },
+    { name: "quotation_benefit_3_title", label: "Beneficio 3 - titulo" },
+    { name: "quotation_benefit_3_subtitle", label: "Beneficio 3 - texto" },
+    { name: "quotation_benefit_3_image", label: "Beneficio 3 - imagen (URL)" },
+    { name: "quotation_benefit_4_title", label: "Beneficio 4 - titulo" },
+    { name: "quotation_benefit_4_subtitle", label: "Beneficio 4 - texto" },
+    { name: "quotation_benefit_4_image", label: "Beneficio 4 - imagen (URL)" },
+];
+
 const Settings = (props) => {
     const {
         fetchSetting,
@@ -80,6 +214,7 @@ const Settings = (props) => {
         postCode: "",
         date_format: "",
         Currency_icon_Right_side: "",
+        ...businessDefaults,
     });
 
     const [defaultDate, setDefaultDate] = useState(null);
@@ -163,6 +298,14 @@ const Settings = (props) => {
 
     useEffect(() => {
         if (settings) {
+            const businessValues = businessSettingKeys.reduce((values, key) => {
+                values[key] =
+                    settings.attributes && settings.attributes[key]
+                        ? settings.attributes[key]
+                        : businessDefaults[key] || "";
+                return values;
+            }, {});
+
             setSettingValue({
                 currency:
                     settings.attributes && settings.attributes.currency
@@ -336,6 +479,7 @@ const Settings = (props) => {
                     settings.attributes.is_currency_right !== "true"
                         ? false
                         : true,
+                ...businessValues,
             });
             if (
                 settings.attributes &&
@@ -611,6 +755,9 @@ const Settings = (props) => {
         formData.append("state", data.state.label);
         formData.append("date_format", data.date_format.value);
         formData.append("is_currency_right", data.Currency_icon_Right_side);
+        businessSettingKeys.forEach((key) => {
+            formData.append(key, data[key] || "");
+        });
         return formData;
     };
 
@@ -750,6 +897,73 @@ const Settings = (props) => {
         }));
         setErrors("");
     };
+
+    const renderBusinessField = (field) => (
+        <div className="col-lg-6 mb-3" key={field.name}>
+            {field.type === "checkbox" ? (
+                <label className="form-check form-check-custom form-check-solid d-flex align-items-center mt-8 cursor-pointer">
+                    <input
+                        type="checkbox"
+                        className="form-check-input me-3"
+                        name={field.name}
+                        checked={settingValue[field.name] === "1" || settingValue[field.name] === true}
+                        onChange={(event) => {
+                            setDisable(false);
+                            setSettingValue((inputs) => ({
+                                ...inputs,
+                                [field.name]: event.target.checked ? "1" : "0",
+                            }));
+                            setErrors("");
+                        }}
+                    />
+                    {field.label}
+                </label>
+            ) : (
+                <>
+                    <label className="form-label">{field.label}:</label>
+                    {field.textarea ? (
+                <textarea
+                    className="form-control"
+                    rows={3}
+                    name={field.name}
+                    value={settingValue[field.name] || ""}
+                    onChange={onChangeInput}
+                />
+                    ) : (
+                <input
+                    type={field.type || "text"}
+                    className="form-control"
+                    name={field.name}
+                    value={settingValue[field.name] || ""}
+                    onChange={onChangeInput}
+                />
+                    )}
+                </>
+            )}
+        </div>
+    );
+
+    const renderColorField = (field) => (
+        <div className="col-lg-4 mb-3" key={field.name}>
+            <label className="form-label">{field.label}:</label>
+            <div className="d-flex gap-2 align-items-center">
+                <input
+                    type="color"
+                    className="form-control form-control-color"
+                    name={field.name}
+                    value={settingValue[field.name] || "#c1121f"}
+                    onChange={onChangeInput}
+                />
+                <input
+                    type="text"
+                    className="form-control"
+                    name={field.name}
+                    value={settingValue[field.name] || ""}
+                    onChange={onChangeInput}
+                />
+            </div>
+        </div>
+    );
 
     return (
         <MasterLayout>
@@ -1263,6 +1477,29 @@ const Settings = (props) => {
                                         <div className="small text-muted ps-6">
                                             Si se desactiva, el pago inicial sera opcional y se tomara como 0.
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div className="col-12 mt-4">
+                                    <div className="border rounded-3 p-4 bg-light">
+                                        <div className="d-flex flex-wrap justify-content-between gap-3 mb-4">
+                                            <div>
+                                                <h4 className="mb-1">Configuracion Empresarial</h4>
+                                                <div className="text-muted">
+                                                    Personaliza los datos, identidad visual y textos que aparecen en cotizaciones, PDF, impresion y mensajes compartidos.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h5 className="mb-3 text-uppercase text-muted fs-6">Informacion empresarial</h5>
+                                        <div className="row">{businessFields.map(renderBusinessField)}</div>
+                                        <h5 className="mb-3 mt-4 text-uppercase text-muted fs-6">Identidad visual</h5>
+                                        <div className="row">{visualFields.map(renderColorField)}</div>
+                                        <h5 className="mb-3 mt-4 text-uppercase text-muted fs-6">Informacion legal</h5>
+                                        <div className="row">{legalFields.map(renderBusinessField)}</div>
+                                        <h5 className="mb-3 mt-4 text-uppercase text-muted fs-6">Configuracion de cotizacion</h5>
+                                        <div className="row">{quotationSettingFields.map(renderBusinessField)}</div>
+                                        <h5 className="mb-3 mt-4 text-uppercase text-muted fs-6">Beneficios de la cotizacion</h5>
+                                        <div className="row">{quotationBenefitFields.map(renderBusinessField)}</div>
                                     </div>
                                 </div>
 

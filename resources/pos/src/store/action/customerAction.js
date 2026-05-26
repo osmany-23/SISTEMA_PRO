@@ -122,12 +122,13 @@ export const addCustomer = (supplier, navigate) => async (dispatch) => {
 export const editCustomer =
     (customerId, customer, navigate) => async (dispatch) => {
         dispatch(setSavingButton(true));
-        const { name, dob, email, phone, country, city, address } = customer;
+        const { name, dob, email, phone, cedula, country, city, address } = customer;
         const data = {
             name,
             dob: dob === null ? null : moment(dob).format("YYYY-MM-DD"),
             email,
             phone,
+            cedula,
             country,
             city,
             address,

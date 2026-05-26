@@ -9,7 +9,8 @@ export const quotationPdfAction = (quotationId, isLoading = true) => async (disp
     }
     apiConfig.get(apiBaseURL.QUOTATION_PDF + '/' + quotationId)
         .then((response) => {
-            window.open(response.data.data.quotation_pdf_url, '_blank');
+            const pdfUrl = response.data.data.quotation_pdf_url;
+            window.open(`${pdfUrl}${pdfUrl.includes('?') ? '&' : '?'}v=${Date.now()}`, '_blank');
             if (isLoading) {
                 dispatch(setLoading(false))
             }

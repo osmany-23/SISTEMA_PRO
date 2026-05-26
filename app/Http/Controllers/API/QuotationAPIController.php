@@ -8,6 +8,8 @@ use App\Http\Requests\UpdateQuotationRequest;
 use App\Http\Resources\QuotationCollection;
 use App\Http\Resources\QuotationResource;
 use App\Models\Customer;
+use App\Models\MainProduct;
+use App\Models\Product;
 use App\Models\Quotation;
 use App\Models\Setting;
 use App\Models\Warehouse;
@@ -92,26 +94,51 @@ class QuotationAPIController extends AppBaseController
 
     public function show($id): QuotationResource
     {
-        $quotationRelations = ['quotationItems.product', 'warehouse', 'customer'];
+        $quotationRelations = [
+            'quotationItems.product.brand',
+            'quotationItems.product.media',
+            'quotationItems.product.mainProduct.media',
+            'warehouse',
+            'customer',
+        ];
         if (Schema::hasTable('product_batches') && Schema::hasColumn('quotation_items', 'product_batch_id')) {
             $quotationRelations[] = 'quotationItems.productBatch';
         }
         $quotation = Quotation::query()->with($quotationRelations)->findOrFail($id);
+        $this->attachQuotationProductImages($quotation);
 
         return new QuotationResource($quotation);
     }
 
     public function quotationInfo(Quotation $quotation): JsonResponse
     {
-        $quotationRelations = ['quotationItems.product', 'warehouse', 'customer'];
+        $quotationRelations = ['quotationItems.product.media', 'quotationItems.product.brand', 'quotationItems.product.mainProduct.media', 'warehouse', 'customer'];
         if (Schema::hasTable('product_batches') && Schema::hasColumn('quotation_items', 'product_batch_id')) {
             $quotationRelations[] = 'quotationItems.productBatch';
         }
         $quotation = $quotation->load($quotationRelations);
+        $this->attachQuotationProductImages($quotation);
         $keyName = [
-            'email', 'company_name', 'phone', 'address',
+            'email', 'company_name', 'phone', 'address', 'city', 'country',
+            'business_trade_name', 'business_ruc', 'business_country', 'business_phone_secondary',
+            'business_whatsapp', 'business_emails', 'business_website', 'business_facebook',
+            'business_instagram', 'business_tiktok', 'business_linkedin', 'business_youtube',
+            'business_secondary_logo', 'business_favicon', 'business_primary_color',
+            'business_secondary_color', 'business_button_color', 'business_pdf_color',
+            'business_header_color', 'business_table_color', 'business_tax_regime',
+            'business_tax_information', 'business_legal_text', 'business_terms',
+            'business_warranty_policy', 'business_return_policy', 'quotation_validity_days',
+            'quotation_validity_text', 'quotation_auto_observations', 'quotation_thank_you_text',
+            'quotation_footer_text', 'quotation_digital_signature', 'quotation_company_stamp',
+            'quotation_company_qr', 'quotation_benefit_1_title', 'quotation_benefit_1_subtitle',
+            'quotation_benefit_1_image', 'quotation_benefit_2_title', 'quotation_benefit_2_subtitle',
+            'quotation_benefit_2_image', 'quotation_benefit_3_title', 'quotation_benefit_3_subtitle',
+            'quotation_benefit_3_image', 'quotation_benefit_4_title', 'quotation_benefit_4_subtitle',
+            'quotation_benefit_4_image', 'quotation_show_product_image',
         ];
         $quotation['company_info'] = Setting::whereIn('key', $keyName)->pluck('value', 'key')->toArray();
+        $quotation['company_info']['logo'] = getLogoUrl();
+        $quotation['seller_name'] = $this->sellerName();
 
         return $this->sendResponse($quotation, 'Quotation information retrieved successfully');
     }
@@ -145,19 +172,67 @@ class QuotationAPIController extends AppBaseController
     public function pdfDownload(Quotation $quotation): JsonResponse
     {
         ini_set('memory_limit','-1');
-        $quotation = $quotation->load('customer', 'quotationItems.product');
+        $quotation = $quotation->load('customer', 'warehouse', 'quotationItems.product.media', 'quotationItems.product.brand', 'quotationItems.product.mainProduct.media');
+        $this->attachQuotationProductImages($quotation);
         $data = [];
         if (Storage::exists('pdf/Quotation-'.$quotation->reference_code.'.pdf')) {
             Storage::delete('pdf/Quotation-'.$quotation->reference_code.'.pdf');
         }
         $companyLogo = getLogoUrl();
         $companyLogo = (string) \Image::make($companyLogo)->encode('data-url');
+        $defaultProductImage = (string) \Image::make(public_path('images/no-image.png'))->encode('data-url');
 
-        $pdf = PDF::loadView('pdf.quotation-pdf', compact('quotation', 'companyLogo'));
+        $settings = Setting::all()->pluck('value', 'key')->toArray();
+        $settings['logo'] = getLogoUrl();
+
+        $sellerName = $this->sellerName();
+
+        $pdf = PDF::loadView('pdf.quotation-pdf', compact('quotation', 'companyLogo', 'settings', 'sellerName', 'defaultProductImage'))
+            ->setPaper('a4', 'landscape');
         Storage::disk(config('app.media_disc'))->put('pdf/Quotation-'.$quotation->reference_code.'.pdf',
             $pdf->output());
         $data['quotation_pdf_url'] = Storage::url('pdf/Quotation-'.$quotation->reference_code.'.pdf');
 
         return $this->sendResponse($data, 'Quotation pdf retrieved Successfully');
+    }
+
+    private function sellerName(): string
+    {
+        $user = auth()->user();
+
+        return trim((string) ($user->name ?? ''))
+            ?: trim((string) (($user->first_name ?? '').' '.($user->last_name ?? '')))
+            ?: (string) ($user->email ?? '');
+    }
+
+    private function attachQuotationProductImages(Quotation $quotation): void
+    {
+        $fallback = asset('images/no-image.png');
+
+        $quotation->quotationItems->each(function ($item) use ($fallback) {
+            if (! $item->product) {
+                return;
+            }
+
+            $item->product->setAttribute('quotation_image_url', $this->productImageUrl($item->product, $fallback));
+        });
+    }
+
+    private function productImageUrl(Product $product, string $fallback): string
+    {
+        $productMedia = $product->getMedia(Product::PATH)->first();
+        if ($productMedia) {
+            return str_replace('\\', '/', $productMedia->getFullUrl());
+        }
+
+        $mainProduct = $product->mainProduct;
+        if ($mainProduct) {
+            $mainMedia = $mainProduct->getMedia(MainProduct::PATH)->first();
+            if ($mainMedia) {
+                return str_replace('\\', '/', $mainMedia->getFullUrl());
+            }
+        }
+
+        return $fallback;
     }
 }

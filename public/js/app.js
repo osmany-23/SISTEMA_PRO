@@ -33528,6 +33528,7 @@ var CustomerForm = function CustomerForm(props) {
     dob: singleCustomer ? singleCustomer[0].dob === null ? null : moment__WEBPACK_IMPORTED_MODULE_7___default()(singleCustomer[0].dob).toDate() : null,
     email: singleCustomer ? singleCustomer[0].email : "",
     phone: singleCustomer ? singleCustomer[0].phone : "",
+    cedula: singleCustomer ? singleCustomer[0].cedula || "" : "",
     country: singleCustomer ? singleCustomer[0].country : "",
     city: singleCustomer ? singleCustomer[0].city : "",
     address: singleCustomer ? singleCustomer[0].address : ""
@@ -33541,6 +33542,7 @@ var CustomerForm = function CustomerForm(props) {
     name: "",
     email: "",
     phone: "",
+    cedula: "",
     country: "",
     city: "",
     address: ""
@@ -33549,7 +33551,7 @@ var CustomerForm = function CustomerForm(props) {
       errors = _useState4[0],
       setErrors = _useState4[1];
 
-  var disabled = singleCustomer && singleCustomer[0].dob === customerValue.dob && singleCustomer[0].phone === customerValue.phone && singleCustomer[0].name === customerValue.name && singleCustomer[0].country === customerValue.country && singleCustomer[0].city === customerValue.city && singleCustomer[0].email === customerValue.email && singleCustomer[0].address === customerValue.address;
+  var disabled = singleCustomer && singleCustomer[0].dob === customerValue.dob && singleCustomer[0].phone === customerValue.phone && (singleCustomer[0].cedula || "") === customerValue.cedula && singleCustomer[0].name === customerValue.name && singleCustomer[0].country === customerValue.country && singleCustomer[0].city === customerValue.city && singleCustomer[0].email === customerValue.email && singleCustomer[0].address === customerValue.address;
 
   var handleValidation = function handleValidation() {
     var errorss = {};
@@ -33684,6 +33686,24 @@ var CustomerForm = function CustomerForm(props) {
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
               className: "text-danger d-block fw-400 fs-small mt-2",
               children: errors["phone"] ? errors["phone"] : null
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+            className: "col-md-6 mb-3",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
+              className: "form-label",
+              children: "Cedula:"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
+              type: "text",
+              name: "cedula",
+              className: "form-control",
+              placeholder: "Cedula del cliente",
+              onChange: function onChange(e) {
+                return onChangeInput(e);
+              },
+              value: customerValue.cedula
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
+              className: "text-danger d-block fw-400 fs-small mt-2",
+              children: errors["cedula"] ? errors["cedula"] : null
             })]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
             className: "col-md-6 mb-3",
@@ -34090,6 +34110,7 @@ var EditCustomer = function EditCustomer(props) {
       name: customer.attributes.name,
       email: customer.attributes.email,
       phone: customer.attributes.phone,
+      cedula: customer.attributes.cedula,
       country: customer.attributes.country,
       city: customer.attributes.city,
       address: customer.attributes.address,
@@ -43522,22 +43543,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-bootstrap/Form */ "./node_modules/react-bootstrap/esm/Form.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var react_bootstrap_v5__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react-bootstrap-v5 */ "./node_modules/react-bootstrap-v5/lib/esm/Row.js");
-/* harmony import */ var react_bootstrap_v5__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! react-bootstrap-v5 */ "./node_modules/react-bootstrap-v5/lib/esm/Col.js");
 /* harmony import */ var react_bootstrap_v5__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! react-bootstrap-v5 */ "./node_modules/react-bootstrap-v5/lib/esm/Table.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/index.js");
 /* harmony import */ var _MasterLayout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../MasterLayout */ "./resources/pos/src/components/MasterLayout.js");
 /* harmony import */ var _header_HeaderTitle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../header/HeaderTitle */ "./resources/pos/src/components/header/HeaderTitle.js");
 /* harmony import */ var _shared_tab_title_TabTitle__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../shared/tab-title/TabTitle */ "./resources/pos/src/shared/tab-title/TabTitle.js");
 /* harmony import */ var _shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../shared/sharedMethod */ "./resources/pos/src/shared/sharedMethod.js");
 /* harmony import */ var _store_action_frontSettingAction__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../store/action/frontSettingAction */ "./resources/pos/src/store/action/frontSettingAction.js");
 /* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
-/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
 /* harmony import */ var _shared_components_loaders_TopProgressBar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../shared/components/loaders/TopProgressBar */ "./resources/pos/src/shared/components/loaders/TopProgressBar.js");
 /* harmony import */ var _store_action_quotationDetails__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../store/action/quotationDetails */ "./resources/pos/src/store/action/quotationDetails.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _store_action_quotationPdfAction__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../store/action/quotationPdfAction */ "./resources/pos/src/store/action/quotationPdfAction.js");
+/* harmony import */ var _assets_images_brand_logo_png__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../assets/images/brand_logo.png */ "./resources/pos/src/assets/images/brand_logo.png");
+/* harmony import */ var _assets_images_no_image_png__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../assets/images/no-image.png */ "./resources/pos/src/assets/images/no-image.png");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 
 
@@ -43554,269 +43594,625 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+var safeValue = function safeValue(value) {
+  var fallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "N/A";
+  return value !== undefined && value !== null && value !== "" ? value : fallback;
+};
+
+var compactText = function compactText() {
+  for (var _len = arguments.length, values = new Array(_len), _key = 0; _key < _len; _key++) {
+    values[_key] = arguments[_key];
+  }
+
+  return values.filter(function (value) {
+    return value !== undefined && value !== null && value !== "";
+  }).join(" ");
+};
+
+var normalizeImageUrl = function normalizeImageUrl(value) {
+  return typeof value === "string" ? value.replace(/\\/g, "/") : value;
+};
+
+var findImageUrl = function findImageUrl(value) {
+  if (!value) {
+    return "";
+  }
+
+  if (typeof value === "string") {
+    return normalizeImageUrl(value);
+  }
+
+  if (Array.isArray(value)) {
+    return value.map(findImageUrl).find(Boolean) || "";
+  }
+
+  if (_typeof(value) === "object") {
+    if (typeof value.url === "string") {
+      return value.url;
+    }
+
+    if (typeof value.original_url === "string") {
+      return value.original_url;
+    }
+
+    if (Array.isArray(value.imageUrls)) {
+      return value.imageUrls.find(Boolean) || "";
+    }
+
+    return Object.values(value).map(findImageUrl).find(Boolean) || "";
+  }
+
+  return "";
+};
+
+var getProductImage = function getProductImage(product) {
+  var _product$main_product, _product$main_product2, _product$main_product3, _product$mainProduct, _product$mainProduct2, _product$mainProduct3;
+
+  return normalizeImageUrl(product === null || product === void 0 ? void 0 : product.quotation_image_url) || findImageUrl([product === null || product === void 0 ? void 0 : product.images, product === null || product === void 0 ? void 0 : product.image_url, product === null || product === void 0 ? void 0 : product.media, product === null || product === void 0 ? void 0 : (_product$main_product = product.main_product) === null || _product$main_product === void 0 ? void 0 : _product$main_product.image_url, product === null || product === void 0 ? void 0 : (_product$main_product2 = product.main_product) === null || _product$main_product2 === void 0 ? void 0 : _product$main_product2.images, product === null || product === void 0 ? void 0 : (_product$main_product3 = product.main_product) === null || _product$main_product3 === void 0 ? void 0 : _product$main_product3.media, product === null || product === void 0 ? void 0 : (_product$mainProduct = product.mainProduct) === null || _product$mainProduct === void 0 ? void 0 : _product$mainProduct.image_url, product === null || product === void 0 ? void 0 : (_product$mainProduct2 = product.mainProduct) === null || _product$mainProduct2 === void 0 ? void 0 : _product$mainProduct2.images, product === null || product === void 0 ? void 0 : (_product$mainProduct3 = product.mainProduct) === null || _product$mainProduct3 === void 0 ? void 0 : _product$mainProduct3.media]) || _assets_images_no_image_png__WEBPACK_IMPORTED_MODULE_12__["default"];
+};
+
+var buildSocialList = function buildSocialList() {
+  var companyInfo = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  return [["Facebook", companyInfo.business_facebook], ["Instagram", companyInfo.business_instagram], ["TikTok", companyInfo.business_tiktok], ["LinkedIn", companyInfo.business_linkedin], ["YouTube", companyInfo.business_youtube]].filter(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 2),
+        value = _ref2[1];
+
+    return value;
+  });
+};
+
+var buildSocialText = function buildSocialText() {
+  var socialList = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var fallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+  return socialList.length ? socialList.map(function (_ref3) {
+    var _ref4 = _slicedToArray(_ref3, 2),
+        name = _ref4[0],
+        value = _ref4[1];
+
+    return "".concat(name, ": ").concat(value);
+  }).join(" | ") : safeValue(fallback);
+};
+
+var ContactRow = function ContactRow(_ref5) {
+  var icon = _ref5.icon,
+      label = _ref5.label,
+      value = _ref5.value;
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+    className: "quote-contact-row",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+      className: "quote-contact-row__icon",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
+        icon: icon
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("strong", {
+      children: label
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+      className: "quote-contact-row__value",
+      children: safeValue(value)
+    })]
+  });
+};
+
+var getStatusMeta = function getStatusMeta(quotationDetails) {
+  var status = Number(quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.status);
+
+  if (quotationDetails !== null && quotationDetails !== void 0 && quotationDetails.expires_at && new Date(quotationDetails.expires_at) < new Date()) {
+    return {
+      label: "Vencida",
+      className: "quote-status quote-status--expired"
+    };
+  }
+
+  if (status === 1) {
+    return {
+      label: "Enviado",
+      className: "quote-status quote-status--sent"
+    };
+  }
+
+  if (status === 2) {
+    return {
+      label: "Pendiente",
+      className: "quote-status quote-status--pending"
+    };
+  }
+
+  if (status === 3) {
+    return {
+      label: "Rechazada",
+      className: "quote-status quote-status--rejected"
+    };
+  }
+
+  return {
+    label: "Pendiente",
+    className: "quote-status quote-status--pending"
+  };
+};
+
+var buildBenefits = function buildBenefits() {
+  var companyInfo = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  return [{
+    title: companyInfo.quotation_benefit_1_title || "Repuestos originales",
+    subtitle: companyInfo.quotation_benefit_1_subtitle || "Calidad garantizada",
+    image: companyInfo.quotation_benefit_1_image,
+    icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faShieldAlt
+  }, {
+    title: companyInfo.quotation_benefit_2_title || "Mejores precios",
+    subtitle: companyInfo.quotation_benefit_2_subtitle || "Competitivos",
+    image: companyInfo.quotation_benefit_2_image,
+    icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faTag
+  }, {
+    title: companyInfo.quotation_benefit_3_title || "Asesoria profesional",
+    subtitle: companyInfo.quotation_benefit_3_subtitle || "Te ayudamos a elegir",
+    image: companyInfo.quotation_benefit_3_image,
+    icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faWrench
+  }, {
+    title: companyInfo.quotation_benefit_4_title || "Entrega rapida",
+    subtitle: companyInfo.quotation_benefit_4_subtitle || "En Jalapa y alrededores",
+    image: companyInfo.quotation_benefit_4_image,
+    icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faTruckFast
+  }];
+};
+
+var formatDate = function formatDate(date) {
+  return date.toLocaleDateString("es-NI", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric"
+  });
+};
+
+var formatTime = function formatTime(date) {
+  return date.toLocaleTimeString("es-NI", {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+};
 
 var QuotationDetails = function QuotationDetails(props) {
+  var _frontSetting$value, _frontSetting$value2, _quotationDetails$use;
+
   var quotationDetailsAction = props.quotationDetailsAction,
       quotationDetails = props.quotationDetails,
       fetchFrontSetting = props.fetchFrontSetting,
       frontSetting = props.frontSetting,
-      allConfigData = props.allConfigData;
+      allConfigData = props.allConfigData,
+      quotationPdfAction = props.quotationPdfAction;
 
-  var _useParams = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_11__.useParams)(),
+  var _useParams = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_15__.useParams)(),
       id = _useParams.id;
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     fetchFrontSetting();
-  }, []);
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     quotationDetailsAction(id);
   }, []);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)(_MasterLayout__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_shared_components_loaders_TopProgressBar__WEBPACK_IMPORTED_MODULE_8__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_header_HeaderTitle__WEBPACK_IMPORTED_MODULE_3__["default"], {
+
+  var companyInfo = _objectSpread(_objectSpread({}, (quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.company_info) || {}), (frontSetting === null || frontSetting === void 0 ? void 0 : frontSetting.value) || {});
+
+  var currencySymbol = frontSetting === null || frontSetting === void 0 ? void 0 : (_frontSetting$value = frontSetting.value) === null || _frontSetting$value === void 0 ? void 0 : _frontSetting$value.currency_symbol;
+  var statusMeta = getStatusMeta(quotationDetails);
+  var brandColor = companyInfo.business_primary_color || "#c1121f";
+  var headerColor = companyInfo.business_header_color || "#111827";
+  var tableColor = companyInfo.business_table_color || "#1f2937";
+  var validityDays = Number(companyInfo.quotation_validity_days || 15);
+  var createdDate = quotationDetails !== null && quotationDetails !== void 0 && quotationDetails.created_at ? new Date(quotationDetails.created_at) : quotationDetails !== null && quotationDetails !== void 0 && quotationDetails.date ? new Date(quotationDetails.date) : new Date();
+  var expiryDate = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
+    var date = new Date(createdDate);
+    date.setDate(date.getDate() + validityDays);
+    return date;
+  }, [quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.created_at, quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.date, validityDays]);
+  var socialList = buildSocialList(companyInfo);
+  var socialText = buildSocialText(socialList, companyInfo.business_website);
+  var businessAddress = compactText(companyInfo.address, companyInfo.city);
+  var businessPhones = compactText(companyInfo.phone, companyInfo.business_phone_secondary ? "/ ".concat(companyInfo.business_phone_secondary) : "");
+  var benefits = buildBenefits(companyInfo);
+  var showProductImage = companyInfo.quotation_show_product_image !== "0" && companyInfo.quotation_show_product_image !== false;
+  var customer = (quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.customer) || {};
+  var products = (quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.quotation_items) || [];
+
+  var money = function money(amount) {
+    return (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.currencySymbolHandling)(allConfigData, currencySymbol, amount || "0.00");
+  };
+
+  var shareText = "Cotizacion ".concat((quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.reference_code) || "", " - ").concat(safeValue(companyInfo.company_name, "Empresa"), ". Total: ").concat(money(quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.grand_total), ". Valida hasta ").concat(expiryDate.toLocaleDateString(), ".");
+
+  var onShareWhatsApp = function onShareWhatsApp() {
+    var phone = String(companyInfo.business_whatsapp || companyInfo.phone || "").replace(/\D/g, "");
+    window.open("https://wa.me/".concat(phone, "?text=").concat(encodeURIComponent(shareText)), "_blank");
+  };
+
+  var onShareMail = function onShareMail() {
+    var subject = "Cotizacion ".concat((quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.reference_code) || "");
+    window.location.href = "mailto:".concat(customer.email || "", "?subject=").concat(encodeURIComponent(subject), "&body=").concat(encodeURIComponent(shareText));
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)(_MasterLayout__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_shared_components_loaders_TopProgressBar__WEBPACK_IMPORTED_MODULE_8__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_header_HeaderTitle__WEBPACK_IMPORTED_MODULE_3__["default"], {
       title: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("details-quotations.title"),
       to: "/app/quotations"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_shared_tab_title_TabTitle__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_shared_tab_title_TabTitle__WEBPACK_IMPORTED_MODULE_4__["default"], {
       title: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.placeholderText)("details-quotations.title")
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
-      className: "card",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
-        className: "card-body",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_12__["default"], {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
-            className: "row",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
-              className: "col-12",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("h4", {
-                className: "font-weight-bold text-center mb-5",
-                children: [(0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("details-quotations.title"), " ", ":", " ", quotationDetails && quotationDetails.reference_code]
-              })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+      className: "quotation-premium",
+      style: {
+        "--quote-primary": brandColor,
+        "--quote-header": headerColor,
+        "--quote-table": tableColor
+      },
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+        className: "quotation-premium__actions",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("button", {
+          className: "btn btn-primary",
+          onClick: function onClick() {
+            return quotationPdfAction(id);
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
+            icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faFilePdf,
+            className: "me-2"
+          }), "Descargar PDF"]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("button", {
+          className: "btn btn-outline-dark",
+          onClick: function onClick() {
+            return window.print();
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
+            icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faPrint,
+            className: "me-2"
+          }), "Imprimir"]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("button", {
+          className: "btn btn-outline-success",
+          onClick: onShareWhatsApp,
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
+            icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faShareNodes,
+            className: "me-2"
+          }), "WhatsApp"]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("button", {
+          className: "btn btn-outline-secondary",
+          onClick: onShareMail,
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
+            icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faEnvelope,
+            className: "me-2"
+          }), "Correo"]
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("section", {
+        className: "quotation-premium__hero",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+          className: "quotation-premium__brand",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("img", {
+            src: companyInfo.logo || (frontSetting === null || frontSetting === void 0 ? void 0 : (_frontSetting$value2 = frontSetting.value) === null || _frontSetting$value2 === void 0 ? void 0 : _frontSetting$value2.logo) || _assets_images_brand_logo_png__WEBPACK_IMPORTED_MODULE_11__["default"],
+            alt: "Logo"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+              children: "Cotizacion corporativa"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("h1", {
+              children: safeValue(companyInfo.company_name)
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("p", {
+              children: safeValue(companyInfo.business_trade_name, "Calidad y confianza para tu vehiculo")
+            })]
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+          className: "quotation-premium__hero-contact",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(ContactRow, {
+            icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faMobileAlt,
+            label: "Tel.",
+            value: companyInfo.phone
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(ContactRow, {
+            icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faCommentDots,
+            label: "WhatsApp",
+            value: companyInfo.business_whatsapp || companyInfo.business_phone_secondary || companyInfo.phone
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(ContactRow, {
+            icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faEnvelope,
+            label: "Correo",
+            value: companyInfo.business_emails || companyInfo.email
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(ContactRow, {
+            icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faLocationDot,
+            label: "Direccion",
+            value: businessAddress
+          }), socialList.length || companyInfo.business_website ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(ContactRow, {
+            icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faGlobe,
+            label: "Redes",
+            value: socialText
+          }) : null]
+        }), companyInfo.quotation_company_qr ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+          className: "quotation-premium__qr",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("img", {
+            src: companyInfo.quotation_company_qr,
+            alt: "QR empresarial"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+            children: "Escanea para contactarnos"
+          })]
+        }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+          className: "quotation-premium__number",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+            children: "Cotizacion No."
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("strong", {
+            children: safeValue(quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.reference_code)
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("em", {
+            className: statusMeta.className,
+            children: statusMeta.label
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("small", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
+              icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faCalendarAlt
+            }), " ", formatDate(createdDate)]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("small", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
+              icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faClock
+            }), " ", formatTime(createdDate)]
+          })]
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("section", {
+        className: "quotation-premium__contact",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(ContactRow, {
+          icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faTag,
+          label: "RUC",
+          value: companyInfo.business_ruc
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(ContactRow, {
+          icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faMobileAlt,
+          label: "Telefonos",
+          value: businessPhones
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(ContactRow, {
+          icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faEnvelope,
+          label: "Correos",
+          value: companyInfo.business_emails || companyInfo.email
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(ContactRow, {
+          icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faCommentDots,
+          label: "WhatsApp",
+          value: companyInfo.business_whatsapp || companyInfo.phone
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(ContactRow, {
+          icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faLocationDot,
+          label: "Direccion",
+          value: businessAddress
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(ContactRow, {
+          icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faGlobe,
+          label: "Redes",
+          value: socialText
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("section", {
+        className: "quotation-premium__grid",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("article", {
+          className: "quote-card",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("h3", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
+              icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faUser
+            }), " Informacion del cliente"]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+            className: "quote-card__metrics",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("strong", {
+                children: "Nombre"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+                children: safeValue(customer.name)
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("strong", {
+                children: "Telefono"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+                children: safeValue(customer.phone)
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("strong", {
+                children: "Cedula"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+                children: safeValue(customer.cedula || customer.ruc || customer.identification)
+              })]
+            })]
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("article", {
+          className: "quote-card",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("h3", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
+              icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faFilePdf
+            }), " Informacion de la cotizacion"]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+            className: "quote-card__metrics",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("strong", {
+                children: "Fecha"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+                children: formatDate(createdDate)
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("strong", {
+                children: "Hora"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+                children: formatTime(createdDate)
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("strong", {
+                children: "Vendedor"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+                children: safeValue((quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.seller_name) || (quotationDetails === null || quotationDetails === void 0 ? void 0 : (_quotationDetails$use = quotationDetails.user) === null || _quotationDetails$use === void 0 ? void 0 : _quotationDetails$use.name) || (quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.user_name), "N/A")
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("strong", {
+                children: "Vencimiento"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("span", {
+                children: [formatDate(expiryDate), " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("em", {
+                  children: ["(", validityDays, " dias)"]
+                })]
+              })]
+            })]
+          })]
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("section", {
+        className: "quotation-premium__table",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)(react_bootstrap_v5__WEBPACK_IMPORTED_MODULE_16__["default"], {
+          responsive: true,
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("thead", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("tr", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
+                children: "Codigo"
+              }), showProductImage ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
+                children: "Imagen"
+              }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
+                children: "Producto"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
+                children: "Marca"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
+                children: "Cant."
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
+                children: "Precio unitario"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
+                children: "Descuento"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
+                children: "Impuesto"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("th", {
+                children: "Total"
+              })]
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)(react_bootstrap_v5__WEBPACK_IMPORTED_MODULE_13__["default"], {
-            className: "custom-line-height",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)(react_bootstrap_v5__WEBPACK_IMPORTED_MODULE_14__["default"], {
-              md: 4,
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("h5", {
-                className: "text-gray-600 bg-light p-4 mb-0 text-uppercase",
-                children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("sale.detail.customer.info")
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-                className: "p-4",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-                  className: "d-flex align-items-center pb-1",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
-                    icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_15__.faUser,
-                    className: "text-primary me-2 fs-5"
-                  }), quotationDetails.customer && quotationDetails.customer.name]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-                  className: "d-flex align-items-center pb-1",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
-                    icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_15__.faEnvelope,
-                    className: "text-primary me-2 fs-5"
-                  }), quotationDetails.customer && quotationDetails.customer.email]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-                  className: "d-flex align-items-center pb-1",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
-                    icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_15__.faMobileAlt,
-                    className: "text-primary me-2 fs-5"
-                  }), quotationDetails.customer && quotationDetails.customer.phone]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-                  className: "d-flex align-items-center",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
-                    icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_15__.faLocationDot,
-                    className: "text-primary me-2 fs-5"
-                  }), quotationDetails.customer && quotationDetails.customer.address]
-                })]
-              })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)(react_bootstrap_v5__WEBPACK_IMPORTED_MODULE_14__["default"], {
-              md: 4,
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("h5", {
-                className: "text-gray-600 bg-light p-4 mb-0 text-uppercase",
-                children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("globally.detail.company.info")
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-                className: "p-4",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-                  className: "d-flex align-items-center pb-1",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
-                    icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_15__.faUser,
-                    className: "text-primary me-2 fs-5"
-                  }), quotationDetails.company_info && quotationDetails.company_info.company_name]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-                  className: "d-flex align-items-center pb-1",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
-                    icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_15__.faEnvelope,
-                    className: "text-primary me-2 fs-5"
-                  }), quotationDetails.company_info && quotationDetails.company_info.email]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-                  className: "d-flex align-items-center pb-1",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
-                    icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_15__.faMobileAlt,
-                    className: "text-primary me-2 fs-5"
-                  }), quotationDetails.company_info && quotationDetails.company_info.phone]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-                  className: "d-flex align-items-center",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
-                    icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_15__.faLocationDot,
-                    className: "text-primary me-2 fs-5"
-                  }), quotationDetails.company_info && quotationDetails.company_info.address]
-                })]
-              })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)(react_bootstrap_v5__WEBPACK_IMPORTED_MODULE_14__["default"], {
-              md: 4,
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("h5", {
-                className: "text-gray-600 bg-light p-4 mb-0 text-uppercase",
-                children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("quotation.detail.invoice.info")
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-                className: "p-4",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-                  className: "pb-1",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("span", {
-                    className: "me-2",
-                    children: [(0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("globally.detail.reference"), " ", ":"]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("span", {
-                    children: quotationDetails && quotationDetails.reference_code
-                  })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-                  className: "pb-1",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("span", {
-                    className: "me-2",
-                    children: [(0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("globally.detail.status"), " ", ":"]
-                  }), quotationDetails && quotationDetails.status === 1 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("span", {
-                    className: "badge bg-light-warning",
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("span", {
-                      children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("status.filter.sent.label")
-                    })
-                  }) || quotationDetails.status === 2 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("span", {
-                    className: "badge bg-light-danger",
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("span", {
-                      children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("status.filter.pending.label")
-                    })
-                  })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-                  className: "pb-1",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("span", {
-                    className: "me-2",
-                    children: [(0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("globally.detail.warehouse"), " ", ":"]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("span", {
-                    children: quotationDetails.warehouse && quotationDetails.warehouse.name
-                  })]
-                })]
-              })]
-            })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-            className: "mt-5",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("h5", {
-              className: "text-gray-600 bg-light p-4 mb-5 text-uppercase",
-              children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("globally.detail.order.summary")
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)(react_bootstrap_v5__WEBPACK_IMPORTED_MODULE_16__["default"], {
-              responsive: true,
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("thead", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("tr", {
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("th", {
-                    className: "ps-3",
-                    children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("globally.detail.product")
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("th", {
-                    className: "ps-3",
-                    children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("globally.detail.net-unit-price")
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("th", {
-                    className: "ps-3",
-                    children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("globally.detail.quantity")
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("th", {
-                    className: "ps-3",
-                    children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("globally.detail.unit-price")
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("th", {
-                    className: "ps-3",
-                    children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("globally.detail.discount")
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("th", {
-                    className: "ps-3",
-                    children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("globally.detail.tax")
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("th", {
-                    colSpan: 2,
-                    children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("globally.detail.subtotal")
-                  })]
-                })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("tbody", {
-                children: quotationDetails.quotation_items && quotationDetails.quotation_items.map(function (details, index) {
-                  var batch = details.product_batch || null;
-                  var batchCode = details.lote_codigo || details.codigo_lote_sistema || (batch === null || batch === void 0 ? void 0 : batch.codigo_lote_sistema) || (batch === null || batch === void 0 ? void 0 : batch.lot_code) || (batch === null || batch === void 0 ? void 0 : batch.lote_fabricante) || null;
-                  var batchStock = Number(details.batch_stock_quantity || details.stock_lote || (batch === null || batch === void 0 ? void 0 : batch.available_quantity) || 0);
-                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("tr", {
-                    className: "align-middle",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("td", {
-                      className: "ps-3",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-                        children: [details.product && details.product.code, " ", "(", details.product && details.product.name, ")"]
-                      }), batchCode ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-                        className: "mt-1 small text-muted",
-                        children: ["Lote: ", batchCode, " | ", "Stock lote:", " ", (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.formatQuantityAuto)(batchStock)]
-                      }) : null]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
-                      children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.currencySymbolHandling)(allConfigData, frontSetting.value && frontSetting.value.currency_symbol, details.net_unit_price)
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
-                      children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.formatQuantityAuto)(details.quantity)
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
-                      children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.currencySymbolHandling)(allConfigData, frontSetting.value && frontSetting.value.currency_symbol, details.product_price)
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
-                      children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.currencySymbolHandling)(allConfigData, frontSetting.value && frontSetting.value.currency_symbol, details.discount_amount)
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
-                      children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.currencySymbolHandling)(allConfigData, frontSetting.value && frontSetting.value.currency_symbol, details.tax_amount)
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
-                      children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.currencySymbolHandling)(allConfigData, frontSetting.value && frontSetting.value.currency_symbol, details.sub_total)
-                    })]
-                  }, index);
-                })
-              })]
-            })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
-            className: "col-xxl-5 col-lg-6 col-md-6 col-12 float-end",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
-              className: "card",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
-                className: "card-body pt-7 pb-2",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
-                  className: "table-responsive",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("table", {
-                    className: "table border",
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("tbody", {
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("tr", {
-                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
-                          className: "py-3",
-                          children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("globally.detail.order.tax")
-                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("td", {
-                          className: "py-3",
-                          children: [(0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.currencySymbolHandling)(allConfigData, frontSetting.value && frontSetting.value.currency_symbol, quotationDetails && quotationDetails.tax_amount > 0 ? quotationDetails.tax_amount : "0.00"), " ", "(", quotationDetails && (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.formatNumber)((0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.parseNumber)(quotationDetails.tax_rate, 0), 2), "%)"]
-                        })]
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("tr", {
-                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
-                          className: "py-3",
-                          children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("globally.detail.discount")
-                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
-                          className: "py-3",
-                          children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.currencySymbolHandling)(allConfigData, frontSetting.value && frontSetting.value.currency_symbol, quotationDetails && quotationDetails.discount)
-                        })]
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("tr", {
-                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
-                          className: "py-3",
-                          children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("globally.detail.shipping")
-                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
-                          className: "py-3",
-                          children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.currencySymbolHandling)(allConfigData, frontSetting.value && frontSetting.value.currency_symbol, quotationDetails && quotationDetails.shipping)
-                        })]
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("tr", {
-                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
-                          className: "py-3 text-primary",
-                          children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.getFormattedMessage)("globally.detail.grand.total")
-                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("td", {
-                          className: "py-3 text-primary",
-                          children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.currencySymbolHandling)(allConfigData, frontSetting.value && frontSetting.value.currency_symbol, quotationDetails && quotationDetails.grand_total)
-                        })]
-                      })]
-                    })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("tbody", {
+            children: products.map(function (details, index) {
+              var _product$brand;
+
+              var product = details.product || {};
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("tr", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+                    className: "quote-code",
+                    children: product.code || product.product_code || "-"
                   })
-                })
-              })
+                }), showProductImage ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("img", {
+                    className: "quote-product-img",
+                    src: getProductImage(product),
+                    alt: product.name || "Producto",
+                    onError: function onError(event) {
+                      event.currentTarget.src = _assets_images_no_image_png__WEBPACK_IMPORTED_MODULE_12__["default"];
+                    }
+                  })
+                }) : null, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("td", {
+                  className: "quote-product-name",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("strong", {
+                    children: safeValue(product.name, "Producto")
+                  }), details.lote_codigo || details.codigo_lote_sistema ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("small", {
+                    children: ["Lote: ", details.lote_codigo || details.codigo_lote_sistema]
+                  }) : null]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
+                  children: safeValue(product.brand_name || ((_product$brand = product.brand) === null || _product$brand === void 0 ? void 0 : _product$brand.name), "-")
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
+                  children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.formatQuantityAuto)(details.quantity)
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
+                  children: money(details.product_price || details.net_unit_price)
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
+                  children: money(details.discount_amount)
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
+                  children: money(details.tax_amount)
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("td", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("strong", {
+                    children: money(details.sub_total)
+                  })
+                })]
+              }, index);
             })
           })]
         })
-      })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("section", {
+        className: "quotation-premium__bottom",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("article", {
+          className: "quote-notes",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("h3", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
+              icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_14__.faCommentDots
+            }), " Observaciones"]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("p", {
+            children: safeValue(companyInfo.quotation_validity_text, "Cotizacion sujeta a disponibilidad.")
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("p", {
+            children: safeValue(companyInfo.quotation_auto_observations, (quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.note) || "")
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("p", {
+            children: safeValue(companyInfo.business_terms, "")
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+            className: "quote-socials",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("strong", {
+              children: safeValue(companyInfo.quotation_thank_you_text, "Gracias por confiar en nosotros.")
+            }), socialList.length || companyInfo.business_website ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+              children: socialText
+            }) : null]
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("article", {
+          className: "quote-totals",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+              children: "Subtotal"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("strong", {
+              children: money((0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.parseNumber)(quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.grand_total, 0) - (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.parseNumber)(quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.tax_amount, 0) + (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.parseNumber)(quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.discount, 0) - (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.parseNumber)(quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.shipping, 0))
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+              children: "IVA"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("strong", {
+              children: [money(quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.tax_amount), " (", (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.formatNumber)((0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_5__.parseNumber)(quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.tax_rate, 0), 2), "%)"]
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+              children: "Descuento"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("strong", {
+              children: money(quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.discount)
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+              children: "Transporte"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("strong", {
+              children: money(quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.shipping)
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+            className: "quote-totals__grand",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+              children: "Total final"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("strong", {
+              children: money(quotationDetails === null || quotationDetails === void 0 ? void 0 : quotationDetails.grand_total)
+            })]
+          })]
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("footer", {
+        className: "quotation-premium__footer",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("div", {
+          className: "quotation-premium__benefits",
+          children: benefits.map(function (benefit, index) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+              className: "quote-benefit",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+                className: "quote-benefit__media",
+                children: benefit.image ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("img", {
+                  src: normalizeImageUrl(benefit.image),
+                  alt: benefit.title
+                }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_7__.FontAwesomeIcon, {
+                  icon: benefit.icon
+                })
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("strong", {
+                children: benefit.title
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("span", {
+                children: benefit.subtitle
+              })]
+            }, index);
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+          className: "quotation-premium__terms",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("strong", {
+            children: "Terminos y condiciones"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("p", {
+            children: safeValue(companyInfo.quotation_footer_text, companyInfo.business_legal_text || "")
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("p", {
+            children: safeValue(companyInfo.business_return_policy, "")
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsxs)("div", {
+          className: "quotation-premium__marks",
+          children: [companyInfo.quotation_digital_signature ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("img", {
+            src: companyInfo.quotation_digital_signature,
+            alt: "Firma"
+          }) : null, companyInfo.quotation_company_stamp ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("img", {
+            src: companyInfo.quotation_company_stamp,
+            alt: "Sello"
+          }) : null, companyInfo.quotation_company_qr ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_13__.jsx)("img", {
+            src: companyInfo.quotation_company_qr,
+            alt: "QR"
+          }) : null]
+        })]
+      })]
     })]
   });
 };
@@ -43834,7 +44230,8 @@ var mapStateToProps = function mapStateToProps(state) {
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(mapStateToProps, {
   quotationDetailsAction: _store_action_quotationDetails__WEBPACK_IMPORTED_MODULE_9__.quotationDetailsAction,
-  fetchFrontSetting: _store_action_frontSettingAction__WEBPACK_IMPORTED_MODULE_6__.fetchFrontSetting
+  fetchFrontSetting: _store_action_frontSettingAction__WEBPACK_IMPORTED_MODULE_6__.fetchFrontSetting,
+  quotationPdfAction: _store_action_quotationPdfAction__WEBPACK_IMPORTED_MODULE_10__.quotationPdfAction
 })(QuotationDetails));
 
 /***/ }),
@@ -59216,6 +59613,184 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+var businessSettingKeys = ["business_trade_name", "business_ruc", "business_country", "business_phone_secondary", "business_whatsapp", "business_emails", "business_website", "business_facebook", "business_instagram", "business_tiktok", "business_linkedin", "business_youtube", "business_secondary_logo", "business_favicon", "business_primary_color", "business_secondary_color", "business_button_color", "business_pdf_color", "business_header_color", "business_table_color", "business_tax_regime", "business_tax_information", "business_legal_text", "business_terms", "business_warranty_policy", "business_return_policy", "quotation_validity_days", "quotation_validity_text", "quotation_auto_observations", "quotation_thank_you_text", "quotation_footer_text", "quotation_digital_signature", "quotation_company_stamp", "quotation_company_qr", "quotation_benefit_1_title", "quotation_benefit_1_subtitle", "quotation_benefit_1_image", "quotation_benefit_2_title", "quotation_benefit_2_subtitle", "quotation_benefit_2_image", "quotation_benefit_3_title", "quotation_benefit_3_subtitle", "quotation_benefit_3_image", "quotation_benefit_4_title", "quotation_benefit_4_subtitle", "quotation_benefit_4_image", "quotation_show_product_image"];
+var businessDefaults = {
+  business_primary_color: "#c1121f",
+  business_secondary_color: "#111827",
+  business_button_color: "#c1121f",
+  business_pdf_color: "#c1121f",
+  business_header_color: "#111827",
+  business_table_color: "#1f2937",
+  quotation_validity_days: "15",
+  quotation_validity_text: "Esta cotizacion es valida durante los dias indicados.",
+  quotation_thank_you_text: "Gracias por confiar en nosotros.",
+  quotation_footer_text: "Soluciones automotrices profesionales para su negocio.",
+  quotation_benefit_1_title: "Repuestos originales",
+  quotation_benefit_1_subtitle: "Calidad garantizada",
+  quotation_benefit_2_title: "Mejores precios",
+  quotation_benefit_2_subtitle: "Competitivos",
+  quotation_benefit_3_title: "Asesoria profesional",
+  quotation_benefit_3_subtitle: "Te ayudamos a elegir",
+  quotation_benefit_4_title: "Entrega rapida",
+  quotation_benefit_4_subtitle: "En Jalapa y alrededores",
+  quotation_show_product_image: "1"
+};
+var businessFields = [{
+  name: "business_trade_name",
+  label: "Frase empresarial"
+}, {
+  name: "business_ruc",
+  label: "Numero RUC"
+}, {
+  name: "business_country",
+  label: "Pais"
+}, {
+  name: "business_phone_secondary",
+  label: "Telefono secundario"
+}, {
+  name: "business_whatsapp",
+  label: "WhatsApp"
+}, {
+  name: "business_emails",
+  label: "Correos electronicos"
+}, {
+  name: "business_website",
+  label: "Pagina web"
+}, {
+  name: "business_facebook",
+  label: "Facebook"
+}, {
+  name: "business_instagram",
+  label: "Instagram"
+}, {
+  name: "business_tiktok",
+  label: "TikTok"
+}, {
+  name: "business_linkedin",
+  label: "LinkedIn"
+}, {
+  name: "business_youtube",
+  label: "YouTube"
+}, {
+  name: "business_secondary_logo",
+  label: "Logo secundario transparente (URL)"
+}, {
+  name: "business_favicon",
+  label: "Favicon (URL)"
+}];
+var visualFields = [{
+  name: "business_primary_color",
+  label: "Color principal del sistema"
+}, {
+  name: "business_secondary_color",
+  label: "Color secundario"
+}, {
+  name: "business_button_color",
+  label: "Color de botones"
+}, {
+  name: "business_pdf_color",
+  label: "Color de PDF"
+}, {
+  name: "business_header_color",
+  label: "Color de encabezados"
+}, {
+  name: "business_table_color",
+  label: "Color de tablas"
+}];
+var legalFields = [{
+  name: "business_tax_regime",
+  label: "Regimen fiscal"
+}, {
+  name: "business_tax_information",
+  label: "Informacion tributaria"
+}, {
+  name: "business_legal_text",
+  label: "Texto legal",
+  textarea: true
+}, {
+  name: "business_terms",
+  label: "Terminos y condiciones",
+  textarea: true
+}, {
+  name: "business_warranty_policy",
+  label: "Politica de garantia",
+  textarea: true
+}, {
+  name: "business_return_policy",
+  label: "Politica de devoluciones",
+  textarea: true
+}];
+var quotationSettingFields = [{
+  name: "quotation_show_product_image",
+  label: "Mostrar campo imagen en cotizacion",
+  type: "checkbox"
+}, {
+  name: "quotation_validity_days",
+  label: "Dias de vencimiento de cotizacion",
+  type: "number"
+}, {
+  name: "quotation_validity_text",
+  label: "Texto de validez",
+  textarea: true
+}, {
+  name: "quotation_auto_observations",
+  label: "Observaciones automaticas",
+  textarea: true
+}, {
+  name: "quotation_thank_you_text",
+  label: "Texto de agradecimiento",
+  textarea: true
+}, {
+  name: "quotation_footer_text",
+  label: "Pie de pagina",
+  textarea: true
+}, {
+  name: "quotation_digital_signature",
+  label: "Firma digital (URL)"
+}, {
+  name: "quotation_company_stamp",
+  label: "Sello empresarial (URL)"
+}, {
+  name: "quotation_company_qr",
+  label: "QR empresarial / WhatsApp (URL)"
+}];
+var quotationBenefitFields = [{
+  name: "quotation_benefit_1_title",
+  label: "Beneficio 1 - titulo"
+}, {
+  name: "quotation_benefit_1_subtitle",
+  label: "Beneficio 1 - texto"
+}, {
+  name: "quotation_benefit_1_image",
+  label: "Beneficio 1 - imagen (URL)"
+}, {
+  name: "quotation_benefit_2_title",
+  label: "Beneficio 2 - titulo"
+}, {
+  name: "quotation_benefit_2_subtitle",
+  label: "Beneficio 2 - texto"
+}, {
+  name: "quotation_benefit_2_image",
+  label: "Beneficio 2 - imagen (URL)"
+}, {
+  name: "quotation_benefit_3_title",
+  label: "Beneficio 3 - titulo"
+}, {
+  name: "quotation_benefit_3_subtitle",
+  label: "Beneficio 3 - texto"
+}, {
+  name: "quotation_benefit_3_image",
+  label: "Beneficio 3 - imagen (URL)"
+}, {
+  name: "quotation_benefit_4_title",
+  label: "Beneficio 4 - titulo"
+}, {
+  name: "quotation_benefit_4_subtitle",
+  label: "Beneficio 4 - texto"
+}, {
+  name: "quotation_benefit_4_image",
+  label: "Beneficio 4 - imagen (URL)"
+}];
 
 var Settings = function Settings(props) {
   var fetchSetting = props.fetchSetting,
@@ -59233,7 +59808,7 @@ var Settings = function Settings(props) {
       dateFormat = props.dateFormat,
       defaultCountry = props.defaultCountry;
 
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(_objectSpread({
     currency: "",
     currency_symbol: "",
     email: "",
@@ -59269,7 +59844,7 @@ var Settings = function Settings(props) {
     postCode: "",
     date_format: "",
     Currency_icon_Right_side: ""
-  }),
+  }, businessDefaults)),
       _useState2 = _slicedToArray(_useState, 2),
       settingValue = _useState2[0],
       setSettingValue = _useState2[1];
@@ -59388,7 +59963,11 @@ var Settings = function Settings(props) {
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (settings) {
-      setSettingValue({
+      var businessValues = businessSettingKeys.reduce(function (values, key) {
+        values[key] = settings.attributes && settings.attributes[key] ? settings.attributes[key] : businessDefaults[key] || "";
+        return values;
+      }, {});
+      setSettingValue(_objectSpread({
         currency: settings.attributes && settings.attributes.currency ? {
           value: Number(settings.attributes.currency),
           label: settings.attributes.currency_symbol
@@ -59445,7 +60024,7 @@ var Settings = function Settings(props) {
           label: defaultDate.label
         } : "",
         Currency_icon_Right_side: settings.attributes && settings.attributes.is_currency_right !== "true" ? false : true
-      });
+      }, businessValues));
 
       if (settings.attributes && settings.attributes.show_version_on_footer === "1") {
         setChecked(true);
@@ -59718,6 +60297,9 @@ var Settings = function Settings(props) {
     formData.append("state", data.state.label);
     formData.append("date_format", data.date_format.value);
     formData.append("is_currency_right", data.Currency_icon_Right_side);
+    businessSettingKeys.forEach(function (key) {
+      formData.append(key, data[key] || "");
+    });
     return formData;
   };
 
@@ -59808,6 +60390,70 @@ var Settings = function Settings(props) {
       });
     });
     setErrors("");
+  };
+
+  var renderBusinessField = function renderBusinessField(field) {
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("div", {
+      className: "col-lg-6 mb-3",
+      children: field.type === "checkbox" ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("label", {
+        className: "form-check form-check-custom form-check-solid d-flex align-items-center mt-8 cursor-pointer",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("input", {
+          type: "checkbox",
+          className: "form-check-input me-3",
+          name: field.name,
+          checked: settingValue[field.name] === "1" || settingValue[field.name] === true,
+          onChange: function onChange(event) {
+            setDisable(false);
+            setSettingValue(function (inputs) {
+              return _objectSpread(_objectSpread({}, inputs), {}, _defineProperty({}, field.name, event.target.checked ? "1" : "0"));
+            });
+            setErrors("");
+          }
+        }), field.label]
+      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.Fragment, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("label", {
+          className: "form-label",
+          children: [field.label, ":"]
+        }), field.textarea ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("textarea", {
+          className: "form-control",
+          rows: 3,
+          name: field.name,
+          value: settingValue[field.name] || "",
+          onChange: onChangeInput
+        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("input", {
+          type: field.type || "text",
+          className: "form-control",
+          name: field.name,
+          value: settingValue[field.name] || "",
+          onChange: onChangeInput
+        })]
+      })
+    }, field.name);
+  };
+
+  var renderColorField = function renderColorField(field) {
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
+      className: "col-lg-4 mb-3",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("label", {
+        className: "form-label",
+        children: [field.label, ":"]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
+        className: "d-flex gap-2 align-items-center",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("input", {
+          type: "color",
+          className: "form-control form-control-color",
+          name: field.name,
+          value: settingValue[field.name] || "#c1121f",
+          onChange: onChangeInput
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("input", {
+          type: "text",
+          className: "form-control",
+          name: field.name,
+          value: settingValue[field.name] || "",
+          onChange: onChangeInput
+        })]
+      })]
+    }, field.name);
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)(_MasterLayout__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -60131,6 +60777,53 @@ var Settings = function Settings(props) {
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("div", {
                     className: "small text-muted ps-6",
                     children: "Si se desactiva, el pago inicial sera opcional y se tomara como 0."
+                  })]
+                })
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("div", {
+                className: "col-12 mt-4",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
+                  className: "border rounded-3 p-4 bg-light",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("div", {
+                    className: "d-flex flex-wrap justify-content-between gap-3 mb-4",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsxs)("div", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("h4", {
+                        className: "mb-1",
+                        children: "Configuracion Empresarial"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("div", {
+                        className: "text-muted",
+                        children: "Personaliza los datos, identidad visual y textos que aparecen en cotizaciones, PDF, impresion y mensajes compartidos."
+                      })]
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("h5", {
+                    className: "mb-3 text-uppercase text-muted fs-6",
+                    children: "Informacion empresarial"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("div", {
+                    className: "row",
+                    children: businessFields.map(renderBusinessField)
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("h5", {
+                    className: "mb-3 mt-4 text-uppercase text-muted fs-6",
+                    children: "Identidad visual"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("div", {
+                    className: "row",
+                    children: visualFields.map(renderColorField)
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("h5", {
+                    className: "mb-3 mt-4 text-uppercase text-muted fs-6",
+                    children: "Informacion legal"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("div", {
+                    className: "row",
+                    children: legalFields.map(renderBusinessField)
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("h5", {
+                    className: "mb-3 mt-4 text-uppercase text-muted fs-6",
+                    children: "Configuracion de cotizacion"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("div", {
+                    className: "row",
+                    children: quotationSettingFields.map(renderBusinessField)
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("h5", {
+                    className: "mb-3 mt-4 text-uppercase text-muted fs-6",
+                    children: "Beneficios de la cotizacion"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("div", {
+                    className: "row",
+                    children: quotationBenefitFields.map(renderBusinessField)
                   })]
                 })
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("div", {
@@ -91362,18 +92055,19 @@ var addCustomer = function addCustomer(supplier, navigate) {
 var editCustomer = function editCustomer(customerId, customer, navigate) {
   return /*#__PURE__*/function () {
     var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(dispatch) {
-      var name, dob, email, phone, country, city, address, data;
+      var name, dob, email, phone, cedula, country, city, address, data;
       return _regeneratorRuntime().wrap(function _callee4$(_context4) {
         while (1) {
           switch (_context4.prev = _context4.next) {
             case 0:
               dispatch((0,_saveButtonAction__WEBPACK_IMPORTED_MODULE_7__.setSavingButton)(true));
-              name = customer.name, dob = customer.dob, email = customer.email, phone = customer.phone, country = customer.country, city = customer.city, address = customer.address;
+              name = customer.name, dob = customer.dob, email = customer.email, phone = customer.phone, cedula = customer.cedula, country = customer.country, city = customer.city, address = customer.address;
               data = {
                 name: name,
                 dob: dob === null ? null : moment__WEBPACK_IMPORTED_MODULE_9___default()(dob).format("YYYY-MM-DD"),
                 email: email,
                 phone: phone,
+                cedula: cedula,
                 country: country,
                 city: city,
                 address: address
@@ -96790,7 +97484,8 @@ var quotationPdfAction = function quotationPdfAction(quotationId) {
               }
 
               _config_apiConfig__WEBPACK_IMPORTED_MODULE_1__["default"].get(_constants__WEBPACK_IMPORTED_MODULE_2__.apiBaseURL.QUOTATION_PDF + '/' + quotationId).then(function (response) {
-                window.open(response.data.data.quotation_pdf_url, '_blank');
+                var pdfUrl = response.data.data.quotation_pdf_url;
+                window.open("".concat(pdfUrl).concat(pdfUrl.includes('?') ? '&' : '?', "v=").concat(Date.now()), '_blank');
 
                 if (isLoading) {
                   dispatch((0,_loadingAction__WEBPACK_IMPORTED_MODULE_0__.setLoading)(false));
@@ -122734,6 +123429,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/gb.svg?1a389497056101e87699ee9185c3a353");
+
+/***/ }),
+
+/***/ "./resources/pos/src/assets/images/no-image.png":
+/*!******************************************************!*\
+  !*** ./resources/pos/src/assets/images/no-image.png ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/no-image.png?654027d6809055412e468d0113b0c9e5");
 
 /***/ }),
 

@@ -22,7 +22,7 @@ class CustomPathGenerator implements PathGenerator
 {
     public function getPath(Media $media): string
     {
-        $path = '{PARENT_DIR}' . DIRECTORY_SEPARATOR . $media->id . DIRECTORY_SEPARATOR;
+        $path = '{PARENT_DIR}/' . $media->id . '/';
         switch ($media->collection_name) {
             case Brand::PATH:
                 return str_replace('{PARENT_DIR}', Brand::PATH, $path);

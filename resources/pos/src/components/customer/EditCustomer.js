@@ -20,6 +20,7 @@ const EditCustomer = ( props ) => {
         name: customer.attributes.name,
         email: customer.attributes.email,
         phone: customer.attributes.phone,
+        cedula: customer.attributes.cedula,
         country: customer.attributes.country,
         city: customer.attributes.city,
         address: customer.attributes.address,
@@ -42,4 +43,3 @@ const mapStateToProps = ( state ) => {
 };
 
 export default connect( mapStateToProps, { fetchCustomer } )( EditCustomer );
-
