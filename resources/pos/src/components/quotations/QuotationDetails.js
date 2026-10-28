@@ -47,6 +47,23 @@ const compactText = (...values) =>
 const normalizeImageUrl = (value) =>
     typeof value === "string" ? value.replace(/\\/g, "/") : value;
 
+const parseSafeDate = (value, fallback = new Date()) => {
+    if (!value) {
+        return fallback;
+    }
+
+    const date = new Date(value);
+
+    return Number.isNaN(date.getTime()) ? fallback : date;
+};
+
+const addDays = (date, days) => {
+    const nextDate = new Date(date);
+    nextDate.setDate(nextDate.getDate() + days);
+
+    return nextDate;
+};
+
 const findImageUrl = (value) => {
     if (!value) {
         return "";
@@ -111,9 +128,13 @@ const ContactRow = ({ icon, label, value }) => (
 
 const getStatusMeta = (quotationDetails) => {
     const status = Number(quotationDetails?.status);
-    if (quotationDetails?.expires_at && new Date(quotationDetails.expires_at) < new Date()) {
-        return { label: "Vencida", className: "quote-status quote-status--expired" };
+    const statusClass = quotationDetails?.status_class === "sent" ? "sent" : "pending";
+    const statusLabel = quotationDetails?.status_label;
+
+    if (statusLabel) {
+        return { label: statusLabel, className: `quote-status quote-status--${statusClass}` };
     }
+
     if (status === 1) {
         return { label: "Enviado", className: "quote-status quote-status--sent" };
     }
@@ -125,6 +146,11 @@ const getStatusMeta = (quotationDetails) => {
     }
     return { label: "Pendiente", className: "quote-status quote-status--pending" };
 };
+
+const getValidityMeta = (isExpired) =>
+    isExpired
+        ? { label: "Validez vencida", className: "quote-validity quote-validity--expired" }
+        : { label: "Validez vigente", className: "quote-validity quote-validity--active" };
 
 const buildBenefits = (companyInfo = {}) => [
     {
@@ -154,10 +180,10 @@ const buildBenefits = (companyInfo = {}) => [
 ];
 
 const formatDate = (date) =>
-    date.toLocaleDateString("es-NI", { day: "2-digit", month: "2-digit", year: "numeric" });
+    parseSafeDate(date).toLocaleDateString("es-NI", { day: "2-digit", month: "2-digit", year: "numeric" });
 
 const formatTime = (date) =>
-    date.toLocaleTimeString("es-NI", { hour: "2-digit", minute: "2-digit" });
+    parseSafeDate(date).toLocaleTimeString("es-NI", { hour: "2-digit", minute: "2-digit" });
 
 const QuotationDetails = (props) => {
     const {
@@ -184,17 +210,18 @@ const QuotationDetails = (props) => {
     const brandColor = companyInfo.business_primary_color || "#c1121f";
     const headerColor = companyInfo.business_header_color || "#111827";
     const tableColor = companyInfo.business_table_color || "#1f2937";
-    const validityDays = Number(companyInfo.quotation_validity_days || 15);
-    const createdDate = quotationDetails?.created_at
-        ? new Date(quotationDetails.created_at)
-        : quotationDetails?.date
-          ? new Date(quotationDetails.date)
-          : new Date();
+    const validityDays = Math.max(
+        Number(quotationDetails?.validity_days || companyInfo.quotation_validity_days || 15),
+        1
+    );
+    const createdDate = parseSafeDate(
+        quotationDetails?.issued_at || quotationDetails?.created_at || quotationDetails?.date,
+        new Date()
+    );
     const expiryDate = useMemo(() => {
-        const date = new Date(createdDate);
-        date.setDate(date.getDate() + validityDays);
-        return date;
-    }, [quotationDetails?.created_at, quotationDetails?.date, validityDays]);
+        return parseSafeDate(quotationDetails?.expires_at, addDays(createdDate, validityDays));
+    }, [quotationDetails?.expires_at, quotationDetails?.issued_at, quotationDetails?.created_at, quotationDetails?.date, validityDays]);
+    const validityMeta = getValidityMeta(Boolean(quotationDetails?.is_expired));
     const socialList = buildSocialList(companyInfo);
     const socialText = buildSocialText(socialList, companyInfo.business_website);
     const businessAddress = compactText(companyInfo.address, companyInfo.city);
@@ -210,7 +237,7 @@ const QuotationDetails = (props) => {
     const shareText = `Cotizacion ${quotationDetails?.reference_code || ""} - ${safeValue(
         companyInfo.company_name,
         "Empresa"
-    )}. Total: ${money(quotationDetails?.grand_total)}. Valida hasta ${expiryDate.toLocaleDateString()}.`;
+    )}. Total: ${money(quotationDetails?.grand_total)}. Valida hasta ${formatDate(expiryDate)}.`;
 
     const onShareWhatsApp = () => {
         const phone = String(companyInfo.business_whatsapp || companyInfo.phone || "").replace(/\D/g, "");
@@ -281,6 +308,7 @@ const QuotationDetails = (props) => {
                         <span>Cotizacion No.</span>
                         <strong>{safeValue(quotationDetails?.reference_code)}</strong>
                         <em className={statusMeta.className}>{statusMeta.label}</em>
+                        <em className={validityMeta.className}>{validityMeta.label}</em>
                         <small><FontAwesomeIcon icon={faCalendarAlt} /> {formatDate(createdDate)}</small>
                         <small><FontAwesomeIcon icon={faClock} /> {formatTime(createdDate)}</small>
                     </div>
@@ -380,7 +408,7 @@ const QuotationDetails = (props) => {
                         </div>
                     </article>
                     <article className="quote-totals">
-                        <div><span>Subtotal</span><strong>{money(parseNumber(quotationDetails?.grand_total, 0) - parseNumber(quotationDetails?.tax_amount, 0) + parseNumber(quotationDetails?.discount, 0) - parseNumber(quotationDetails?.shipping, 0))}</strong></div>
+                        <div><span>Subtotal</span><strong>{money(quotationDetails?.subtotal ?? (parseNumber(quotationDetails?.grand_total, 0) - parseNumber(quotationDetails?.tax_amount, 0) + parseNumber(quotationDetails?.discount, 0) - parseNumber(quotationDetails?.shipping, 0)))}</strong></div>
                         <div><span>IVA</span><strong>{money(quotationDetails?.tax_amount)} ({formatNumber(parseNumber(quotationDetails?.tax_rate, 0), 2)}%)</strong></div>
                         <div><span>Descuento</span><strong>{money(quotationDetails?.discount)}</strong></div>
                         <div><span>Transporte</span><strong>{money(quotationDetails?.shipping)}</strong></div>

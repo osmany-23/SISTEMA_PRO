@@ -12,6 +12,7 @@ export const createCartProductTemplate = (product) => {
     return {
         name: product.attributes.name,
         code: product.attributes.code,
+        medidas: product.attributes.medidas,
         stock_alert: product.attributes.stock_alert,
         stock_quantity: batchId
             ? batchAvailableQuantity

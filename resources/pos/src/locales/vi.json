@@ -830,4 +830,7 @@
     "logout.confirmation.label": "Bạn có chắc chắn muốn Đăng xuất không?",
     "addition.title": "Phép cộng",
     "subtraction.title": "Phép trừ"
+,
+    "product.input.medidas.label": "Measurements",
+    "product.input.medidas.placeholder.label": "Enter measurements"
 }

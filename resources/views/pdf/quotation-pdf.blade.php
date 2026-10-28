@@ -10,13 +10,14 @@
         $primary = $setting('business_pdf_color', $setting('business_primary_color', '#c1121f'));
         $header = $setting('business_header_color', '#07111b');
         $table = $setting('business_table_color', '#111827');
-        $validityDays = max((int) $setting('quotation_validity_days', 15), 1);
+        $quotationMeta = $quotationMeta ?? $quotation->quotationPresentationData($settings);
+        $validityDays = (int) ($quotationMeta['validity_days'] ?? \App\Models\Quotation::configuredValidityDays($settings));
         $showProductImage = $setting('quotation_show_product_image', '1') !== '0';
-        $createdAt = \Carbon\Carbon::parse($quotation->created_at ?? $quotation->date);
-        $expiresAt = $createdAt->copy()->addDays($validityDays);
-        $subtotal = (float) $quotation->grand_total - (float) $quotation->tax_amount + (float) $quotation->discount - (float) $quotation->shipping;
-        $statusLabel = $quotation->status == \App\Models\Quotation::SENT ? 'Enviado' : ($quotation->status == 3 ? 'Rechazado' : 'Pendiente');
-        $statusClass = $quotation->status == \App\Models\Quotation::SENT ? 'approved' : ($quotation->status == 3 ? 'rejected' : 'pending');
+        $createdAt = \Carbon\Carbon::parse($quotationMeta['issued_at'] ?? ($quotation->created_at ?? $quotation->date));
+        $expiresAt = \Carbon\Carbon::parse($quotationMeta['expires_at'] ?? $createdAt->copy()->addDays($validityDays));
+        $subtotal = (float) ($quotationMeta['subtotal'] ?? $quotation->quotationSubtotal());
+        $statusLabel = $quotationMeta['status_label'] ?? $quotation->quotationStatusLabel();
+        $statusClass = ($quotationMeta['status_class'] ?? $quotation->quotationStatusClass()) === 'sent' ? 'approved' : 'pending';
         $socials = collect([
             'Facebook' => $setting('business_facebook'),
             'Instagram' => $setting('business_instagram'),

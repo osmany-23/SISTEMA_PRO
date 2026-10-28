@@ -6,6 +6,7 @@ use App\Models\Quotation;
 use App\Models\QuotationItem;
 use App\Models\Sale;
 use App\Services\ProductBatchService;
+use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;

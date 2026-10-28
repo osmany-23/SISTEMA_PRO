@@ -18,6 +18,7 @@ const EditSubProductModal = (props) => {
         product_cost: "",
         order_tax: "",
         stock_alert: "",
+        medidas: "",
         tax_type: "",
         code:""
     });
@@ -36,6 +37,7 @@ const EditSubProductModal = (props) => {
                 product_cost: productData.product_cost,
                 order_tax: productData.order_tax ? productData.order_tax : "",
                 stock_alert: productData.stock_alert,
+                medidas: productData.medidas || "",
                 tax_type: productData.tax_type,
                 code: productData.code
             }));
@@ -46,6 +48,7 @@ const EditSubProductModal = (props) => {
                 product_cost: "",
                 order_tax: "",
                 stock_alert: "",
+                medidas: "",
                 tax_type: "",
                 code:""
             });
@@ -80,6 +83,8 @@ const EditSubProductModal = (props) => {
             validationErrors['code'] = getFormattedMessage('product.input.code.validate.label');
         } else if (formInput['order_tax'] > 100) {
             validationErrors["order_tax"] = getFormattedMessage('product.input.order-tax.valid.validate.label');
+        } else if (formInput['medidas'] && formInput['medidas'].length > 10) {
+            validationErrors["medidas"] = "Medidas no debe superar 10 caracteres.";
         } else {
             isValid = true;
         }
@@ -111,6 +116,7 @@ const EditSubProductModal = (props) => {
         formData.append('purchase_unit', commonData.purchase_unit);
         formData.append('quantity_limit', commonData.quantity_limit);
         formData.append('main_product_id', commonData.main_product_id);
+        formData.append('medidas', formInput.medidas || '');
         formData.append('notes', commonData.notes);
 
         formData.append('code', formInput.code);
@@ -292,6 +298,34 @@ const EditSubProductModal = (props) => {
                                         }
                                         min={0}
                                     />
+                                </div>
+                                <div className="col-md-3 mb-3">
+                                    <label className="form-label">
+                                        {getFormattedMessage(
+                                            "product.input.medidas.label"
+                                        )}
+                                        :{" "}
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="medidas"
+                                        className="form-control"
+                                        placeholder={placeholderText(
+                                            "product.input.medidas.placeholder.label"
+                                        )}
+                                        onChange={(e) =>
+                                            onProductDataChange(e)
+                                        }
+                                        value={
+                                            formInput.medidas
+                                        }
+                                        maxLength={10}
+                                    />
+                                    <span className="text-danger d-block fw-400 fs-small mt-2">
+                                        {errors["medidas"]
+                                            ? errors["medidas"]
+                                            : null}
+                                    </span>
                                 </div>
                                 <div className="col-md-3 mb-3">
                                     <label className="form-label">

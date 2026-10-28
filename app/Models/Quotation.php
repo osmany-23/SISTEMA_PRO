@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Contracts\JsonResourceful;
 use App\Traits\HasJsonResourcefulData;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -126,6 +127,66 @@ class Quotation extends BaseModel implements JsonResourceful
 
     const PENDING = 2;
 
+    public static function configuredValidityDays(?array $settings = null): int
+    {
+        $value = $settings['quotation_validity_days'] ?? getSettingValue('quotation_validity_days', 15);
+
+        if ($value === null || $value === '') {
+            return 15;
+        }
+
+        return max((int) $value, 1);
+    }
+
+    public function quotationIssuedAt(): Carbon
+    {
+        $value = $this->created_at ?: $this->date ?: now();
+
+        return $value instanceof Carbon ? $value->copy() : Carbon::parse($value);
+    }
+
+    public function quotationExpiresAt(?array $settings = null): Carbon
+    {
+        return $this->quotationIssuedAt()->copy()->addDays(self::configuredValidityDays($settings));
+    }
+
+    public function quotationStatusLabel(): string
+    {
+        return (int) $this->status === self::SENT ? 'Enviado' : 'Pendiente';
+    }
+
+    public function quotationStatusClass(): string
+    {
+        return (int) $this->status === self::SENT ? 'sent' : 'pending';
+    }
+
+    public function quotationSubtotal(): float
+    {
+        return round(
+            (float) $this->grand_total
+            - (float) $this->tax_amount
+            + (float) $this->discount
+            - (float) $this->shipping,
+            2
+        );
+    }
+
+    public function quotationPresentationData(?array $settings = null): array
+    {
+        $issuedAt = $this->quotationIssuedAt();
+        $expiresAt = $this->quotationExpiresAt($settings);
+
+        return [
+            'issued_at' => $issuedAt->toIso8601String(),
+            'validity_days' => self::configuredValidityDays($settings),
+            'expires_at' => $expiresAt->toIso8601String(),
+            'is_expired' => now()->greaterThan($expiresAt),
+            'status_label' => $this->quotationStatusLabel(),
+            'status_class' => $this->quotationStatusClass(),
+            'subtotal' => $this->quotationSubtotal(),
+        ];
+    }
+
     public function prepareLinks(): array
     {
         return [
@@ -156,7 +217,7 @@ class Quotation extends BaseModel implements JsonResourceful
             'created_at' => $this->created_at,
         ];
 
-        return $fields;
+        return array_merge($fields, $this->quotationPresentationData());
     }
 
     public function customer(): BelongsTo

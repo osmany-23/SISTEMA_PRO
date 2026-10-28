@@ -41,9 +41,18 @@ const ProductCard = memo(
 
         const imageUrl = product?.attributes?.images?.imageUrls?.[0] || productImage;
         const stockQuantity = Number(product?.attributes?.stock?.quantity || 0);
+        const medidas = product?.attributes?.medidas || "";
+        const tooltipText = medidas
+            ? `Medidas: ${medidas}`
+            : product.attributes?.name || "";
 
         return (
-            <div className="product-custom-card" key={product.id} onClick={handleClick}>
+            <div
+                className="product-custom-card"
+                key={product.id}
+                onClick={handleClick}
+                title={tooltipText}
+            >
                 <Card className={`position-relative h-100 ${isActive ? "product-active" : ""}`}>
                     <OptimizedProductImage src={imageUrl} alt={product.attributes?.name || "product"} />
                     <Card.Body className="px-2 pt-2 pb-1 custom-card-body">
@@ -117,6 +126,7 @@ const Product = (props) => {
                     normalize(product?.attributes?.name),
                     normalize(product?.attributes?.code),
                     normalize(product?.attributes?.product_code),
+                    normalize(product?.attributes?.medidas),
                 ].join(" "),
             });
 

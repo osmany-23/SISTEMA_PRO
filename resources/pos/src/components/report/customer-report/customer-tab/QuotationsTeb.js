@@ -33,6 +33,8 @@ const QuotationsTeb = (props) => {
         frontSetting &&
         frontSetting.value &&
         frontSetting.value.currency_symbol;
+    const statusBadgeClass = (statusClass) =>
+        statusClass === "sent" ? "bg-light-success" : "bg-light-warning";
 
     // fetch all quotations
     const onChange = (filter) => {
@@ -59,9 +61,11 @@ const QuotationsTeb = (props) => {
             customer_name: quotation.attributes.customer_name,
             warehouse_name: quotation.attributes.warehouse_name,
             status: quotation.attributes.status,
+            status_label: quotation.attributes.status_label,
+            status_class: quotation.attributes.status_class,
             grand_total: quotation.attributes.grand_total,
             paid_amount: quotation.attributes.paid_amount
-                ? sale.attributes.paid_amount
+                ? quotation.attributes.paid_amount
                 : (0.0).toFixed(2),
             id: quotation.id,
             currency: currencySymbol,
@@ -98,24 +102,14 @@ const QuotationsTeb = (props) => {
             sortable: false,
             cell: (row) => {
                 return (
-                    (row.status === 1 && (
-                        <span className="badge bg-light-warning">
-                            <span>
-                                {getFormattedMessage(
-                                    "status.filter.sent.label"
-                                )}
-                            </span>
+                    <span className={`badge ${statusBadgeClass(row.status_class)}`}>
+                        <span>
+                            {row.status_label ||
+                                (row.status === 1
+                                    ? getFormattedMessage("status.filter.sent.label")
+                                    : getFormattedMessage("status.filter.pending.label"))}
                         </span>
-                    )) ||
-                    (row.status === 2 && (
-                        <span className="badge bg-light-danger">
-                            <span>
-                                {getFormattedMessage(
-                                    "status.filter.pending.label"
-                                )}
-                            </span>
-                        </span>
-                    ))
+                    </span>
                 );
             },
         },

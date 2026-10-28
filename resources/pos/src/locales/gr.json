@@ -824,4 +824,7 @@
     "logout.confirmation.label": "Möchten Sie sich wirklich abmelden?",
     "addition.title": "Addition",
     "subtraction.title": "Subtraktion"
+,
+    "product.input.medidas.label": "Measurements",
+    "product.input.medidas.placeholder.label": "Enter measurements"
 }

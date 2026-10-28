@@ -107,6 +107,7 @@ const ProductForm = (props) => {
         sale_unit: "",
         purchase_unit: "",
         sale_quantity_limit: "",
+        medidas: "",
         notes: "",
         images: [],
         warehouse_id: "",
@@ -225,6 +226,8 @@ const ProductForm = (props) => {
                   productValue.order_tax &&
               singleProductItem.quantity_limit ===
                   productValue.sale_quantity_limit &&
+              (singleProductItem.medidas || "") ===
+                  (productValue.medidas || "") &&
               singleProductItem.brand_id.value === productValue.brand_id.value &&
               newTax.length === productValue.tax_type.length &&
               singleProductItem.product_category_id.value ===
@@ -372,6 +375,7 @@ const ProductForm = (props) => {
                         ? singleProduct[0].quantity_limit
                         : ""
                     : "",
+                medidas: singleProduct ? singleProduct[0].medidas || "" : "",
                 notes: singleProduct ? singleProduct[0].notes : "",
                 images: singleProduct ? singleProduct[0].images : "",
                 isEdit: singleProduct ? singleProduct[0].is_Edit : false,
@@ -1032,6 +1036,11 @@ const ProductForm = (props) => {
                 "product.input.purchase-unit.validate.label"
             );
         } else if (
+            productValue["medidas"] &&
+            productValue["medidas"].length > 10
+        ) {
+            errorss["medidas"] = "Medidas no debe superar 10 caracteres.";
+        } else if (
             productValue["notes"] &&
             productValue["notes"].length > 1500
         ) {
@@ -1142,7 +1151,12 @@ const ProductForm = (props) => {
         e.preventDefault();
         const { value, name } = e.target;
         // Solo aplicar la restricción de decimales a los campos numéricos, no a 'notes'
-        if (name !== "name" && name !== "notes" && value.match(/\./g)) {
+        if (
+            name !== "name" &&
+            name !== "notes" &&
+            name !== "medidas" &&
+            value.match(/\./g)
+        ) {
             const [, decimal] = value.split(".");
             if (decimal?.length > 2) {
                 return;
@@ -1250,6 +1264,7 @@ const ProductForm = (props) => {
                 ? productValue.sale_quantity_limit
                 : ""
         );
+        formData.append("medidas", productValue.medidas || "");
 
         formData.append("notes", productValue.notes);
         if (productValue.isEdit === false) {
@@ -1589,6 +1604,30 @@ const ProductForm = (props) => {
                                         <span className="text-danger d-block fw-400 fs-small mt-2">
                                             {errors["stock_alert"]
                                                 ? errors["stock_alert"]
+                                                : null}
+                                        </span>
+                                    </div>
+                                    <div className="col-md-6 mb-3">
+                                        <label className="form-label">
+                                            {getFormattedMessage(
+                                                "product.input.medidas.label"
+                                            )}
+                                            :{" "}
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="medidas"
+                                            className="form-control"
+                                            placeholder={formatPlaceholder(
+                                                "product.input.medidas.placeholder.label"
+                                            )}
+                                            onChange={(e) => onChangeInput(e)}
+                                            value={productValue.medidas || ""}
+                                            maxLength={10}
+                                        />
+                                        <span className="text-danger d-block fw-400 fs-small mt-2">
+                                            {errors["medidas"]
+                                                ? errors["medidas"]
                                                 : null}
                                         </span>
                                     </div>

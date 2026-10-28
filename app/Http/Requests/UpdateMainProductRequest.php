@@ -41,6 +41,7 @@ class UpdateMainProductRequest extends FormRequest
             // 'product_cost' => 'required|numeric', //
             // 'product_price' => 'required|numeric', //
             'product_unit' => 'required',
+            'medidas' => 'nullable|string|max:10',
             'sale_unit' => 'nullable',
             'purchase_unit' => 'nullable',
             // 'stock_alert' => 'nullable', //

@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -71,6 +72,7 @@ class MainProductAPIController extends AppBaseController
             'max_price' => 'meta.max_price',
         ];
         $sortColumn = $allowedSorts[$sortField] ?? 'main_products.created_at';
+        $hasProductMedidasColumn = Schema::hasColumn('products', 'medidas');
 
         $stockSubQuery = DB::table('products as products_for_stock')
             ->leftJoin('manage_stocks as manage_stocks', function ($join) use ($warehouseId) {
@@ -93,6 +95,9 @@ class MainProductAPIController extends AppBaseController
                 DB::raw('MIN(products_for_meta.brand_id) as brand_id'),
                 DB::raw('MIN(products_for_meta.product_category_id) as product_category_id'),
                 DB::raw('MIN(products_for_meta.created_at) as first_product_created_at'),
+                DB::raw($hasProductMedidasColumn
+                    ? "SUBSTRING_INDEX(GROUP_CONCAT(COALESCE(products_for_meta.medidas, '') ORDER BY products_for_meta.created_at DESC SEPARATOR '|||'), '|||', 1) as latest_medidas"
+                    : "'' as latest_medidas"),
                 DB::raw("SUBSTRING_INDEX(GROUP_CONCAT(COALESCE(products_for_meta.notes, '') ORDER BY products_for_meta.created_at DESC SEPARATOR '|||'), '|||', 1) as latest_notes")
             )
             ->groupBy('products_for_meta.main_product_id');
@@ -113,6 +118,7 @@ class MainProductAPIController extends AppBaseController
                 'main_products.created_at',
                 DB::raw('COALESCE(meta.min_price, 0) as min_price'),
                 DB::raw('COALESCE(meta.max_price, 0) as max_price'),
+                DB::raw('COALESCE(meta.latest_medidas, "") as latest_medidas'),
                 DB::raw('COALESCE(meta.latest_notes, "") as latest_notes'),
                 DB::raw('COALESCE(stock.in_stock, 0) as in_stock'),
                 DB::raw('COALESCE(brands.name, "") as brand_name'),
@@ -127,6 +133,7 @@ class MainProductAPIController extends AppBaseController
                     ->where('main_products.name', 'LIKE', $likeSearch)
                     ->orWhere('main_products.code', 'LIKE', $likeSearch)
                     ->orWhere('brands.name', 'LIKE', $likeSearch)
+                    ->orWhere('meta.latest_medidas', 'LIKE', $likeSearch)
                     ->orWhere('meta.latest_notes', 'LIKE', $likeSearch)
                     ->orWhereExists(function ($searchSubQuery) use ($likeSearch) {
                         $searchSubQuery
@@ -262,6 +269,7 @@ class MainProductAPIController extends AppBaseController
                         'brand_name' => $item->brand_name,
                         'min_price' => (float) $item->min_price,
                         'max_price' => (float) $item->max_price,
+                        'medidas' => $item->latest_medidas,
                         'in_stock' => (float) $item->in_stock,
                         'description' => $shortDescription,
                         'full_description' => $fullDescription,
@@ -299,29 +307,38 @@ class MainProductAPIController extends AppBaseController
     $perPage = getPageSize($request);
 
     // Inicia consulta
+    $productColumns = [
+        'id',
+        'name',
+        'code',
+        'product_code',
+        'main_product_id',
+        'product_category_id',
+        'brand_id',
+        'product_cost',
+        'product_price',
+        'product_unit',
+    ];
+
+    if (Schema::hasColumn('products', 'medidas')) {
+        $productColumns[] = 'medidas';
+    }
+
+    $productColumns = array_merge($productColumns, [
+        'sale_unit',
+        'purchase_unit',
+        'stock_alert',
+        'quantity_limit',
+        'order_tax',
+        'tax_type',
+        'notes',
+        'barcode_symbol',
+        'created_at',
+    ]);
+
     $query = MainProduct::query()->with([
-        'products' => function ($q) {
-            $q->select([
-                'id',
-                'name',
-                'code',
-                'product_code',
-                'main_product_id',
-                'product_category_id',
-                'brand_id',
-                'product_cost',
-                'product_price',
-                'product_unit',
-                'sale_unit',
-                'purchase_unit',
-                'stock_alert',
-                'quantity_limit',
-                'order_tax',
-                'tax_type',
-                'notes',
-                'barcode_symbol',
-                'created_at',
-            ])->with([
+        'products' => function ($q) use ($productColumns) {
+            $q->select($productColumns)->with([
                 'brand:id,name',
                 'productCategory:id,name',
                 'stock:id,product_id,warehouse_id,quantity',

@@ -29,6 +29,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property float $product_cost
  * @property float $product_price
  * @property string $product_unit
+ * @property string|null $medidas
  * @property string|null $sale_unit
  * @property string|null $purchase_unit
  * @property int $warehouse_id
@@ -121,6 +122,7 @@ class Product extends BaseModel implements HasMedia, JsonResourceful
         'product_cost',
         'product_price',
         'product_unit',
+        'medidas',
         'sale_unit',
         'purchase_unit',
         'stock_alert',
@@ -140,6 +142,7 @@ class Product extends BaseModel implements HasMedia, JsonResourceful
         'product_cost' => 'required|numeric',
         'product_price' => 'required|numeric',
         'product_unit' => 'required',
+        'medidas' => 'nullable|string|max:10',
         'sale_unit' => 'nullable',
         'purchase_unit' => 'nullable',
         'stock_alert' => 'nullable',
@@ -244,6 +247,7 @@ class Product extends BaseModel implements HasMedia, JsonResourceful
             'brand_id' => $this->brand_id,
             'product_price' => $this->product_price,
             'product_unit' => $this->product_unit,
+            'medidas' => $this->medidas,
             'sale_unit' => $this->sale_unit,
             'purchase_unit' => $this->purchase_unit,
             'stock_alert' => $this->stock_alert,
@@ -394,6 +398,7 @@ class Product extends BaseModel implements HasMedia, JsonResourceful
             'name' => $this->name,
             'code' => $this->code,
             'product_code' => $this->product_code,
+            'medidas' => $this->medidas,
             'price' => $this->product_price,
             'sale_unit' => array_values($this->getProductUnitName())[1],
             'remaining_quantity' => $this->stock->quantity ?? 0,

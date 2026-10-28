@@ -111,6 +111,7 @@ class ProductAPIController extends AppBaseController
         $filters = $request->input('filter', []);
         $brandId = (int) Arr::get($filters, 'brand_id', 0);
         $categoryId = (int) Arr::get($filters, 'product_category_id', 0);
+        $hasProductMedidasColumn = Schema::hasColumn('products', 'medidas');
 
         $stockQuery = DB::table('manage_stocks')
             ->select('product_id', DB::raw('SUM(quantity) as quantity'))
@@ -134,6 +135,7 @@ class ProductAPIController extends AppBaseController
                 'products.product_cost',
                 'products.product_price',
                 'products.product_unit',
+                $hasProductMedidasColumn ? 'products.medidas' : DB::raw("'' as medidas"),
                 'products.sale_unit',
                 'products.stock_alert',
                 'products.order_tax',
@@ -259,6 +261,7 @@ class ProductAPIController extends AppBaseController
                     'product_cost' => $canViewPurchasePrice ? (float) $product->product_cost : 0,
                     'product_price' => (float) $product->product_price,
                     'product_unit' => $product->product_unit,
+                    'medidas' => $product->medidas,
                     'sale_unit' => $product->sale_unit,
                     'stock_alert' => $product->stock_alert,
                     'product_type' => (int) $product->main_product_type,
@@ -336,6 +339,7 @@ class ProductAPIController extends AppBaseController
         $likeSearch = '%'.$search.'%';
         $prefixSearch = $search.'%';
         $supportsContainsSearch = $searchLength >= 2;
+        $hasProductMedidasColumn = Schema::hasColumn('products', 'medidas');
 
         $query = DB::table('products')
             ->select([
@@ -346,6 +350,7 @@ class ProductAPIController extends AppBaseController
                 'products.product_cost',
                 'products.product_price',
                 'products.product_unit',
+                $hasProductMedidasColumn ? 'products.medidas' : DB::raw("'' as medidas"),
                 'products.sale_unit',
                 'products.purchase_unit',
                 'products.quantity_limit',
@@ -445,6 +450,7 @@ class ProductAPIController extends AppBaseController
                     'product_cost' => $canViewPurchasePrice ? (float) $product->product_cost : 0,
                     'product_price' => (float) $product->product_price,
                     'product_unit' => $product->product_unit,
+                    'medidas' => $product->medidas,
                     'sale_unit' => $product->sale_unit,
                     'purchase_unit' => $product->purchase_unit,
                     'quantity_limit' => $product->quantity_limit,

@@ -826,4 +826,7 @@
     "logout.confirmation.label": "Çıkış yapmak istediğinizden emin misiniz?",
     "addition.title": "Ekleme",
     "subtraction.title": "Çıkarma"
+,
+    "product.input.medidas.label": "Measurements",
+    "product.input.medidas.placeholder.label": "Enter measurements"
 }

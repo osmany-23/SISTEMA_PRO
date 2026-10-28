@@ -49,6 +49,7 @@ const EditProduct = (props) => {
         sale_unit: getSaleUnit,
         purchase_unit: getPurchaseUnit,
         quantity_limit: subProduct?.quantity_limit,
+        medidas: subProduct?.medidas || "",
         notes: subProduct?.notes,
         images: product?.attributes.images,
         status_id: {

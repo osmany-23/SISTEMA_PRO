@@ -206,6 +206,8 @@
     "product.input.purchase-unit.placeholder.label": "选择购买单位",
     "product.input.stock-alert.label": "库存警报",
     "product.input.stock-alert.placeholder.label": "输入库存警报",
+    "product.input.medidas.label": "Measurements",
+    "product.input.medidas.placeholder.label": "Enter measurements",
     "product.input.order-tax.label": "订单税",
     "product.input.order-tax.placeholder.label": "输入订单税",
     "product.input.order-tax.validate.label": "请输入订单税",

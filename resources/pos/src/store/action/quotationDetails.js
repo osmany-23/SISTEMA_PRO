@@ -15,7 +15,10 @@ export const quotationDetailsAction = (saleId, singleSale, isLoading = true) => 
             }
         })
         .catch(({response}) => {
+            if (isLoading) {
+                dispatch(setLoading(false))
+            }
             dispatch(addToast(
-                {text: response.data.message, type: toastType.ERROR}));
+                {text: response?.data?.message || 'No se pudo cargar la cotizacion.', type: toastType.ERROR}));
         });
 };

@@ -122,6 +122,10 @@ const ProductDetail = (props) => {
         id: "product.product-details.unit.label",
         defaultMessage: "Unidad",
     });
+    const medidasLabel = intl.formatMessage({
+        id: "product.input.medidas.label",
+        defaultMessage: "Medidas",
+    });
     const salePriceLabel = intl.formatMessage({
         id: "product.table.price.column.label",
         defaultMessage: "Precio venta",
@@ -232,6 +236,8 @@ const ProductDetail = (props) => {
         selectedProduct?.product_unit_name?.name ||
         primaryProduct?.product_unit_name?.name ||
         "--";
+    const selectedMedidasValue =
+        selectedProduct?.medidas || primaryProduct?.medidas || "--";
     const selectedStockValue = formatQuantityAuto(
         selectedProduct?.in_stock ?? selectedProduct?.stock?.quantity ?? 0
     );
@@ -256,6 +262,7 @@ const ProductDetail = (props) => {
     const desktopCategoryName = primaryProduct?.product_category_name || "--";
     const desktopBrandName = primaryProduct?.brand_name || "--";
     const desktopUnitName = primaryProduct?.product_unit_name?.name || "--";
+    const desktopMedidasValue = primaryProduct?.medidas || "--";
     const desktopNote = primaryProduct?.notes || emptyNoteLabel;
 
     const priceStockFields = useMemo(
@@ -281,12 +288,20 @@ const ProductDetail = (props) => {
                 variant: "badge",
                 fullWidth: true,
             },
+            {
+                key: "medidas",
+                label: medidasLabel,
+                value: selectedMedidasValue,
+                variant: "muted",
+            },
         ],
         [
             costPriceLabel,
+            medidasLabel,
             salePriceLabel,
             selectedAlertValue,
             selectedCostPrice,
+            selectedMedidasValue,
             selectedSalePrice,
             selectedTaxValue,
             selectedUnitName,
@@ -346,6 +361,7 @@ const ProductDetail = (props) => {
         sale_unit: productBaseData.sale_unit,
         purchase_unit: productBaseData.purchase_unit,
         quantity_limit: productBaseData.quantity_limit,
+        medidas: productBaseData.medidas || "",
         notes: productBaseData.notes,
         main_product_id: product && product.id,
         variation: product && product?.attributes?.variation,
@@ -692,6 +708,7 @@ const ProductDetail = (props) => {
                             const variantStock = formatQuantityAuto(
                                 data?.in_stock ?? data?.stock?.quantity ?? 0
                             );
+                            const variantMedidas = data?.medidas || "--";
 
                             return (
                                 <button
@@ -706,7 +723,10 @@ const ProductDetail = (props) => {
                                 >
                                     <div className="product-detail-variant-item__copy">
                                         <strong>{variantLabel}</strong>
-                                        <span>{variantPrice}</span>
+                                        <span>
+                                            {variantPrice} | {medidasLabel}:{" "}
+                                            {variantMedidas}
+                                        </span>
                                     </div>
                                     <span className="product-detail-variant-item__stock">
                                         {stockLabel}: {variantStock}
@@ -960,6 +980,14 @@ const ProductDetail = (props) => {
                                                 </tr>
                                                 <tr>
                                                     <th className="py-4" scope="row">
+                                                        {medidasLabel}
+                                                    </th>
+                                                    <td className="py-4">
+                                                        {desktopMedidasValue}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th className="py-4" scope="row">
                                                         {notePanelTitle}
                                                     </th>
                                                     <td className="py-4">
@@ -1000,6 +1028,7 @@ const ProductDetail = (props) => {
                                                 )}
                                                 <th>{costPriceLabel}</th>
                                                 <th>{salePriceLabel}</th>
+                                                <th>{medidasLabel}</th>
                                                 <th>{taxLabel}</th>
                                                 <th>{stockAlertLabel}</th>
                                                 <th className="text-center">
@@ -1041,8 +1070,11 @@ const ProductDetail = (props) => {
                                                                         .value
                                                                         .currency_symbol,
                                                                 data?.product_price ||
-                                                                    0
+                                                                0
                                                             )}
+                                                        </td>
+                                                        <td className="py-4">
+                                                            {data?.medidas || "--"}
                                                         </td>
                                                         <td className="py-4">
                                                             {data?.order_tax || 0}%

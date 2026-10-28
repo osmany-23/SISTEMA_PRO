@@ -41,6 +41,8 @@ const Quotations = (props) => {
         frontSetting &&
         frontSetting.value &&
         frontSetting.value.currency_symbol;
+    const statusBadgeClass = (statusClass) =>
+        statusClass === "sent" ? "bg-light-success" : "bg-light-warning";
 
     const onChange = (filter) => {
         fetchQuotations(filter, true);
@@ -89,9 +91,20 @@ const Quotations = (props) => {
             customer_name: quotation.attributes.customer_name,
             warehouse_name: quotation.attributes.warehouse_name,
             status: quotation.attributes.status,
+            status_label: quotation.attributes.status_label,
+            status_class: quotation.attributes.status_class,
+            expires_at: quotation.attributes.expires_at,
+            expires_date: quotation.attributes.expires_at
+                ? getFormattedDate(
+                      quotation.attributes.expires_at,
+                      allConfigData && allConfigData
+                  )
+                : "",
+            validity_days: quotation.attributes.validity_days,
+            is_expired: quotation.attributes.is_expired,
             grand_total: quotation.attributes.grand_total,
             paid_amount: quotation.attributes.paid_amount
-                ? sale.attributes.paid_amount
+                ? quotation.attributes.paid_amount
                 : (0.0).toFixed(2),
             id: quotation.id,
             currency: currencySymbol,
@@ -128,26 +141,33 @@ const Quotations = (props) => {
             sortable: false,
             cell: (row) => {
                 return (
-                    (row.status === 1 && (
-                        <span className="badge bg-light-warning">
-                            <span>
-                                {getFormattedMessage(
-                                    "status.filter.sent.label"
-                                )}
-                            </span>
+                    <span className={`badge ${statusBadgeClass(row.status_class)}`}>
+                        <span>
+                            {row.status_label ||
+                                (row.status === 1
+                                    ? getFormattedMessage("status.filter.sent.label")
+                                    : getFormattedMessage("status.filter.pending.label"))}
                         </span>
-                    )) ||
-                    (row.status === 2 && (
-                        <span className="badge bg-light-danger">
-                            <span>
-                                {getFormattedMessage(
-                                    "status.filter.pending.label"
-                                )}
-                            </span>
-                        </span>
-                    ))
+                    </span>
                 );
             },
+        },
+        {
+            name: "Validez",
+            sortField: "expires_at",
+            sortable: false,
+            cell: (row) => (
+                <span
+                    className={`badge ${
+                        row.is_expired ? "bg-light-danger" : "bg-light-success"
+                    }`}
+                >
+                    <span>{row.is_expired ? "Vencida" : "Vigente"}</span>
+                    {row.expires_date ? (
+                        <small className="d-block mt-1">{row.expires_date}</small>
+                    ) : null}
+                </span>
+            ),
         },
         {
             name: getFormattedMessage("purchase.grant-total.label"),

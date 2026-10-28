@@ -208,6 +208,8 @@
     "product.input.purchase-unit.placeholder.label": "اختر وحدة الشراء",
     "product.input.stock-alert.label": "تنبيه المخزون",
     "product.input.stock-alert.placeholder.label": "أدخل تنبيه المخزون",
+    "product.input.medidas.label": "Measurements",
+    "product.input.medidas.placeholder.label": "Enter measurements",
     "product.input.order-tax.label": "ضريبة الطلب",
     "product.input.order-tax.placeholder.label": "أدخل ضريبة الطلب",
     "product.input.order-tax.validate.label": "الرجاء إدخال ضريبة الطلب",

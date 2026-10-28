@@ -227,6 +227,8 @@
     "product.input.purchase-unit.placeholder.label": "Choose Purchase Unit",
     "product.input.stock-alert.label": "Stock Alert",
     "product.input.stock-alert.placeholder.label": "Enter Stock Alert",
+    "product.input.medidas.label": "Measurements",
+    "product.input.medidas.placeholder.label": "Enter measurements",
     "product.input.order-tax.label": "Order Tax",
     "product.input.order-tax.placeholder.label": "Enter Order Tax",
     "product.input.order-tax.validate.label": "Please enter order tax",

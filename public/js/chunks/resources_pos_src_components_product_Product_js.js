@@ -786,9 +786,12 @@ var ProductImageCell = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(
   });
 });
 var ProductNameCell = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(function ProductNameCell(_ref2) {
-  var name = _ref2.name;
+  var name = _ref2.name,
+      medidas = _ref2.medidas;
+  var tooltipText = medidas ? "Medidas: ".concat(medidas) : name || "-";
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_19__.jsx)("div", {
     className: "product-table-card__name",
+    title: tooltipText,
     children: name || "-"
   });
 });
@@ -1320,6 +1323,7 @@ var Product = function Product(props) {
         date: createdAt ? (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_12__.getFormattedDate)(createdAt, allConfigData && allConfigData) : "",
         time: createdAt ? moment__WEBPACK_IMPORTED_MODULE_3___default()(createdAt).format("LT") : "",
         brand_name: attributes.brand_name || firstVariation.brand_name || "",
+        medidas: attributes.medidas || firstVariation.medidas || "",
         product_price: productPrice,
         product_unit: (attributes === null || attributes === void 0 ? void 0 : (_attributes$product_u = attributes.product_unit) === null || _attributes$product_u === void 0 ? void 0 : _attributes$product_u.name) || "N/A",
         in_stock: Number((_attributes$in_stock = attributes.in_stock) !== null && _attributes$in_stock !== void 0 ? _attributes$in_stock : inStockFromVariations),
@@ -1360,7 +1364,8 @@ var Product = function Product(props) {
       minWidth: "220px",
       cell: function cell(row) {
         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_19__.jsx)(ProductNameCell, {
-          name: row.name
+          name: row.name,
+          medidas: row.medidas
         });
       }
     }, {

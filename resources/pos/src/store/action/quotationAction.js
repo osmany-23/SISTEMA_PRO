@@ -51,9 +51,14 @@ export const fetchQuotations =
                 }
             })
             .catch((response) => {
+                if (isLoading) {
+                    dispatch(setLoading(false));
+                }
                 dispatch(
                     addToast({
-                        text: response.response.data.message,
+                        text:
+                            response?.response?.data?.message ||
+                            "No se pudieron cargar las cotizaciones.",
                         type: toastType.ERROR,
                     })
                 );
@@ -81,6 +86,9 @@ export const fetchQuotation =
                 }
             })
             .catch(({ response }) => {
+                if (isLoading) {
+                    dispatch(setLoading(false));
+                }
                 response &&
                     dispatch(
                         addToast({

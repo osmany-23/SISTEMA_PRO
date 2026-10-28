@@ -118,29 +118,19 @@ class QuotationAPIController extends AppBaseController
         }
         $quotation = $quotation->load($quotationRelations);
         $this->attachQuotationProductImages($quotation);
-        $keyName = [
-            'email', 'company_name', 'phone', 'address', 'city', 'country',
-            'business_trade_name', 'business_ruc', 'business_country', 'business_phone_secondary',
-            'business_whatsapp', 'business_emails', 'business_website', 'business_facebook',
-            'business_instagram', 'business_tiktok', 'business_linkedin', 'business_youtube',
-            'business_secondary_logo', 'business_favicon', 'business_primary_color',
-            'business_secondary_color', 'business_button_color', 'business_pdf_color',
-            'business_header_color', 'business_table_color', 'business_tax_regime',
-            'business_tax_information', 'business_legal_text', 'business_terms',
-            'business_warranty_policy', 'business_return_policy', 'quotation_validity_days',
-            'quotation_validity_text', 'quotation_auto_observations', 'quotation_thank_you_text',
-            'quotation_footer_text', 'quotation_digital_signature', 'quotation_company_stamp',
-            'quotation_company_qr', 'quotation_benefit_1_title', 'quotation_benefit_1_subtitle',
-            'quotation_benefit_1_image', 'quotation_benefit_2_title', 'quotation_benefit_2_subtitle',
-            'quotation_benefit_2_image', 'quotation_benefit_3_title', 'quotation_benefit_3_subtitle',
-            'quotation_benefit_3_image', 'quotation_benefit_4_title', 'quotation_benefit_4_subtitle',
-            'quotation_benefit_4_image', 'quotation_show_product_image',
-        ];
-        $quotation['company_info'] = Setting::whereIn('key', $keyName)->pluck('value', 'key')->toArray();
-        $quotation['company_info']['logo'] = getLogoUrl();
-        $quotation['seller_name'] = $this->sellerName();
+        $companyInfo = $this->quotationSettings();
+        $companyInfo['logo'] = getLogoUrl();
 
-        return $this->sendResponse($quotation, 'Quotation information retrieved successfully');
+        $data = array_merge(
+            $quotation->toArray(),
+            $quotation->quotationPresentationData($companyInfo),
+            [
+                'company_info' => $companyInfo,
+                'seller_name' => $this->sellerName(),
+            ]
+        );
+
+        return $this->sendResponse($data, 'Quotation information retrieved successfully');
     }
 
     public function edit(Quotation $quotation): QuotationResource
@@ -184,10 +174,11 @@ class QuotationAPIController extends AppBaseController
 
         $settings = Setting::all()->pluck('value', 'key')->toArray();
         $settings['logo'] = getLogoUrl();
+        $quotationMeta = $quotation->quotationPresentationData($settings);
 
         $sellerName = $this->sellerName();
 
-        $pdf = PDF::loadView('pdf.quotation-pdf', compact('quotation', 'companyLogo', 'settings', 'sellerName', 'defaultProductImage'))
+        $pdf = PDF::loadView('pdf.quotation-pdf', compact('quotation', 'companyLogo', 'settings', 'sellerName', 'defaultProductImage', 'quotationMeta'))
             ->setPaper('a4', 'landscape');
         Storage::disk(config('app.media_disc'))->put('pdf/Quotation-'.$quotation->reference_code.'.pdf',
             $pdf->output());
@@ -203,6 +194,30 @@ class QuotationAPIController extends AppBaseController
         return trim((string) ($user->name ?? ''))
             ?: trim((string) (($user->first_name ?? '').' '.($user->last_name ?? '')))
             ?: (string) ($user->email ?? '');
+    }
+
+    private function quotationSettings(): array
+    {
+        $keyName = [
+            'email', 'company_name', 'phone', 'address', 'city', 'country',
+            'business_trade_name', 'business_ruc', 'business_country', 'business_phone_secondary',
+            'business_whatsapp', 'business_emails', 'business_website', 'business_facebook',
+            'business_instagram', 'business_tiktok', 'business_linkedin', 'business_youtube',
+            'business_secondary_logo', 'business_favicon', 'business_primary_color',
+            'business_secondary_color', 'business_button_color', 'business_pdf_color',
+            'business_header_color', 'business_table_color', 'business_tax_regime',
+            'business_tax_information', 'business_legal_text', 'business_terms',
+            'business_warranty_policy', 'business_return_policy', 'quotation_validity_days',
+            'quotation_validity_text', 'quotation_auto_observations', 'quotation_thank_you_text',
+            'quotation_footer_text', 'quotation_digital_signature', 'quotation_company_stamp',
+            'quotation_company_qr', 'quotation_benefit_1_title', 'quotation_benefit_1_subtitle',
+            'quotation_benefit_1_image', 'quotation_benefit_2_title', 'quotation_benefit_2_subtitle',
+            'quotation_benefit_2_image', 'quotation_benefit_3_title', 'quotation_benefit_3_subtitle',
+            'quotation_benefit_3_image', 'quotation_benefit_4_title', 'quotation_benefit_4_subtitle',
+            'quotation_benefit_4_image', 'quotation_show_product_image',
+        ];
+
+        return Setting::whereIn('key', $keyName)->pluck('value', 'key')->toArray();
     }
 
     private function attachQuotationProductImages(Quotation $quotation): void

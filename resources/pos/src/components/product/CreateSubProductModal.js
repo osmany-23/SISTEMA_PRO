@@ -19,6 +19,7 @@ const CreateSubProductModal = (props) => {
         product_cost: "",
         order_tax: "",
         stock_alert: "",
+        medidas: "",
         tax_type: "",
     });
     const [errors, setErrors] = useState({});
@@ -39,6 +40,10 @@ const CreateSubProductModal = (props) => {
                 }
                 ),
             });
+            setFormInput((prev) => ({
+                ...prev,
+                medidas: commonData.medidas || "",
+            }));
         } else {
             setProduct({});
             setFormInput({
@@ -46,6 +51,7 @@ const CreateSubProductModal = (props) => {
                 product_cost: "",
                 order_tax: "",
                 stock_alert: "",
+                medidas: "",
                 tax_type: "",
             });
             setErrors({});
@@ -91,6 +97,8 @@ const CreateSubProductModal = (props) => {
             validationErrors['product_price'] = getFormattedMessage('product.input.product-price.validate.label');
         } else if (formInput['order_tax'] > 100) {
             validationErrors["order_tax"] = getFormattedMessage('product.input.order-tax.valid.validate.label');
+        } else if (formInput['medidas'] && formInput['medidas'].length > 10) {
+            validationErrors["medidas"] = "Medidas no debe superar 10 caracteres.";
         } else if (!formInput['tax_type']) {
             validationErrors["tax_type"] = getFormattedMessage('product.input.tax-type.validate.label');
         }
@@ -124,6 +132,7 @@ const CreateSubProductModal = (props) => {
         formData.append('sale_unit', commonData.sale_unit);
         formData.append('purchase_unit', commonData.purchase_unit);
         formData.append('quantity_limit', commonData.quantity_limit);
+        formData.append('medidas', formInput.medidas || commonData.medidas || '');
         formData.append('notes', commonData.notes);
         formData.append('variation_id', commonData.variation.id);
         formData.append('main_product_id', commonData.main_product_id);
@@ -294,6 +303,34 @@ const CreateSubProductModal = (props) => {
                                     }
                                     min={0}
                                 />
+                            </div>
+                            <div className="col-md-3 mb-3">
+                                <label className="form-label">
+                                    {getFormattedMessage(
+                                        "product.input.medidas.label"
+                                    )}
+                                    :{" "}
+                                </label>
+                                <input
+                                    type="text"
+                                    name="medidas"
+                                    className="form-control"
+                                    placeholder={placeholderText(
+                                        "product.input.medidas.placeholder.label"
+                                    )}
+                                    onChange={(e) =>
+                                        onProductDataChange(e)
+                                    }
+                                    value={
+                                        formInput.medidas
+                                    }
+                                    maxLength={10}
+                                />
+                                <span className="text-danger d-block fw-400 fs-small mt-2">
+                                    {errors["medidas"]
+                                        ? errors["medidas"]
+                                        : null}
+                                </span>
                             </div>
                             <div className="col-md-3 mb-3">
                                 <label className="form-label">

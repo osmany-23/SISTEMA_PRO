@@ -890,6 +890,7 @@ var ProductForm = function ProductForm(props) {
     sale_unit: "",
     purchase_unit: "",
     sale_quantity_limit: "",
+    medidas: "",
     notes: "",
     images: [],
     warehouse_id: "",
@@ -1021,7 +1022,7 @@ var ProductForm = function ProductForm(props) {
 
     return singleProductBarcodeSymbol === String((_barcode$value = barcode === null || barcode === void 0 ? void 0 : barcode.value) !== null && _barcode$value !== void 0 ? _barcode$value : "");
   }) : [];
-  var disabled = multipleFiles.length !== 0 || deletedImageIds.length !== 0 ? false : singleProductItem && productValue.product_unit[0] && productValue.product_unit[0].value === singleProductItem.product_unit && selectedBarcodeValue !== "" && String(selectedBarcodeValue) === singleProductBarcodeSymbol && singleProductItem.name === productValue.name && singleProductItem.notes === productValue.notes && singleProductItem.product_price === productValue.product_price && (singleProductItem === null || singleProductItem === void 0 ? void 0 : (_singleProductItem$st = singleProductItem.stock_alert) === null || _singleProductItem$st === void 0 ? void 0 : _singleProductItem$st.toString()) === productValue.stock_alert && singleProductItem.product_cost === productValue.product_cost && singleProductItem.code === productValue.code && JSON.stringify(singleProductItem.order_tax) === productValue.order_tax && singleProductItem.quantity_limit === productValue.sale_quantity_limit && singleProductItem.brand_id.value === productValue.brand_id.value && newTax.length === productValue.tax_type.length && singleProductItem.product_category_id.value === productValue.product_category_id.value && JSON.stringify(singleProductItem.images.imageUrls || []) === JSON.stringify(existingImages);
+  var disabled = multipleFiles.length !== 0 || deletedImageIds.length !== 0 ? false : singleProductItem && productValue.product_unit[0] && productValue.product_unit[0].value === singleProductItem.product_unit && selectedBarcodeValue !== "" && String(selectedBarcodeValue) === singleProductBarcodeSymbol && singleProductItem.name === productValue.name && singleProductItem.notes === productValue.notes && singleProductItem.product_price === productValue.product_price && (singleProductItem === null || singleProductItem === void 0 ? void 0 : (_singleProductItem$st = singleProductItem.stock_alert) === null || _singleProductItem$st === void 0 ? void 0 : _singleProductItem$st.toString()) === productValue.stock_alert && singleProductItem.product_cost === productValue.product_cost && singleProductItem.code === productValue.code && JSON.stringify(singleProductItem.order_tax) === productValue.order_tax && singleProductItem.quantity_limit === productValue.sale_quantity_limit && (singleProductItem.medidas || "") === (productValue.medidas || "") && singleProductItem.brand_id.value === productValue.brand_id.value && newTax.length === productValue.tax_type.length && singleProductItem.product_category_id.value === productValue.product_category_id.value && JSON.stringify(singleProductItem.images.imageUrls || []) === JSON.stringify(existingImages);
 
   var _useState25 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
       _useState26 = _slicedToArray(_useState25, 2),
@@ -1147,6 +1148,7 @@ var ProductForm = function ProductForm(props) {
         purchase_unit: singleProduct ? singleProduct[0].purchase_unit && singleProduct[0].purchase_unit : "",
         stock_alert: singleProduct ? singleProduct[0].stock_alert ? singleProduct[0].stock_alert : 0 : 0,
         sale_quantity_limit: singleProduct ? singleProduct[0].quantity_limit ? singleProduct[0].quantity_limit : "" : "",
+        medidas: singleProduct ? singleProduct[0].medidas || "" : "",
         notes: singleProduct ? singleProduct[0].notes : "",
         images: singleProduct ? singleProduct[0].images : "",
         isEdit: singleProduct ? singleProduct[0].is_Edit : false
@@ -1753,6 +1755,8 @@ var ProductForm = function ProductForm(props) {
       errorss["purchase_unit"] = (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_9__.getFormattedMessage)("product.input.purchase-unit.validate.label");
     } else if (isDropdown === false) {
       errorss["purchase_unit"] = (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_9__.getFormattedMessage)("product.input.purchase-unit.validate.label");
+    } else if (productValue["medidas"] && productValue["medidas"].length > 10) {
+      errorss["medidas"] = "Medidas no debe superar 10 caracteres.";
     } else if (productValue["notes"] && productValue["notes"].length > 1500) {
       errorss["notes"] = (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_9__.getFormattedMessage)("globally.input.notes.validate.label");
     } else if (productValue["isEdit"] === false) {
@@ -1813,7 +1817,7 @@ var ProductForm = function ProductForm(props) {
         value = _e$target.value,
         name = _e$target.name; // Solo aplicar la restricción de decimales a los campos numéricos, no a 'notes'
 
-    if (name !== "name" && name !== "notes" && value.match(/\./g)) {
+    if (name !== "name" && name !== "notes" && name !== "medidas" && value.match(/\./g)) {
       var _value$split = value.split("."),
           _value$split2 = _slicedToArray(_value$split, 2),
           decimal = _value$split2[1];
@@ -1896,6 +1900,7 @@ var ProductForm = function ProductForm(props) {
     formData.append("sale_unit", productValue.sale_unit && productValue.sale_unit[0] ? productValue.sale_unit[0].value : productValue.sale_unit.value);
     formData.append("purchase_unit", productValue.purchase_unit && productValue.purchase_unit[0] ? productValue.purchase_unit[0].value : productValue.purchase_unit.value);
     formData.append("quantity_limit", productValue.sale_quantity_limit ? productValue.sale_quantity_limit : "");
+    formData.append("medidas", productValue.medidas || "");
     formData.append("notes", productValue.notes);
 
     if (productValue.isEdit === false) {
@@ -2137,6 +2142,25 @@ var ProductForm = function ProductForm(props) {
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_24__.jsx)("span", {
                       className: "text-danger d-block fw-400 fs-small mt-2",
                       children: errors["stock_alert"] ? errors["stock_alert"] : null
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_24__.jsxs)("div", {
+                    className: "col-md-6 mb-3",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_24__.jsxs)("label", {
+                      className: "form-label",
+                      children: [(0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_9__.getFormattedMessage)("product.input.medidas.label"), ":", " "]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_24__.jsx)("input", {
+                      type: "text",
+                      name: "medidas",
+                      className: "form-control",
+                      placeholder: formatPlaceholder("product.input.medidas.placeholder.label"),
+                      onChange: function onChange(e) {
+                        return onChangeInput(e);
+                      },
+                      value: productValue.medidas || "",
+                      maxLength: 10
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_24__.jsx)("span", {
+                      className: "text-danger d-block fw-400 fs-small mt-2",
+                      children: errors["medidas"] ? errors["medidas"] : null
                     })]
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_24__.jsxs)("div", {
                     className: "col-md-6 mb-3",

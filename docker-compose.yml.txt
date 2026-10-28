@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: inventapro_app
+    volumes:
+      - .:/var/www
+    depends_on:
+      - mysql
+    networks:
+      - inventanet
+
+  nginx:
+    image: nginx:latest
+    container_name: inventapro_nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - inventanet
+
+  mysql:
+    image: mysql:5.7
+    container_name: inventapro_mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: inventapro
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: inventa
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3307:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - inventanet
+
+volumes:
+  dbdata:
+
+networks:
+  inventanet:

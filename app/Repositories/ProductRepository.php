@@ -10,6 +10,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -28,6 +29,7 @@ class ProductRepository extends BaseRepository
         'product_cost',
         'product_price',
         'product_unit',
+        'medidas',
         'sale_unit',
         'purchase_unit',
         'stock_alert',
@@ -45,6 +47,7 @@ class ProductRepository extends BaseRepository
         'product_cost',
         'product_price',
         'product_unit',
+        'medidas',
         'sale_unit',
         'purchase_unit',
         'stock_alert',
@@ -62,7 +65,12 @@ class ProductRepository extends BaseRepository
      */
     public function getFieldsSearchable(): array
     {
-        return $this->fieldSearchable;
+        return $this->withoutUnsupportedProductColumns($this->fieldSearchable);
+    }
+
+    public function getAllowedFields(): array
+    {
+        return array_merge($this->withoutUnsupportedProductColumns($this->allowedFields), ['id', 'uuid']);
     }
 
     /**
@@ -78,6 +86,8 @@ class ProductRepository extends BaseRepository
      */
     public function storeProduct($input)
     {
+        $input = $this->filterUnsupportedProductInput((array) $input);
+
         try {
             DB::beginTransaction();
             $product = $this->create($input);
@@ -185,6 +195,8 @@ class ProductRepository extends BaseRepository
      */
     public function updateProduct($input, $id)
     {
+        $input = $this->filterUnsupportedProductInput((array) $input);
+
         try {
             DB::beginTransaction();
             $product = $this->update($input, $id);
@@ -231,5 +243,28 @@ class ProductRepository extends BaseRepository
         );
 
         return true;
+    }
+
+    private function withoutUnsupportedProductColumns(array $fields): array
+    {
+        if ($this->supportsMedidasColumn()) {
+            return $fields;
+        }
+
+        return array_values(array_diff($fields, ['medidas']));
+    }
+
+    private function filterUnsupportedProductInput(array $input): array
+    {
+        if (! $this->supportsMedidasColumn()) {
+            unset($input['medidas']);
+        }
+
+        return $input;
+    }
+
+    private function supportsMedidasColumn(): bool
+    {
+        return Schema::hasTable('products') && Schema::hasColumn('products', 'medidas');
     }
 }

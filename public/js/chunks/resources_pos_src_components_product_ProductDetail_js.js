@@ -77,6 +77,7 @@ var CreateSubProductModal = function CreateSubProductModal(props) {
     product_cost: "",
     order_tax: "",
     stock_alert: "",
+    medidas: "",
     tax_type: ""
   }),
       _useState4 = _slicedToArray(_useState3, 2),
@@ -101,6 +102,11 @@ var CreateSubProductModal = function CreateSubProductModal(props) {
           };
         })
       }));
+      setFormInput(function (prev) {
+        return _objectSpread(_objectSpread({}, prev), {}, {
+          medidas: commonData.medidas || ""
+        });
+      });
     } else {
       setProduct({});
       setFormInput({
@@ -108,6 +114,7 @@ var CreateSubProductModal = function CreateSubProductModal(props) {
         product_cost: "",
         order_tax: "",
         stock_alert: "",
+        medidas: "",
         tax_type: ""
       });
       setErrors({});
@@ -151,6 +158,8 @@ var CreateSubProductModal = function CreateSubProductModal(props) {
       validationErrors['product_price'] = (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_1__.getFormattedMessage)('product.input.product-price.validate.label');
     } else if (formInput['order_tax'] > 100) {
       validationErrors["order_tax"] = (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_1__.getFormattedMessage)('product.input.order-tax.valid.validate.label');
+    } else if (formInput['medidas'] && formInput['medidas'].length > 10) {
+      validationErrors["medidas"] = "Medidas no debe superar 10 caracteres.";
     } else if (!formInput['tax_type']) {
       validationErrors["tax_type"] = (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_1__.getFormattedMessage)('product.input.tax-type.validate.label');
     } else {
@@ -182,6 +191,7 @@ var CreateSubProductModal = function CreateSubProductModal(props) {
     formData.append('sale_unit', commonData.sale_unit);
     formData.append('purchase_unit', commonData.purchase_unit);
     formData.append('quantity_limit', commonData.quantity_limit);
+    formData.append('medidas', formInput.medidas || commonData.medidas || '');
     formData.append('notes', commonData.notes);
     formData.append('variation_id', commonData.variation.id);
     formData.append('main_product_id', commonData.main_product_id);
@@ -317,6 +327,25 @@ var CreateSubProductModal = function CreateSubProductModal(props) {
                   },
                   value: formInput.stock_alert,
                   min: 0
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+                className: "col-md-3 mb-3",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("label", {
+                  className: "form-label",
+                  children: [(0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_1__.getFormattedMessage)("product.input.medidas.label"), ":", " "]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("input", {
+                  type: "text",
+                  name: "medidas",
+                  className: "form-control",
+                  placeholder: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_1__.placeholderText)("product.input.medidas.placeholder.label"),
+                  onChange: function onChange(e) {
+                    return onProductDataChange(e);
+                  },
+                  value: formInput.medidas,
+                  maxLength: 10
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("span", {
+                  className: "text-danger d-block fw-400 fs-small mt-2",
+                  children: errors["medidas"] ? errors["medidas"] : null
                 })]
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
                 className: "col-md-3 mb-3",
@@ -506,6 +535,7 @@ var EditSubProductModal = function EditSubProductModal(props) {
     product_cost: "",
     order_tax: "",
     stock_alert: "",
+    medidas: "",
     tax_type: "",
     code: ""
   }),
@@ -530,6 +560,7 @@ var EditSubProductModal = function EditSubProductModal(props) {
           product_cost: productData.product_cost,
           order_tax: productData.order_tax ? productData.order_tax : "",
           stock_alert: productData.stock_alert,
+          medidas: productData.medidas || "",
           tax_type: productData.tax_type,
           code: productData.code
         });
@@ -541,6 +572,7 @@ var EditSubProductModal = function EditSubProductModal(props) {
         product_cost: "",
         order_tax: "",
         stock_alert: "",
+        medidas: "",
         tax_type: "",
         code: ""
       });
@@ -576,6 +608,8 @@ var EditSubProductModal = function EditSubProductModal(props) {
       validationErrors['code'] = (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_1__.getFormattedMessage)('product.input.code.validate.label');
     } else if (formInput['order_tax'] > 100) {
       validationErrors["order_tax"] = (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_1__.getFormattedMessage)('product.input.order-tax.valid.validate.label');
+    } else if (formInput['medidas'] && formInput['medidas'].length > 10) {
+      validationErrors["medidas"] = "Medidas no debe superar 10 caracteres.";
     } else {
       isValid = true;
     }
@@ -606,6 +640,7 @@ var EditSubProductModal = function EditSubProductModal(props) {
     formData.append('purchase_unit', commonData.purchase_unit);
     formData.append('quantity_limit', commonData.quantity_limit);
     formData.append('main_product_id', commonData.main_product_id);
+    formData.append('medidas', formInput.medidas || '');
     formData.append('notes', commonData.notes);
     formData.append('code', formInput.code);
     formData.append('product_price', formInput.product_price);
@@ -754,6 +789,25 @@ var EditSubProductModal = function EditSubProductModal(props) {
                   },
                   value: formInput.stock_alert,
                   min: 0
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+                className: "col-md-3 mb-3",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("label", {
+                  className: "form-label",
+                  children: [(0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_1__.getFormattedMessage)("product.input.medidas.label"), ":", " "]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+                  type: "text",
+                  name: "medidas",
+                  className: "form-control",
+                  placeholder: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_1__.placeholderText)("product.input.medidas.placeholder.label"),
+                  onChange: function onChange(e) {
+                    return onProductDataChange(e);
+                  },
+                  value: formInput.medidas,
+                  maxLength: 10
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+                  className: "text-danger d-block fw-400 fs-small mt-2",
+                  children: errors["medidas"] ? errors["medidas"] : null
                 })]
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
                 className: "col-md-3 mb-3",
@@ -1036,6 +1090,10 @@ var ProductDetail = function ProductDetail(props) {
     id: "product.product-details.unit.label",
     defaultMessage: "Unidad"
   });
+  var medidasLabel = intl.formatMessage({
+    id: "product.input.medidas.label",
+    defaultMessage: "Medidas"
+  });
   var salePriceLabel = intl.formatMessage({
     id: "product.table.price.column.label",
     defaultMessage: "Precio venta"
@@ -1123,6 +1181,7 @@ var ProductDetail = function ProductDetail(props) {
   var selectedBrandName = (selectedProduct === null || selectedProduct === void 0 ? void 0 : selectedProduct.brand_name) || (primaryProduct === null || primaryProduct === void 0 ? void 0 : primaryProduct.brand_name) || "--";
   var selectedCategoryName = (selectedProduct === null || selectedProduct === void 0 ? void 0 : selectedProduct.product_category_name) || (primaryProduct === null || primaryProduct === void 0 ? void 0 : primaryProduct.product_category_name) || "--";
   var selectedUnitName = (selectedProduct === null || selectedProduct === void 0 ? void 0 : (_selectedProduct$prod = selectedProduct.product_unit_name) === null || _selectedProduct$prod === void 0 ? void 0 : _selectedProduct$prod.name) || (primaryProduct === null || primaryProduct === void 0 ? void 0 : (_primaryProduct$produ = primaryProduct.product_unit_name) === null || _primaryProduct$produ === void 0 ? void 0 : _primaryProduct$produ.name) || "--";
+  var selectedMedidasValue = (selectedProduct === null || selectedProduct === void 0 ? void 0 : selectedProduct.medidas) || (primaryProduct === null || primaryProduct === void 0 ? void 0 : primaryProduct.medidas) || "--";
   var selectedStockValue = (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_7__.formatQuantityAuto)((_ref = (_selectedProduct$in_s = selectedProduct === null || selectedProduct === void 0 ? void 0 : selectedProduct.in_stock) !== null && _selectedProduct$in_s !== void 0 ? _selectedProduct$in_s : selectedProduct === null || selectedProduct === void 0 ? void 0 : (_selectedProduct$stoc = selectedProduct.stock) === null || _selectedProduct$stoc === void 0 ? void 0 : _selectedProduct$stoc.quantity) !== null && _ref !== void 0 ? _ref : 0);
   var selectedTaxValue = "".concat((selectedProduct === null || selectedProduct === void 0 ? void 0 : selectedProduct.order_tax) || 0, "%");
   var selectedAlertValue = selectedProduct !== null && selectedProduct !== void 0 && selectedProduct.stock_alert && (selectedProduct === null || selectedProduct === void 0 ? void 0 : selectedProduct.stock_alert) !== "null" ? (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_7__.formatQuantityAuto)(selectedProduct.stock_alert) : (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_7__.formatQuantityAuto)(0);
@@ -1133,6 +1192,7 @@ var ProductDetail = function ProductDetail(props) {
   var desktopCategoryName = (primaryProduct === null || primaryProduct === void 0 ? void 0 : primaryProduct.product_category_name) || "--";
   var desktopBrandName = (primaryProduct === null || primaryProduct === void 0 ? void 0 : primaryProduct.brand_name) || "--";
   var desktopUnitName = (primaryProduct === null || primaryProduct === void 0 ? void 0 : (_primaryProduct$produ2 = primaryProduct.product_unit_name) === null || _primaryProduct$produ2 === void 0 ? void 0 : _primaryProduct$produ2.name) || "--";
+  var desktopMedidasValue = (primaryProduct === null || primaryProduct === void 0 ? void 0 : primaryProduct.medidas) || "--";
   var desktopNote = (primaryProduct === null || primaryProduct === void 0 ? void 0 : primaryProduct.notes) || emptyNoteLabel;
   var priceStockFields = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
     return [{
@@ -1160,8 +1220,13 @@ var ProductDetail = function ProductDetail(props) {
       value: selectedUnitName,
       variant: "badge",
       fullWidth: true
+    }, {
+      key: "medidas",
+      label: medidasLabel,
+      value: selectedMedidasValue,
+      variant: "muted"
     }];
-  }, [costPriceLabel, salePriceLabel, selectedAlertValue, selectedCostPrice, selectedSalePrice, selectedTaxValue, selectedUnitName, stockAlertLabel, taxLabel, unitLabel]);
+  }, [costPriceLabel, medidasLabel, salePriceLabel, selectedAlertValue, selectedCostPrice, selectedMedidasValue, selectedSalePrice, selectedTaxValue, selectedUnitName, stockAlertLabel, taxLabel, unitLabel]);
   var productBaseData = primaryProduct || {};
   var availableVariationTypes = (product === null || product === void 0 ? void 0 : (_product$attributes7 = product.attributes) === null || _product$attributes7 === void 0 ? void 0 : (_product$attributes7$ = _product$attributes7.variation) === null || _product$attributes7$ === void 0 ? void 0 : (_product$attributes7$2 = _product$attributes7$.variation_types) === null || _product$attributes7$2 === void 0 ? void 0 : _product$attributes7$2.filter(function (variationType) {
     var _product$attributes8, _product$attributes8$;
@@ -1205,6 +1270,7 @@ var ProductDetail = function ProductDetail(props) {
     sale_unit: productBaseData.sale_unit,
     purchase_unit: productBaseData.purchase_unit,
     quantity_limit: productBaseData.quantity_limit,
+    medidas: productBaseData.medidas || "",
     notes: productBaseData.notes,
     main_product_id: product && product.id,
     variation: product && (product === null || product === void 0 ? void 0 : (_product$attributes10 = product.attributes) === null || _product$attributes10 === void 0 ? void 0 : _product$attributes10.variation),
@@ -1564,6 +1630,7 @@ var ProductDetail = function ProductDetail(props) {
           var variantLabel = getVariationLabel(data) || productName;
           var variantPrice = (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_7__.currencySymbolHandling)(allConfigData, frontSetting.value && frontSetting.value.currency_symbol, (data === null || data === void 0 ? void 0 : data.product_price) || 0);
           var variantStock = (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_7__.formatQuantityAuto)((_ref2 = (_data$in_stock = data === null || data === void 0 ? void 0 : data.in_stock) !== null && _data$in_stock !== void 0 ? _data$in_stock : data === null || data === void 0 ? void 0 : (_data$stock = data.stock) === null || _data$stock === void 0 ? void 0 : _data$stock.quantity) !== null && _ref2 !== void 0 ? _ref2 : 0);
+          var variantMedidas = (data === null || data === void 0 ? void 0 : data.medidas) || "--";
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("button", {
             type: "button",
             className: "product-detail-variant-item ".concat(isActiveProduct ? "product-detail-variant-item--active" : ""),
@@ -1574,8 +1641,8 @@ var ProductDetail = function ProductDetail(props) {
               className: "product-detail-variant-item__copy",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("strong", {
                 children: variantLabel
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("span", {
-                children: variantPrice
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("span", {
+                children: [variantPrice, " | ", medidasLabel, ":", " ", variantMedidas]
               })]
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("span", {
               className: "product-detail-variant-item__stock",
@@ -1818,6 +1885,15 @@ var ProductDetail = function ProductDetail(props) {
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("th", {
                         className: "py-4",
                         scope: "row",
+                        children: medidasLabel
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("td", {
+                        className: "py-4",
+                        children: desktopMedidasValue
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("tr", {
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("th", {
+                        className: "py-4",
+                        scope: "row",
                         children: notePanelTitle
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("td", {
                         className: "py-4",
@@ -1854,6 +1930,8 @@ var ProductDetail = function ProductDetail(props) {
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("th", {
                     children: salePriceLabel
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("th", {
+                    children: medidasLabel
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("th", {
                     children: taxLabel
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("th", {
                     children: stockAlertLabel
@@ -1875,6 +1953,9 @@ var ProductDetail = function ProductDetail(props) {
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("td", {
                       className: "py-4",
                       children: (0,_shared_sharedMethod__WEBPACK_IMPORTED_MODULE_7__.currencySymbolHandling)(allConfigData, frontSetting.value && frontSetting.value.currency_symbol, (data === null || data === void 0 ? void 0 : data.product_price) || 0)
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsx)("td", {
+                      className: "py-4",
+                      children: (data === null || data === void 0 ? void 0 : data.medidas) || "--"
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_15__.jsxs)("td", {
                       className: "py-4",
                       children: [(data === null || data === void 0 ? void 0 : data.order_tax) || 0, "%"]

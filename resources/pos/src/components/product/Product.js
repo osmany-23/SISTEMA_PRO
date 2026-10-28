@@ -239,8 +239,14 @@ const ProductImageCell = memo(function ProductImageCell({
     );
 });
 
-const ProductNameCell = memo(function ProductNameCell({ name }) {
-    return <div className="product-table-card__name">{name || "-"}</div>;
+const ProductNameCell = memo(function ProductNameCell({ name, medidas }) {
+    const tooltipText = medidas ? `Medidas: ${medidas}` : name || "-";
+
+    return (
+        <div className="product-table-card__name" title={tooltipText}>
+            {name || "-"}
+        </div>
+    );
 });
 
 const ProductCodeCell = memo(function ProductCodeCell({ code, label }) {
@@ -793,6 +799,7 @@ const Product = (props) => {
                     : "",
                 time: createdAt ? moment(createdAt).format("LT") : "",
                 brand_name: attributes.brand_name || firstVariation.brand_name || "",
+                medidas: attributes.medidas || firstVariation.medidas || "",
                 product_price: productPrice,
                 product_unit: attributes?.product_unit?.name || "N/A",
                 in_stock: Number(attributes.in_stock ?? inStockFromVariations),
@@ -835,7 +842,9 @@ const Product = (props) => {
                 style: PRODUCT_NAME_COLUMN_CELL_STYLE,
                 grow: 1.4,
                 minWidth: "220px",
-                cell: (row) => <ProductNameCell name={row.name} />,
+                cell: (row) => (
+                    <ProductNameCell name={row.name} medidas={row.medidas} />
+                ),
             },
             {
                 name: getFormattedMessage("product.input.code.label"),
